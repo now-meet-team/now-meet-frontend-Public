@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "newMeetFrontend.app"
-               BlueprintName = "newMeetFrontend"
-               ReferencedContainer = "container:newMeetFrontend.xcodeproj">
+               BuildableName = "nowmeetfrontend.app"
+               BlueprintName = "nowmeetfrontend"
+               ReferencedContainer = "container:nowmeetfrontend.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "newMeetFrontendTests.xctest"
-               BlueprintName = "newMeetFrontendTests"
-               ReferencedContainer = "container:newMeetFrontend.xcodeproj">
+               BuildableName = "nowmeetfrontendTests.xctest"
+               BlueprintName = "nowmeetfrontendTests"
+               ReferencedContainer = "container:nowmeetfrontend.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "newMeetFrontend.app"
-            BlueprintName = "newMeetFrontend"
-            ReferencedContainer = "container:newMeetFrontend.xcodeproj">
+            BuildableName = "nowmeetfrontend.app"
+            BlueprintName = "nowmeetfrontend"
+            ReferencedContainer = "container:nowmeetfrontend.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "newMeetFrontend.app"
-            BlueprintName = "newMeetFrontend"
-            ReferencedContainer = "container:newMeetFrontend.xcodeproj">
+            BuildableName = "nowmeetfrontend.app"
+            BlueprintName = "nowmeetfrontend"
+            ReferencedContainer = "container:nowmeetfrontend.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
