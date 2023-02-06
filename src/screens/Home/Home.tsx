@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 export default function Home() {
   return (
     <View>
-      <Title>Home</Title>
+      <Title>Home..</Title>
     </View>
   );
 }
