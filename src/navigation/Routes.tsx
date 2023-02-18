@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -14,7 +14,14 @@ export default function Routes() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{headerShown: false}}
+          options={{
+            headerShadowVisible: true,
+            headerTitle: 'asd',
+
+            headerLeft: () => (
+              <Button onPress={() => {}} title="<" color="red" />
+            ),
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
