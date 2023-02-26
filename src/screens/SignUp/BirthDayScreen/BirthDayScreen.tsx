@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SignUpLayout from '../../../layout/SignUpLayout';
-import DatePicker from 'react-native-date-picker';
-import CustomDatePicker from '../../../components/Common/DatePicker/CustomDatePicker';
+import {StyleSheet} from 'react-native';
+
+import SignUpLayout from '@layout/SignUpLayout/SignUpLayout';
+import CustomDatePicker from '@components/Common/DatePicker/CustomDatePicker';
 
 export default function BirthDayScreen() {
   return (
@@ -12,5 +12,3 @@ export default function BirthDayScreen() {
     </SignUpLayout>
   );
 }
-
-const styles = StyleSheet.create({});

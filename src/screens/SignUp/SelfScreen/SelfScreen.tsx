@@ -1,6 +1,5 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SignUpLayout from '../../../layout/SignUpLayout';
+import SignUpLayout from '@layout/SignUpLayout/SignUpLayout';
 
 export default function SelfScreen() {
   return (
@@ -9,5 +8,3 @@ export default function SelfScreen() {
     </SignUpLayout>
   );
 }
-
-const styles = StyleSheet.create({});

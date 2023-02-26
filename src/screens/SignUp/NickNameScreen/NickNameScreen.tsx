@@ -1,9 +1,9 @@
 import {StyleSheet, View, Text} from 'react-native';
 import React from 'react';
 // import {useNavigation} from '@react-navigation/native';
-import SignUpLayout from '../../../layout/SignUpLayout';
 
-import Input from '../../../components/Common/Input/Input';
+import Input from '@components/Common/Input/Input';
+import SignUpLayout from '@layout/SignUpLayout/SignUpLayout';
 
 export default function NickNameScreen() {
   return (

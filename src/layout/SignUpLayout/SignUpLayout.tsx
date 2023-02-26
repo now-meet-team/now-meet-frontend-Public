@@ -1,9 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import {palette} from '../../config/globalStyles';
-import Button from '../../components/Common/Button/Button';
+
 import styled from 'styled-components/native';
 import {useNavigationStore} from '../../store/signup/signUpStore';
+import {palette} from '../../config/globalStyles';
+import Button from '../../components/Common/Button/Button';
 
 type SignUpLayoutType = {
   title: string;
