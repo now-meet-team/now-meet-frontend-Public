@@ -6,6 +6,7 @@ export const palette = {
   nero: '#1A1A1A',
   gray: '#7A7A7A',
   white: '#fff',
+  inputColor: '#e0e0e0',
 };
 
 export type PaletteKeyTypes = keyof typeof palette;

@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {palette} from '../../config/globalStyles';
-import Button from '../../components/Button/Button';
+import Button from '../../components/Common/Button/Button';
 import styled from 'styled-components/native';
 
 type SignUpLayoutType = {
@@ -15,7 +15,7 @@ export default function SignUpLayout(props: SignUpLayoutType) {
     <SignUpLayoutContainer>
       <SignUpText>{title}</SignUpText>
 
-      {children}
+      <View>{children}</View>
 
       <ButtonContainer>
         <Button
@@ -28,21 +28,22 @@ export default function SignUpLayout(props: SignUpLayoutType) {
   );
 }
 
-const SignUpLayoutContainer = styled.View`
+const SignUpLayoutContainer = styled.SafeAreaView`
+  flex: 1;
   position: relative;
-  height: 100%;
+  background-color: ${palette.white};
 `;
 
 const SignUpText = styled.Text`
   font-size: 24px;
   font-weight: 500;
-
-  background-color: red;
+  padding: 20px;
+  background-color: ${palette.white};
 `;
 
 const ButtonContainer = styled.View`
   width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   padding: 15px;
 `;

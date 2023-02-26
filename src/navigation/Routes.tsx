@@ -15,11 +15,13 @@ export default function Routes() {
           name="SignUp"
           component={SignUp}
           options={{
-            headerShadowVisible: true,
-            headerTitle: 'asd',
+            headerShadowVisible: false,
+            headerTitle: '',
 
             headerLeft: () => (
-              <Button onPress={() => {}} title="<" color="red" />
+              <View>
+                <Button onPress={() => {}} title="<" color="red" />
+              </View>
             ),
           }}
         />
