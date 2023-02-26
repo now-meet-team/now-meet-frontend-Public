@@ -2,11 +2,13 @@ import styled from 'styled-components/native';
 import {palette} from '../../../config/globalStyles';
 
 type InputType = {
+  value: string;
   placeholder?: string;
 };
 
 export default function Input(props: InputType) {
-  return <StyledInput {...props} />;
+  const {value, ...other} = props;
+  return <StyledInput value={value} {...other} />;
 }
 
 const StyledInput = styled.TextInput`

@@ -3,6 +3,7 @@ import React from 'react';
 import {palette} from '../../config/globalStyles';
 import Button from '../../components/Common/Button/Button';
 import styled from 'styled-components/native';
+import {useNavigationStore} from '../../store/signup/signUpStore';
 
 type SignUpLayoutType = {
   title: string;
@@ -11,6 +12,8 @@ type SignUpLayoutType = {
 
 export default function SignUpLayout(props: SignUpLayoutType) {
   const {title, children} = props;
+  const nextPage = useNavigationStore(state => state.handleNextPage);
+
   return (
     <SignUpLayoutContainer>
       <SignUpText>{title}</SignUpText>
@@ -21,7 +24,7 @@ export default function SignUpLayout(props: SignUpLayoutType) {
         <Button
           backgroundColor={palette.awesome}
           title="다음"
-          onPress={() => {}}
+          onPress={nextPage}
         />
       </ButtonContainer>
     </SignUpLayoutContainer>
