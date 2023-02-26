@@ -12,10 +12,3 @@ export default function NickNameScreen() {
     </SignUpLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: palette.beer,
-  },
-});
