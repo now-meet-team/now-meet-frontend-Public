@@ -19,7 +19,7 @@ export default function SignUpLayout(props: SignUpLayoutType) {
     <SignUpLayoutContainer>
       <SignUpText>{title}</SignUpText>
 
-      <View>{children}</View>
+      <ViewChildrenStyled>{children}</ViewChildrenStyled>
 
       <ButtonContainer>
         <Button
@@ -36,6 +36,10 @@ const SignUpLayoutContainer = styled.SafeAreaView`
   flex: 1;
   position: relative;
   background-color: ${palette.white};
+`;
+
+const ViewChildrenStyled = styled.View`
+  /* padding: 20px; */
 `;
 
 const SignUpText = styled.Text`
