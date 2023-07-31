@@ -1,9 +1,12 @@
-import {StyleSheet, Text, View, TextInput} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
-export default function TextArea() {
+type TextAreaType = {
+  value: string;
+  onChangeText: (value: string) => void;
+};
+export default function TextArea(props: TextAreaType) {
   return (
     <StyledContainer>
       <StyledTextInput
@@ -11,6 +14,8 @@ export default function TextArea() {
         maxLength={200}
         multiline={true}
         numberOfLines={10}
+        value={props.value}
+        onChangeText={text => props.onChangeText(text)}
       />
     </StyledContainer>
   );
