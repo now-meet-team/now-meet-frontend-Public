@@ -1,4 +1,3 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import SignUpLayout from '../../../layout/SignUpLayout/SignUpLayout';
 import Chip from 'components/Chip';

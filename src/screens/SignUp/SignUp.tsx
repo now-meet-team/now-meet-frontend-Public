@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+
 import {useNavigationStore} from '../../store/signup/signUpStore';
 import BirthDayScreen from './BirthDayScreen/BirthDayScreen';
 import GenderScreen from './GenderScreen/GenderScreen';

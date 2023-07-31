@@ -29,3 +29,13 @@ export const useGenderStore = create<UseGenderStoreType>(set => ({
   selectGender: '',
   handleSelectGender: (value: string) => set({selectGender: value}),
 }));
+
+type UseJobStoreType = {
+  selectJob: string | number;
+  handleSelectJob: (value: string | number) => void;
+};
+
+export const useJobStore = create<UseJobStoreType>(set => ({
+  selectJob: '',
+  handleSelectJob: (value: string | number) => set({selectJob: value}),
+}));
