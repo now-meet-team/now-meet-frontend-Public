@@ -55,9 +55,7 @@ const SignUpSubText = styled.Text`
   font-size: 13px;
   font-weight: 500;
   padding: 0 20px;
-
   margin-top: 10px;
-  margin-bottom: 26px;
   background-color: ${palette.white};
 `;
 

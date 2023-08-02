@@ -7,6 +7,8 @@ export const palette = {
   gray: '#7A7A7A',
   white: '#fff',
   inputColor: '#e0e0e0',
+  lineColor: '#f5f5f5',
+  requiredText: '#aaa',
 };
 
 export type PaletteKeyTypes = keyof typeof palette;

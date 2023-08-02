@@ -5,7 +5,6 @@ import {View} from 'react-native';
 import {hobbyData} from './data/data';
 import Chip from 'components/Chip';
 import {useHobbyStore} from 'store/signup/signUpStore';
-import {Alert} from 'react-native';
 
 export default function HobbyScreen() {
   const selectHobby = useHobbyStore(state => state.selectHobby);
@@ -15,7 +14,7 @@ export default function HobbyScreen() {
     <SignUpLayout
       title={'취향을 골라주세요'}
       subTitle="최대 3개까지 선택 가능합니다">
-      <StyledJobChipContainer>
+      <StyledJobChipContainer style={{marginTop: 26}}>
         {hobbyData.map(hobby => {
           return (
             <View key={hobby.id}>
