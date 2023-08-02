@@ -7,16 +7,19 @@ import Button from '../../components/Common/Button/Button';
 
 type SignUpLayoutType = {
   title: string;
+  subTitle?: string;
   children?: React.ReactNode;
 };
 
 export default function SignUpLayout(props: SignUpLayoutType) {
-  const {title, children} = props;
+  const {title, subTitle, children} = props;
   const nextPage = useNavigationStore(state => state.handleNextPage);
 
   return (
     <SignUpLayoutContainer>
       <SignUpText>{title}</SignUpText>
+
+      <SignUpSubText>{subTitle}</SignUpSubText>
 
       <ViewChildrenStyled>{children}</ViewChildrenStyled>
 
@@ -44,7 +47,17 @@ const ViewChildrenStyled = styled.View`
 const SignUpText = styled.Text`
   font-size: 24px;
   font-weight: 500;
-  padding: 20px;
+  padding: 0 20px;
+  background-color: ${palette.white};
+`;
+
+const SignUpSubText = styled.Text`
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 20px;
+
+  margin-top: 10px;
+  margin-bottom: 26px;
   background-color: ${palette.white};
 `;
 

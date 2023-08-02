@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import {create} from 'zustand';
 
 type UseNavigationStoreType = {
@@ -44,7 +45,7 @@ export const useJobStore = create<UseJobStoreType>(set => ({
   handleSelectJob: (value: string | number) => set({selectJob: value}),
 }));
 
-/* 자기소갸 */
+/* 자기소개 */
 type UseMySelfStoreType = {
   mySelfValue: string;
   handleMySelfValue: (value: string) => void;
@@ -53,4 +54,23 @@ type UseMySelfStoreType = {
 export const useMySelfStore = create<UseMySelfStoreType>(set => ({
   mySelfValue: '',
   handleMySelfValue: (value: string) => set({mySelfValue: value}),
+}));
+
+/* 취미 */
+type UseHobbyStoreType = {
+  selectHobby: Array<string>;
+  handleSelectHobby: (value: string) => void;
+};
+
+export const useHobbyStore = create<UseHobbyStoreType>((set, get) => ({
+  selectHobby: [],
+  handleSelectHobby: (chipId: string) => {
+    if (get().selectHobby.includes(chipId)) {
+      set({selectHobby: get().selectHobby.filter(hobby => hobby !== chipId)});
+    } else if (get().selectHobby.length < 3) {
+      set({selectHobby: [...get().selectHobby, chipId]});
+    } else {
+      Alert.alert('최대 3개까지 선택 가능합니다');
+    }
+  },
 }));

@@ -14,7 +14,7 @@ export default function JobScreen() {
   return (
     <SignUpLayout title={'직업을 선택해주세요'}>
       <StyledJobChipContainer>
-        {jobData.map((job, index) => {
+        {jobData?.map((job, index) => {
           return (
             <View key={job.id}>
               <Chip
@@ -30,7 +30,7 @@ export default function JobScreen() {
   );
 }
 
-const StyledJobChipContainer = styled.View`
+export const StyledJobChipContainer = styled.View`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
