@@ -3,19 +3,27 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
+import TermCheckbox from 'components/TermCheckbox';
+
 export type TermTextBoxType = {
   lineText: string;
   requiredText: string;
   isBorder?: boolean | undefined;
+  isCheck?: boolean;
+  handleCheck: () => void;
 };
 
 export default function TermTextBox(props: TermTextBoxType) {
-  const {lineText, requiredText, isBorder = true} = props;
+  const {lineText, requiredText, isBorder = true, isCheck, handleCheck} = props;
   return (
     <StyledLineTextContainer isBorder={isBorder}>
       <StyledTermText>
-        <StyledTermsText>{lineText}</StyledTermsText>
-        <StyledRequiredText>{requiredText}</StyledRequiredText>
+        <StyledTermContainer>
+          <StyledTermsText>{lineText}</StyledTermsText>
+          <StyledRequiredText>{requiredText}</StyledRequiredText>
+        </StyledTermContainer>
+
+        <TermCheckbox isCheck={isCheck} handleCheck={handleCheck} />
       </StyledTermText>
     </StyledLineTextContainer>
   );
@@ -30,10 +38,17 @@ const StyledLineTextContainer = styled(View)<{isBorder: boolean}>`
   margin-top: 14px;
 `;
 
+const StyledTermContainer = styled(View)`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`;
+
 export const StyledTermText = styled.View`
   margin-bottom: 14px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   gap: 5px;
 `;
 
