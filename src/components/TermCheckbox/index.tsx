@@ -1,6 +1,6 @@
+import {DisabledTerms, Terms} from '../../assets/index';
 import React from 'react';
-import {Terms} from '../../assets/';
-import {DisabledTerms} from '../../assets/';
+
 import styled from 'styled-components/native';
 
 type TermCheckboxType = {

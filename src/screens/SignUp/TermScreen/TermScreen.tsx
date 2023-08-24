@@ -5,6 +5,7 @@ import {StyledChipContainer} from '../GenderScreen/GenderScreen';
 import styled from 'styled-components/native';
 import {useTermsStore} from 'store/term/termStore';
 import {shallow} from 'zustand/shallow';
+import AllTermCheckbox from 'components/AllTermCheckbox';
 
 export default function TermScreen() {
   const termCheckValue = useTermsStore(
@@ -16,6 +17,10 @@ export default function TermScreen() {
       marketingCheck: state.marketingCheck,
     }),
     shallow,
+  );
+
+  const allChecked = Object.values(termCheckValue).every(
+    value => value === true,
   );
 
   return (
@@ -71,6 +76,20 @@ export default function TermScreen() {
           lineText="마케팅 수신 동의"
           requiredText="선택"
           isBorder={false}
+        />
+
+        <AllTermCheckbox
+          label="전체동의"
+          isCheck={allChecked}
+          handleCheck={() => {
+            useTermsStore.setState({
+              term: !allChecked,
+              privacy: !allChecked,
+              locationCheck: !allChecked,
+              sensitiveCheck: !allChecked,
+              marketingCheck: !allChecked,
+            });
+          }}
         />
       </StyledTermTextContainer>
     </SignUpLayout>

@@ -1,6 +1,4 @@
-import {StyleSheet, View, Text} from 'react-native';
 import React from 'react';
-// import {useNavigation} from '@react-navigation/native';
 import {shallow} from 'zustand/shallow';
 
 import Input from '@components/Common/Input/Input';

@@ -9,6 +9,8 @@ export const palette = {
   inputColor: '#e0e0e0',
   lineColor: '#f5f5f5',
   requiredText: '#aaa',
+
+  progressColor: '#f4f4f4',
 };
 
 export type PaletteKeyTypes = keyof typeof palette;

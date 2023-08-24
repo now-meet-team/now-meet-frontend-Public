@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import {useNavigationStore} from '../../store/signup/signUpStore';
 import {palette} from '../../config/globalStyles';
 import Button from '../../components/Common/Button/Button';
+import ProgressBar from 'components/ProgressBar';
 
 type SignUpLayoutType = {
   title: string;
@@ -13,12 +14,13 @@ type SignUpLayoutType = {
 
 export default function SignUpLayout(props: SignUpLayoutType) {
   const {title, subTitle, children} = props;
+
   const nextPage = useNavigationStore(state => state.handleNextPage);
 
   return (
     <SignUpLayoutContainer>
+      <ProgressBar />
       <SignUpText>{title}</SignUpText>
-
       <SignUpSubText>{subTitle}</SignUpSubText>
 
       <ViewChildrenStyled>{children}</ViewChildrenStyled>
