@@ -4,13 +4,22 @@ import {create} from 'zustand';
 type UseNavigationStoreType = {
   pageNumber: number;
   handleNextPage: () => void;
+  handlePrevPage: () => void;
 };
 
 /* 페이지 이동 */
-export const useNavigationStore = create<UseNavigationStoreType>(set => ({
-  pageNumber: 0,
-  handleNextPage: () => set(state => ({pageNumber: state.pageNumber + 1})),
-}));
+export const useNavigationStore = create<UseNavigationStoreType>(
+  (set, get) => ({
+    pageNumber: 0,
+    handleNextPage: () => set(state => ({pageNumber: state.pageNumber + 1})),
+    handlePrevPage: () => {
+      if (get().pageNumber === 0) {
+        return;
+      }
+      set(state => ({pageNumber: state.pageNumber - 1}));
+    },
+  }),
+);
 
 /* 닉네임 */
 type UseNickNameStoreType = {
@@ -30,19 +39,39 @@ type UseGenderStoreType = {
 };
 
 export const useGenderStore = create<UseGenderStoreType>(set => ({
-  selectGender: '',
+  selectGender: 'men',
   handleSelectGender: (value: string) => set({selectGender: value}),
+}));
+
+/* 키 */
+type UseHeightStoreType = {
+  height: string;
+  handleSelectGender: (value: string) => void;
+};
+
+export const useHeightStore = create<UseHeightStoreType>(set => ({
+  height: '',
+  handleSelectGender: (value: string) => {
+    if (value[0] === '0') {
+      return;
+    }
+    set({height: value});
+  },
 }));
 
 /* 직업 */
 type UseJobStoreType = {
   selectJob: string | number;
+  etcJob: string;
   handleSelectJob: (value: string | number) => void;
+  handleEtcJob: (value: string) => void;
 };
 
 export const useJobStore = create<UseJobStoreType>(set => ({
   selectJob: '',
+  etcJob: '',
   handleSelectJob: (value: string | number) => set({selectJob: value}),
+  handleEtcJob: (value: string) => set({etcJob: value}),
 }));
 
 /* 자기소개 */

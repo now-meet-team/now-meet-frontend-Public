@@ -12,6 +12,7 @@ export default function HobbyScreen() {
 
   return (
     <SignUpLayout
+      disabled={selectHobby.length === 0}
       title={'취향을 골라주세요'}
       subTitle="최대 3개까지 선택 가능합니다">
       <StyledJobChipContainer style={{marginTop: 26}}>

@@ -10,10 +10,11 @@ type SignUpLayoutType = {
   title: string;
   subTitle?: string;
   children?: React.ReactNode;
+  disabled?: boolean;
 };
 
 export default function SignUpLayout(props: SignUpLayoutType) {
-  const {title, subTitle, children} = props;
+  const {title, subTitle, children, disabled} = props;
 
   const nextPage = useNavigationStore(state => state.handleNextPage);
 
@@ -27,7 +28,8 @@ export default function SignUpLayout(props: SignUpLayoutType) {
 
       <ButtonContainer>
         <Button
-          backgroundColor={palette.awesome}
+          disabled={disabled}
+          backgroundColor={disabled ? palette.gray : palette.awesome}
           title="다음"
           onPress={nextPage}
         />

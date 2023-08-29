@@ -5,11 +5,19 @@ type InputType = {
   onChangeText: ((text: string) => void) | undefined;
   value: string;
   placeholder?: string;
+  maxLength?: number;
 };
 
 export default function Input(props: InputType) {
-  const {value, onChangeText, ...other} = props;
-  return <StyledInput onChangeText={onChangeText} value={value} {...other} />;
+  const {value, onChangeText, maxLength, ...other} = props;
+  return (
+    <StyledInput
+      onChangeText={onChangeText}
+      value={value}
+      maxLength={maxLength}
+      {...other}
+    />
+  );
 }
 
 const StyledInput = styled.TextInput`

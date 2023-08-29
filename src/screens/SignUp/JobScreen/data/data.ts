@@ -43,8 +43,4 @@ export const jobData = [
     id: 10,
     label: '학생',
   },
-  {
-    id: 11,
-    label: '직접입력',
-  },
 ];

@@ -24,7 +24,14 @@ export default function TermScreen() {
   );
 
   return (
-    <SignUpLayout title={'이용약관에 동의해주세요'}>
+    <SignUpLayout
+      title={'이용약관에 동의해주세요'}
+      disabled={
+        !termCheckValue.term ||
+        !termCheckValue.privacy ||
+        !termCheckValue.locationCheck ||
+        !termCheckValue.sensitiveCheck
+      }>
       <StyledTermTextContainer>
         <TermTextBox
           isCheck={termCheckValue.term}

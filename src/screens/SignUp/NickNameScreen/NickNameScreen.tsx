@@ -10,7 +10,9 @@ export default function NickNameScreen() {
   const handleNickName = useNickNameStore(state => state.handleNickName);
 
   return (
-    <SignUpLayout title={'반갑습니다!\n닉네임을 입력해주세요😊'}>
+    <SignUpLayout
+      title={'반갑습니다!\n닉네임을 입력해주세요😊'}
+      disabled={!nickName}>
       <Input
         onChangeText={text => handleNickName(text)}
         value={nickName}
