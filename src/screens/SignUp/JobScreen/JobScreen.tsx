@@ -33,7 +33,7 @@ export default function JobScreen() {
 
         <ChipAndInputContainer>
           <Chip
-            label={selectJob === 'custom' ? ' ' : etcJob}
+            label={selectJob === 'custom' ? ' ' : etcJob || '직접 입력'}
             select={selectJob === 'custom'}
             onPress={() => handleSelectJob('custom')}
           />

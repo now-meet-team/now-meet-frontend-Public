@@ -1,39 +1,41 @@
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
-  Button,
   StyleSheet,
+  FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
+import {useImageStore} from 'store/signup/signUpStore';
 
-export default function ImageUploadContainer() {
-  const [selectedImages, setSelectedImages] = useState([]);
+type ImageUploadContainerType = {
+  onUpload: (index: number) => void;
+};
+
+export default function ImageUploadContainer(props: ImageUploadContainerType) {
+  const {onUpload} = props;
+
+  const images = useImageStore(state => state.images);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageRow}>
-        {selectedImages.map((image, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.imageContainer}
-            onPress={() =>
-              setSelectedImages(selectedImages.filter((_, i) => i !== index))
-            }>
-            <Image source={{uri: ''}} style={styles.image} />
-          </TouchableOpacity>
-        ))}
-        {selectedImages.length < 5 && (
-          <TouchableOpacity style={styles.imageContainer} onPress={() => {}}>
-            <View style={styles.plusIconContainer}>
-              <Text style={styles.plusIcon}>+</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
-
-      <Button title="Upload Images" onPress={() => {}} />
+    <View style={styles.imageRow}>
+      <FlatList
+        horizontal
+        data={images}
+        renderItem={({item, index}) => {
+          return (
+            <>
+              <TouchableOpacity
+                style={styles.imageContainer}
+                onPress={() => onUpload(index)}>
+                <Image source={{uri: item?.uri}} style={styles.image} />
+              </TouchableOpacity>
+            </>
+          );
+        }}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.contentContainerStyle}
+      />
     </View>
   );
 }
@@ -41,45 +43,43 @@ export default function ImageUploadContainer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imageRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imageContainer: {
-    flex: 1,
-    aspectRatio: 1,
-    justifyContent: 'center',
+    width: 100,
+    height: 100,
+    margin: 10,
+    backgroundColor: '#eee',
+    borderRadius: 5,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    overflow: 'hidden',
+    justifyContent: 'center',
   },
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
+    borderRadius: 5,
   },
   plusIconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
+    borderRadius: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   plusIcon: {
+    color: '#fff',
     fontSize: 40,
-    color: '#888',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+  contentContainerStyle: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
 });

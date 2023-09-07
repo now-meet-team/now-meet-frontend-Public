@@ -1,4 +1,6 @@
 import {Alert} from 'react-native';
+import {Asset} from 'react-native-image-picker';
+
 import {create} from 'zustand';
 
 type UseNavigationStoreType = {
@@ -100,6 +102,23 @@ export const useHobbyStore = create<UseHobbyStoreType>((set, get) => ({
       set({selectHobby: [...get().selectHobby, chipId]});
     } else {
       Alert.alert('최대 3개까지 선택 가능합니다');
+    }
+  },
+}));
+
+/* 사진 */
+type UseFileStoreType = {
+  image: string;
+  images: Array<Asset>;
+  handleOnUpload: (image: Asset[] | undefined) => void;
+};
+
+export const useImageStore = create<UseFileStoreType>(set => ({
+  image: '',
+  images: ['', '', ''],
+  handleOnUpload: (imageURL: Asset[] | undefined) => {
+    if (imageURL) {
+      set({images: imageURL});
     }
   },
 }));
