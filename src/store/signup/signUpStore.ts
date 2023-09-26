@@ -23,6 +23,17 @@ export const useNavigationStore = create<UseNavigationStoreType>(
   }),
 );
 
+/* 이메일 */
+type UseEmailStoreType = {
+  email: string;
+  handleEmail: (text: string) => void;
+};
+
+export const useEmailStore = create<UseEmailStoreType>(set => ({
+  email: '',
+  handleEmail: (text: string) => set({email: text}),
+}));
+
 /* 닉네임 */
 type UseNickNameStoreType = {
   nickName: string;
@@ -120,5 +131,32 @@ export const useImageStore = create<UseFileStoreType>(set => ({
     if (imageURL) {
       set({images: imageURL});
     }
+  },
+}));
+
+type UseUserSignUpType = {
+  handleUserSignUp: () => FormData;
+};
+
+export const useSignUpStore = create<UseUserSignUpType>(() => ({
+  handleUserSignUp: () => {
+    const formData = new FormData();
+
+    formData.append('email', useEmailStore.getState().email);
+    formData.append('nickname', useNickNameStore.getState().nickName);
+    formData.append('sex', useGenderStore.getState().selectGender);
+    formData.append('birthDate', '1994-11-21');
+    formData.append('tall', useHeightStore.getState().height);
+    formData.append('job', useJobStore.getState().selectJob);
+    formData.append('introduce', useMySelfStore.getState().mySelfValue);
+    // formData.append('preference', useHobbyStore.getState().selectHobby);
+    formData.append('preference', '독서');
+    formData.append('profileImages', useImageStore.getState().images);
+
+    // formData.append('email', 'test2@test.com');
+    // formData.append('username', 'Chris');
+    // formData.append('username', 'Bob');
+
+    return formData;
   },
 }));

@@ -1,10 +1,14 @@
 import React from 'react';
 
 import styled from 'styled-components/native';
-import {useNavigationStore} from '../../store/signup/signUpStore';
+import {
+  useNavigationStore,
+  useSignUpStore,
+} from '../../store/signup/signUpStore';
 import {palette} from '../../config/globalStyles';
 import Button from '../../components/Common/Button/Button';
 import ProgressBar from 'components/ProgressBar';
+import {usePostSignUp} from 'lib/mutation/signUp';
 
 type SignUpLayoutType = {
   title: string;
@@ -16,22 +20,30 @@ type SignUpLayoutType = {
 export default function SignUpLayout(props: SignUpLayoutType) {
   const {title, subTitle, children, disabled} = props;
 
+  const pageNumber = useNavigationStore(state => state.pageNumber);
   const nextPage = useNavigationStore(state => state.handleNextPage);
+
+  const handleUserSignUp = useSignUpStore(state => state.handleUserSignUp);
+
+  const {useSignUpMutation} = usePostSignUp();
+
+  const finalSignUp = () => {
+    const formData = handleUserSignUp();
+    useSignUpMutation.mutate(formData);
+  };
 
   return (
     <SignUpLayoutContainer>
       <ProgressBar />
       <SignUpText>{title}</SignUpText>
       <SignUpSubText>{subTitle}</SignUpSubText>
-
       <ViewChildrenStyled>{children}</ViewChildrenStyled>
-
       <ButtonContainer>
         <Button
           disabled={disabled}
           backgroundColor={disabled ? palette.gray : palette.awesome}
-          title="다음"
-          onPress={nextPage}
+          title={pageNumber === 8 ? '완료' : '다음'}
+          onPress={pageNumber === 8 ? finalSignUp : nextPage}
         />
       </ButtonContainer>
     </SignUpLayoutContainer>

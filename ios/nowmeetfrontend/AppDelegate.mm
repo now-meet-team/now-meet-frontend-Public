@@ -1,11 +1,13 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyAZhtDZMo1dNrbzfzKH1C-faKSVgH6d-ys"]; // add this line using the api key obtained from Google Console
   self.moduleName = @"now-meet-frontend";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignUp from '../screens/SignUp/SignUp';
 import {useNavigationStore} from 'store/signup/signUpStore';
+import Home from 'screens/Home/Home';
 
 const Stack = createNativeStackNavigator();
 export default function Routes() {
@@ -12,7 +13,16 @@ export default function Routes() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShadowVisible: false,
+            headerTitle: '',
+          }}
+        />
+
         <Stack.Screen
           name="SignUp"
           component={SignUp}
@@ -25,7 +35,7 @@ export default function Routes() {
                 <Button
                   onPress={() => handlePrevPage()}
                   title="<"
-                  color="red"
+                  color="black"
                 />
               </View>
             ),
