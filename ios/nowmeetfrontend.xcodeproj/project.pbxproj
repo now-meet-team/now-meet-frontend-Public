@@ -31,6 +31,7 @@
 		00E356EE1AD99517003FC87E /* nowmeetfrontendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nowmeetfrontendTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* nowmeetfrontendTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nowmeetfrontendTests.m; sourceTree = "<group>"; };
+		09D6E3D02ACD9CBD00CB61D3 /* nowmeetfrontend-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nowmeetfrontend-Bridging-Header.h"; sourceTree = "<group>"; };
 		09EC95B02AB1E9F400312A15 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* nowmeetfrontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nowmeetfrontend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = nowmeetfrontend/AppDelegate.h; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				09D6E3D02ACD9CBD00CB61D3 /* nowmeetfrontend-Bridging-Header.h */,
 			);
 			name = nowmeetfrontend;
 			sourceTree = "<group>";
@@ -210,7 +212,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -493,6 +495,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nowmeetfrontend/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "now-meet-frontend";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -503,8 +506,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mproject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nowmeetfrontend;
 				PRODUCT_NAME = nowmeetfrontend;
+				SWIFT_OBJC_BRIDGING_HEADER = "nowmeetfrontend-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -520,6 +524,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = nowmeetfrontend/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "now-meet-frontend";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,8 +535,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mproject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nowmeetfrontend;
 				PRODUCT_NAME = nowmeetfrontend;
+				SWIFT_OBJC_BRIDGING_HEADER = "nowmeetfrontend-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
