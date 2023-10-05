@@ -18,7 +18,6 @@ export default function CustomDatePicker() {
         onDateChange={() => setDate(date)}
         maximumDate={maximumDate}
       />
-      ;
     </Text>
   );
 }

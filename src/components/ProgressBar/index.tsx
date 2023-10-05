@@ -14,7 +14,7 @@ const ProgressBar = () => {
         <Progress.Bar
           color={palette.bittersweet}
           borderColor={palette.white}
-          progress={convertProgressToPage(pageNumbers, 9)}
+          progress={convertProgressToPage(pageNumbers, 10)}
           width={null}
           height={8}
           borderRadius={8}

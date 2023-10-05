@@ -13,7 +13,7 @@ export default function Routes() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="SignUp">
         <Stack.Screen
           name="Home"
           component={Home}

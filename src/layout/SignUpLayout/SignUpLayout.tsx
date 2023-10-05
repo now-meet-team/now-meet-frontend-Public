@@ -42,8 +42,8 @@ export default function SignUpLayout(props: SignUpLayoutType) {
         <Button
           disabled={disabled}
           backgroundColor={disabled ? palette.gray : palette.awesome}
-          title={pageNumber === 8 ? '완료' : '다음'}
-          onPress={pageNumber === 8 ? finalSignUp : nextPage}
+          title={pageNumber === 9 ? '완료' : '다음'}
+          onPress={pageNumber === 9 ? finalSignUp : nextPage}
         />
       </ButtonContainer>
     </SignUpLayoutContainer>

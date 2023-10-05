@@ -1,17 +1,12 @@
-import React, {useEffect} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {mapStyle} from './mapStyle';
+import {PERMISSIONS, RESULTS, check, request} from 'react-native-permissions';
 
 export default function GoogleMap() {
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization('always');
-    }
-  }, []);
-
-  useEffect(() => {
+  const getCurrentPosition = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
@@ -23,7 +18,44 @@ export default function GoogleMap() {
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
+  };
+
+  const showAlert = useCallback(() => {
+    Linking.openSettings();
+    Alert.alert(
+      '위치 권한이 필요합니다!',
+      '앱의 기능을 사용하려면 위치 권한이 필요합니다. 설정으로 이동하여 권한을 허용해주세요.',
+      [
+        {
+          text: '설정으로 이동',
+          onPress: () => {
+            Linking.openSettings().then(() => {
+              requestLocationPermission();
+            });
+          },
+        },
+      ],
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const requestLocationPermission = useCallback(async () => {
+    if (Platform.OS === 'ios') {
+      const permission = await Geolocation.requestAuthorization('whenInUse');
+
+      if (permission === 'denied') {
+        showAlert();
+      }
+
+      if (permission === 'granted') {
+        getCurrentPosition();
+      }
+    }
+  }, [showAlert]);
+
+  useEffect(() => {
+    requestLocationPermission();
+  }, [requestLocationPermission]);
 
   return (
     <>

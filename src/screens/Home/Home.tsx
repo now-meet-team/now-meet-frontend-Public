@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import React, {useEffect} from 'react';
 
 import {
@@ -8,6 +8,8 @@ import {
 import {useEmailStore} from 'store/signup/signUpStore';
 import {useNavigation} from '@react-navigation/native';
 import GoogleMap from 'components/GoogleMap/GoogleMap';
+import styled from 'styled-components/native';
+import {palette} from 'config/globalStyles';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -36,15 +38,27 @@ export default function Home() {
   };
 
   return (
-    <View>
-      {/* <GoogleSigninButton
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={googleLogin}
-        disabled={false}
-      /> */}
-
-      <GoogleMap />
-    </View>
+    <HomeContainer>
+      <ButtonContainer>
+        <GoogleSigninButton
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={googleLogin}
+          disabled={false}
+        />
+      </ButtonContainer>
+      {/* <GoogleMap /> */}
+    </HomeContainer>
   );
 }
+
+const HomeContainer = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${palette.white};
+`;
+
+const ButtonContainer = styled.View`
+  position: absolute;
+  bottom: 80px;
+  left: 10%;
+`;

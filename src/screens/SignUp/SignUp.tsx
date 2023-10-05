@@ -10,6 +10,7 @@ import NickNameScreen from './NickNameScreen/NickNameScreen';
 import SelfScreen from './SelfScreen/SelfScreen';
 import TermScreen from './TermScreen/TermScreen';
 import UploadImageScreen from './UploadImageScreen/UploadImageScreen';
+import CurrentPositionScreen from './CurrentPositionScreen/CurrentPositionScreen';
 
 type PageScreenType = {
   [key: number]: JSX.Element;
@@ -22,12 +23,13 @@ export default function SignUp() {
     0: <NickNameScreen />,
     1: <GenderScreen />,
     2: <BirthDayScreen />,
-    3: <HeightScreen />,
-    4: <JobScreen />,
-    5: <SelfScreen />,
-    6: <HobbyScreen />,
-    7: <UploadImageScreen />,
-    8: <TermScreen />,
+    3: <CurrentPositionScreen />,
+    4: <HeightScreen />,
+    5: <JobScreen />,
+    6: <SelfScreen />,
+    7: <HobbyScreen />,
+    8: <UploadImageScreen />,
+    9: <TermScreen />,
   };
 
   return pageScreen[pageNumber];

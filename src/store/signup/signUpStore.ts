@@ -153,10 +153,6 @@ export const useSignUpStore = create<UseUserSignUpType>(() => ({
     formData.append('preference', '독서');
     formData.append('profileImages', useImageStore.getState().images);
 
-    // formData.append('email', 'test2@test.com');
-    // formData.append('username', 'Chris');
-    // formData.append('username', 'Bob');
-
     return formData;
   },
 }));
