@@ -1,4 +1,3 @@
-import {SafeAreaView} from 'react-native';
 import React, {useEffect} from 'react';
 
 import {
@@ -6,21 +5,21 @@ import {
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import {useEmailStore} from 'store/signup/signUpStore';
-import {useNavigation} from '@react-navigation/native';
-import GoogleMap from 'components/GoogleMap/GoogleMap';
+
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
-export default function Home() {
-  const navigation = useNavigation();
+import {saveWebClientId} from 'utils/auth';
+import {usePostIsSignIn} from 'lib/mutation/signIn';
 
+export default function Home() {
   const handleEmail = useEmailStore(state => state.handleEmail);
+  const {useSignInMutation} = usePostIsSignIn();
 
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '740602482619-0fekkor4v48tnskj5412hup32fhpc59i.apps.googleusercontent.com',
-    });
+    saveWebClientId();
+
+    // retrieveWebClientId();
   }, []);
 
   const googleLogin = async () => {
@@ -29,9 +28,7 @@ export default function Home() {
       const userInfo = await GoogleSignin.signIn();
       handleEmail(userInfo?.user.email);
 
-      if (userInfo) {
-        return navigation.navigate('SignUp' as never);
-      }
+      useSignInMutation.mutate(userInfo?.user.email);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +44,6 @@ export default function Home() {
           disabled={false}
         />
       </ButtonContainer>
-      {/* <GoogleMap /> */}
     </HomeContainer>
   );
 }

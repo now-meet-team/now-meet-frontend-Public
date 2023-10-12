@@ -6,7 +6,8 @@
     "paths": {
       "*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@layout/*": ["src/layout/*"]
+      "@layout/*": ["src/layout/*"],
+      "env": ["src/config/env.ts"] // 'env' 모듈에 대한 경로 추가
     }
   }
 }

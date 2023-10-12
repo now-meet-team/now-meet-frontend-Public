@@ -56,6 +56,22 @@ export const useGenderStore = create<UseGenderStoreType>(set => ({
   handleSelectGender: (value: string) => set({selectGender: value}),
 }));
 
+/* 자기위치 */
+type UseMapStoreType = {
+  latitude: number;
+  longitude: number;
+  setLocationMapValue: (value: {latitude: number; longitude: number}) => void;
+};
+
+export const useGoogleMapStore = create<UseMapStoreType>(set => ({
+  latitude: 0,
+  longitude: 0,
+  setLocationMapValue: value => {
+    set({latitude: value.latitude});
+    set({longitude: value.longitude});
+  },
+}));
+
 /* 키 */
 type UseHeightStoreType = {
   height: string;
@@ -152,6 +168,9 @@ export const useSignUpStore = create<UseUserSignUpType>(() => ({
     // formData.append('preference', useHobbyStore.getState().selectHobby);
     formData.append('preference', '독서');
     formData.append('profileImages', useImageStore.getState().images);
+
+    formData.append('latitude', useGoogleMapStore.getState().latitude);
+    formData.append('longitude', useGoogleMapStore.getState().longitude);
 
     return formData;
   },

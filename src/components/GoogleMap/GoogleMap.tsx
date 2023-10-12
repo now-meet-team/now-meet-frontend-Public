@@ -1,24 +1,40 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {mapStyle} from './mapStyle';
-import {PERMISSIONS, RESULTS, check, request} from 'react-native-permissions';
+
+import {useGoogleMapStore} from 'store/signup/signUpStore';
+import {palette} from 'config/globalStyles';
 
 export default function GoogleMap() {
-  const getCurrentPosition = () => {
-    Geolocation.getCurrentPosition(
+  const setLocationMapValue = useGoogleMapStore(
+    state => state.setLocationMapValue,
+  );
+
+  const lat = useGoogleMapStore(state => state.latitude);
+  const long = useGoogleMapStore(state => state.longitude);
+
+  const getCurrentPosition = useCallback(async () => {
+    await Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
 
-        console.log(latitude, longitude);
+        setLocationMapValue({latitude: latitude, longitude: longitude});
       },
       error => {
         console.log(error.code, error.message);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
-  };
+  }, [setLocationMapValue]);
 
   const showAlert = useCallback(() => {
     Linking.openSettings();
@@ -51,7 +67,7 @@ export default function GoogleMap() {
         getCurrentPosition();
       }
     }
-  }, [showAlert]);
+  }, [showAlert, getCurrentPosition]);
 
   useEffect(() => {
     requestLocationPermission();
@@ -59,22 +75,26 @@ export default function GoogleMap() {
 
   return (
     <>
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        customMapStyle={mapStyle}
-        showsUserLocation
-        scrollEnabled={false}
-        toolbarEnabled={false}
-        mapType={Platform.OS === 'android' ? 'none' : 'standard'}
-        minZoomLevel={14}
-        initialRegion={{
-          latitude: 37.652753,
-          longitude: 126.901085,
-          latitudeDelta: 1.795218101812615,
-          longitudeDelta: 0.9008869173333,
-        }}
-      />
+      {lat !== 0 && long !== 0 ? (
+        <MapView
+          style={styles.map}
+          provider={PROVIDER_GOOGLE}
+          customMapStyle={mapStyle}
+          showsUserLocation
+          scrollEnabled={false}
+          toolbarEnabled={false}
+          mapType={Platform.OS === 'android' ? 'none' : 'standard'}
+          minZoomLevel={14}
+          initialRegion={{
+            latitude: lat,
+            longitude: long,
+            latitudeDelta: 1.795218101812615,
+            longitudeDelta: 0.9008869173333,
+          }}
+        />
+      ) : (
+        <ActivityIndicator size="large" color={palette.awesome} />
+      )}
     </>
   );
 }
