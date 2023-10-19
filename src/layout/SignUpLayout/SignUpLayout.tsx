@@ -8,7 +8,7 @@ import {
 import {palette} from '../../config/globalStyles';
 import Button from '../../components/Common/Button/Button';
 import ProgressBar from 'components/ProgressBar';
-import {usePostSignUp} from 'lib/mutation/signUp';
+import {usePostSignUp} from 'lib/mutation/auth';
 
 type SignUpLayoutType = {
   title: string;
@@ -40,6 +40,7 @@ export default function SignUpLayout(props: SignUpLayoutType) {
       <ViewChildrenStyled>{children}</ViewChildrenStyled>
       <ButtonContainer>
         <Button
+          padding="12px 24px"
           disabled={disabled}
           backgroundColor={disabled ? palette.gray : palette.awesome}
           title={pageNumber === 9 ? '완료' : '다음'}
@@ -75,7 +76,7 @@ const SignUpSubText = styled.Text`
   background-color: ${palette.white};
 `;
 
-const ButtonContainer = styled.View`
+export const ButtonContainer = styled.View`
   width: 100%;
   position: absolute;
   bottom: 20px;

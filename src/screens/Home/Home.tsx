@@ -10,7 +10,7 @@ import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
 import {saveWebClientId} from 'utils/auth';
-import {usePostIsSignIn} from 'lib/mutation/signIn';
+import {usePostIsSignIn} from 'lib/mutation/auth';
 
 export default function Home() {
   const handleEmail = useEmailStore(state => state.handleEmail);
@@ -18,8 +18,6 @@ export default function Home() {
 
   useEffect(() => {
     saveWebClientId();
-
-    // retrieveWebClientId();
   }, []);
 
   const googleLogin = async () => {

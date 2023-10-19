@@ -12,7 +12,7 @@ type ButtonProps = TouchableOpacityProps &
 const Button = ({title, onPress, ...rest}: ButtonProps) => {
   return (
     <StyledButton {...rest} onPress={onPress}>
-      <ButtonText>{title}</ButtonText>
+      <ButtonText color={rest.color}>{title}</ButtonText>
     </StyledButton>
   );
 };
@@ -21,8 +21,7 @@ export default Button;
 
 type StyledButtonType = TouchableOpacityProps & {
   backgroundColor?: string;
-  paddingVertical?: number;
-  paddingHorizontal?: number;
+  padding?: string;
   borderRadius?: number;
 };
 
@@ -34,9 +33,12 @@ type StyledTextType = TextProps & {
 
 const StyledButton = styled.TouchableOpacity<StyledButtonType>`
   background-color: ${props => props.backgroundColor || '#007AFF'};
-  padding: ${props => props.paddingVertical || 12}px
-    ${props => props.paddingHorizontal || 20}px;
+  padding: ${props => props.padding || '0px'};
   border-radius: ${props => props.borderRadius || 30}px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ButtonText = styled.Text<StyledTextType>`

@@ -2,6 +2,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {webClientId} from 'config/env';
 
 import {axiosInstance} from 'lib/axiosConfig';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import Keychain from 'react-native-keychain';
 
 export const setAuthToken = (authToken: string | null) => {
@@ -37,5 +38,27 @@ export const retrieveWebClientId = async () => {
     }
   } catch (error) {
     console.error('Error retrieving webClientId:', error);
+  }
+};
+
+export const storeUserSession = async (key: string, value: string) => {
+  try {
+    await EncryptedStorage.setItem(key, value);
+
+    // Congrats! You've just stored your first value!
+  } catch (error) {
+    // There was an error on the native side
+  }
+};
+
+export const retrieveUserSession = async (key: string) => {
+  try {
+    const session = await EncryptedStorage.getItem(key);
+
+    if (session !== undefined) {
+      console.log('Congrats! You just retrieved your first value!');
+    }
+  } catch (error) {
+    // There was an error on the native side
   }
 };

@@ -1,5 +1,5 @@
 import {Button, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -7,52 +7,163 @@ import SignUp from '../screens/SignUp/SignUp';
 import {useNavigationStore} from 'store/signup/signUpStore';
 import Home from 'screens/Home/Home';
 import Main from 'screens/Main/Main';
+import Profile from 'screens/Profile/Profile';
+import Setting from 'screens/Profile/Setting/Setting';
+import Account from 'screens/Profile/Account/Account';
+import UserDelete from 'screens/Profile/UserDelete/UserDelete';
+import NetInfo from '@react-native-community/netinfo';
+import Toast from 'react-native-toast-message';
+import 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 export default function Routes() {
   const handlePrevPage = useNavigationStore(state => state.handlePrevPage);
 
+  const unsubscribe = NetInfo.addEventListener(state => {
+    if (!state.isConnected) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network',
+        text2: '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
+      });
+    }
+  });
+
+  useEffect(() => {
+    unsubscribe();
+  }, [unsubscribe]);
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShadowVisible: false,
-            headerTitle: '',
-          }}
-        />
+    <>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerShown: false,
+              headerShadowVisible: false,
+              headerTitle: '',
+            }}
+          />
 
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-          options={{
-            headerShadowVisible: false,
-            headerTitle: '',
+          <Stack.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{
+              headerShadowVisible: false,
+              headerTitle: '',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  onPress={() => handlePrevPage()}
-                  title="<"
-                  color="black"
-                />
-              </View>
-            ),
-          }}
-        />
+              headerLeft: () => (
+                <View>
+                  <Button
+                    onPress={() => handlePrevPage()}
+                    title="<"
+                    color="black"
+                  />
+                </View>
+              ),
+            }}
+          />
 
-        <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{
-            headerShown: false,
-            headerShadowVisible: false,
-            headerTitle: '',
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="Main"
+            component={Main}
+            options={{
+              headerShown: false,
+              headerShadowVisible: false,
+              headerTitle: '',
+            }}
+          />
+
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              headerTitle: '',
+              headerLeft: () => {
+                return (
+                  <View>
+                    <Button
+                      onPress={() => handlePrevPage()}
+                      title="<"
+                      color="black"
+                    />
+                  </View>
+                );
+              },
+            }}
+          />
+
+          <Stack.Screen
+            name="Setting"
+            component={Setting}
+            options={({navigation}) => ({
+              title: '환경설정',
+
+              headerLeft: () => (
+                <View>
+                  <Button
+                    title="<"
+                    color="black"
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
+                  />
+                </View>
+              ),
+            })}
+          />
+
+          <Stack.Screen
+            name="Account"
+            component={Account}
+            options={({navigation}) => ({
+              title: '계정',
+
+              headerLeft: () => (
+                <View>
+                  <Button
+                    title="<"
+                    color="black"
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
+                  />
+                </View>
+              ),
+            })}
+          />
+
+          <Stack.Screen
+            name="UserDelete"
+            component={UserDelete}
+            options={({navigation}) => ({
+              title: '계정 삭제',
+
+              headerLeft: () => (
+                <View>
+                  <Button
+                    title="<"
+                    color="black"
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
+                  />
+                </View>
+              ),
+            })}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+
+      <Toast />
+    </>
   );
 }
