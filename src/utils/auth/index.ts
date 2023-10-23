@@ -1,4 +1,5 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 import {webClientId} from 'config/env';
 
 import {axiosInstance} from 'lib/axiosConfig';
@@ -55,9 +56,15 @@ export const retrieveUserSession = async (key: string) => {
   try {
     const session = await EncryptedStorage.getItem(key);
 
-    if (session !== undefined) {
-      console.log('Congrats! You just retrieved your first value!');
-    }
+    return session;
+  } catch (error) {
+    // There was an error on the native side
+  }
+};
+
+export const removeUserSession = async (key: string) => {
+  try {
+    await EncryptedStorage.removeItem(key);
   } catch (error) {
     // There was an error on the native side
   }

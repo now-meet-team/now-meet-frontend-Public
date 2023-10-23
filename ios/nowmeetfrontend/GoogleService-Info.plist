@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>740602482619-ch22tgeqdqdgevgcir432s1buuvse62i.apps.googleusercontent.com</string>
+	<string>249506090961-kgh7fccocimenioh5kvnvr142jdk4k25.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.740602482619-ch22tgeqdqdgevgcir432s1buuvse62i</string>
+	<string>com.googleusercontent.apps.249506090961-kgh7fccocimenioh5kvnvr142jdk4k25</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBFNtAxiLrtCR9_ne85q3KPQIYNs0Z7Ylw</string>
+	<string>AIzaSyCCkU7h0GpmEIlXH46YcLogtPu0ZshGsws</string>
 	<key>GCM_SENDER_ID</key>
-	<string>740602482619</string>
+	<string>249506090961</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mproject</string>
+	<string>com.nowmeetfrontend</string>
 	<key>PROJECT_ID</key>
-	<string>liveapp-ee4fe</string>
+	<string>now-meet-335a2</string>
 	<key>STORAGE_BUCKET</key>
-	<string>liveapp-ee4fe.appspot.com</string>
+	<string>now-meet-335a2.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:740602482619:ios:404d4402c5b954507efe9e</string>
+	<string>1:249506090961:ios:fd50f716605d70b34e9af0</string>
 </dict>
 </plist>

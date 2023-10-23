@@ -8,6 +8,7 @@ import CustomModal from 'components/CustomModal';
 import {useModalStore} from 'store/modal/modalStore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
+import {removeUserSession} from 'utils/auth';
 
 export default function Account() {
   const navigation = useNavigation();
@@ -17,6 +18,7 @@ export default function Account() {
     try {
       await GoogleSignin.signOut();
       handleVisible(false);
+      await removeUserSession('token');
       navigation.navigate('Home' as never);
     } catch (error) {
       console.error(error);

@@ -4,9 +4,11 @@ import React, {useCallback, useMemo, useRef} from 'react';
 import GoogleMap from 'components/GoogleMap/GoogleMap';
 import BottomSheet, {BottomSheetVirtualizedList} from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Main() {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   // const netInfo = useNetInfo();
 
   const sheetRef = useRef<BottomSheet>(null);
@@ -31,8 +33,11 @@ export default function Main() {
 
   return (
     <MainContainer>
-      <GoogleMap />
+      {/* <TouchableOpacity onPress={() => navigation.navigate('Profile' as never)}>
+        <Text>ghi</Text>
+      </TouchableOpacity> */}
 
+      <GoogleMap />
       <View style={styles.container}>
         <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
           <BottomSheetVirtualizedList

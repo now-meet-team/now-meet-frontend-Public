@@ -3,7 +3,7 @@ import {useMutation} from '@tanstack/react-query';
 import {AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {useModalStore} from 'store/modal/modalStore';
-import {setAuthToken} from 'utils/auth';
+import {setAuthToken, storeUserSession} from 'utils/auth';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
@@ -19,6 +19,7 @@ export const usePostIsSignIn = () => {
           return navigation.navigate('SignUp' as never);
         }
 
+        storeUserSession('token', isUserSignIn.token);
         setAuthToken(isUserSignIn.token);
 
         return navigation.navigate('Main' as never);
