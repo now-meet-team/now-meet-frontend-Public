@@ -14,8 +14,9 @@ import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import 'react-native-gesture-handler';
 import {retrieveUserSession} from 'utils/auth';
-import {axiosInstance} from 'lib/axiosConfig';
+
 import {useNavigation} from '@react-navigation/native';
+import LikedMessageList from 'screens/Profile/LikedMessageList/LikedMessageList';
 
 const Stack = createNativeStackNavigator();
 export default function Routes() {
@@ -35,21 +36,34 @@ export default function Routes() {
     }
   }, [navigation]);
 
-  const unsubscribe = NetInfo.addEventListener(state => {
-    if (!state.isConnected) {
-      Toast.show({
-        type: 'error',
-        text1: 'Network',
-        text2: '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
-      });
-    }
-  });
+  // const unsubscribe = NetInfo.addEventListener(state => {
+  //   if (!state.isConnected) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Network',
+  //       text2: '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
+  //     });
+  //   }
+  // });
 
   useEffect(() => {
-    unsubscribe();
-  }, [unsubscribe]);
+    const unsubscribe = NetInfo.addEventListener(state => {
+      if (!state.isConnected) {
+        Toast.show({
+          type: 'error',
+          text1: 'Network',
+          text2:
+            '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
+        });
+      }
 
-  useEffect(() => {
+      // 컴포넌트 언마운트 시 구독 취소
+      return () => {
+        unsubscribe();
+      };
+    });
+
+    // 컴포넌트가 마운트될 때 자동 로그인 체크
     checkAutoLogin();
   }, [checkAutoLogin]);
 
@@ -104,7 +118,11 @@ export default function Routes() {
               return (
                 <View>
                   <Button
-                    onPress={() => handlePrevPage()}
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
                     title="<"
                     color="black"
                   />
@@ -119,6 +137,28 @@ export default function Routes() {
           component={Setting}
           options={({navigation}) => ({
             title: '환경설정',
+
+            headerLeft: () => (
+              <View>
+                <Button
+                  title="<"
+                  color="black"
+                  onPress={() => {
+                    if (navigation.canGoBack()) {
+                      navigation.goBack();
+                    }
+                  }}
+                />
+              </View>
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="LikedMessageList"
+          component={LikedMessageList}
+          options={({navigation}) => ({
+            title: '좋아요 발신함',
 
             headerLeft: () => (
               <View>

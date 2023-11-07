@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
-import {AxiosResponse} from 'axios';
+import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {useModalStore} from 'store/modal/modalStore';
 import {setAuthToken, storeUserSession} from 'utils/auth';
@@ -25,8 +25,9 @@ export const usePostIsSignIn = () => {
         return navigation.navigate('Main' as never);
       },
 
-      onError: error => {
-        console.log(error);
+      onError: (error: AxiosError) => {
+        console.log('에러에요');
+        console.error(error.status);
       },
     },
   );
@@ -69,7 +70,8 @@ export const usePostUserDelete = () => {
   const handleVisible = useModalStore(state => state.handleVisible);
 
   const useUserDeleteMutation = useMutation(
-    (): Promise<AxiosResponse> => axiosInstance.delete('/users/me/delete'),
+    (): Promise<AxiosResponse> =>
+      axiosInstance.delete('/users/me/delete/account'),
     {
       onSuccess: data => {
         handleVisible(false);

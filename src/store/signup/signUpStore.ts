@@ -1,7 +1,7 @@
-import {Alert} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {Asset} from 'react-native-image-picker';
-
 import {create} from 'zustand';
+import RNFS from 'react-native-fs';
 
 type UseNavigationStoreType = {
   pageNumber: number;
@@ -167,7 +167,17 @@ export const useSignUpStore = create<UseUserSignUpType>(() => ({
     formData.append('introduce', useMySelfStore.getState().mySelfValue);
     // formData.append('preference', useHobbyStore.getState().selectHobby);
     formData.append('preference', '독서');
+
+    // useImageStore.getState().images.map(item => item.base64);
     formData.append('profileImages', useImageStore.getState().images);
+
+    useImageStore.getState().images.map(item => {
+      return formData.append('profileImages', {
+        uri: item.base64,
+        name: item.fileName,
+        type: item.type,
+      });
+    });
 
     formData.append('latitude', useGoogleMapStore.getState().latitude);
     formData.append('longitude', useGoogleMapStore.getState().longitude);

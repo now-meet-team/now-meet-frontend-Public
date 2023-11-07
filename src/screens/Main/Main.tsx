@@ -9,7 +9,6 @@ import {useNavigation} from '@react-navigation/native';
 
 export default function Main() {
   const navigation = useNavigation();
-  // const netInfo = useNetInfo();
 
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -36,6 +35,10 @@ export default function Main() {
       {/* <TouchableOpacity onPress={() => navigation.navigate('Profile' as never)}>
         <Text>ghi</Text>
       </TouchableOpacity> */}
+
+      <MainWrapper onPress={() => navigation.navigate('Profile' as never)}>
+        <Text>프로필</Text>
+      </MainWrapper>
 
       <GoogleMap />
       <View style={styles.container}>
@@ -74,5 +77,14 @@ const styles = StyleSheet.create({
 });
 
 export const MainContainer = styled.SafeAreaView`
-  flex: 1;
+  position: relative;
+`;
+
+export const MainWrapper = styled.TouchableOpacity`
+  position: absolute;
+  top: 120px;
+  left: 80%;
+  right: 0px;
+
+  z-index: 2;
 `;

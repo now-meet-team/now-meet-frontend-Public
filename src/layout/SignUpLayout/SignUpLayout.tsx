@@ -9,6 +9,7 @@ import {palette} from '../../config/globalStyles';
 import Button from '../../components/Common/Button/Button';
 import ProgressBar from 'components/ProgressBar';
 import {usePostSignUp} from 'lib/mutation/auth';
+import {useNavigation} from '@react-navigation/native';
 
 type SignUpLayoutType = {
   title: string;
@@ -20,6 +21,8 @@ type SignUpLayoutType = {
 export default function SignUpLayout(props: SignUpLayoutType) {
   const {title, subTitle, children, disabled} = props;
 
+  const navigation = useNavigation();
+
   const pageNumber = useNavigationStore(state => state.pageNumber);
   const nextPage = useNavigationStore(state => state.handleNextPage);
 
@@ -30,6 +33,7 @@ export default function SignUpLayout(props: SignUpLayoutType) {
   const finalSignUp = () => {
     const formData = handleUserSignUp();
     useSignUpMutation.mutate(formData);
+    navigation.navigate('Main' as never);
   };
 
   return (
