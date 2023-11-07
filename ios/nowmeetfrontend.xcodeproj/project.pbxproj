@@ -31,6 +31,7 @@
 		00E356EE1AD99517003FC87E /* nowmeetfrontendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nowmeetfrontendTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* nowmeetfrontendTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nowmeetfrontendTests.m; sourceTree = "<group>"; };
+		0909A5822AF91A420024BC9D /* nowmeetfrontend copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "nowmeetfrontend copy-Info.plist"; path = "/Users/ky/Desktop/now-meet-frontend/ios/nowmeetfrontend copy-Info.plist"; sourceTree = "<absolute>"; };
 		09D6E3D02ACD9CBD00CB61D3 /* nowmeetfrontend-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nowmeetfrontend-Bridging-Header.h"; sourceTree = "<group>"; };
 		09EC95B02AB1E9F400312A15 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* nowmeetfrontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nowmeetfrontend.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +128,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				0909A5822AF91A420024BC9D /* nowmeetfrontend copy-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -612,7 +614,10 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
@@ -682,7 +687,10 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
