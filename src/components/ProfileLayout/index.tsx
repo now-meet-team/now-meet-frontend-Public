@@ -5,16 +5,17 @@ import ProfileImage from 'components/ProfileImage';
 import {palette} from 'config/globalStyles';
 
 type ProfileLayoutType = {
+  uri: string;
   nickname: string;
   subText: string;
 };
 
 export default function ProfileLayout(props: ProfileLayoutType) {
-  const {nickname, subText} = props;
+  const {uri, nickname, subText} = props;
 
   return (
     <ProfileImageWrapper>
-      <ProfileImage />
+      <ProfileImage uri={uri} />
 
       <ProfileImageInfo>
         <Text>{nickname}</Text>

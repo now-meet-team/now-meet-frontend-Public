@@ -9,13 +9,25 @@ import {DmSVG, StoreSVG, SettingSVG, GhostSVG} from '../../assets';
 import SettingList from 'components/SettingList';
 import {useNavigation} from '@react-navigation/native';
 import ProfileLayout from 'components/ProfileLayout';
+import {useProfileMe} from 'lib/query/profile';
 
 export default function Profile() {
   const navigation = useNavigation();
 
+  const {queryProfileData} = useProfileMe();
+
+  console.log(queryProfileData?.user.birthDate);
   return (
     <ProfileSafeAreaView>
-      <ProfileLayout nickname="닉네임" subText="필테테스 강사 29" />
+      <ProfileLayout
+        uri={queryProfileData?.PreSignedUrl[0] || ''}
+        nickname={queryProfileData?.user.nickname || ''}
+        subText={
+          queryProfileData?.user.job ||
+          '' + queryProfileData?.user.birthDate ||
+          ''
+        }
+      />
 
       <ProfileButton
         title="프로필 수정"

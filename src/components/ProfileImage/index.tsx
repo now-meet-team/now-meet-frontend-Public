@@ -1,9 +1,16 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-export default function ProfileImage() {
+type ProfileImageType = {
+  uri: string;
+};
+
+export default function ProfileImage(props: ProfileImageType) {
   return (
-    <ProfileImageContainer source={{uri: 'asd'}} alt="nowmeet-profile-image" />
+    <ProfileImageContainer
+      source={{uri: props.uri}}
+      alt="nowmeet-profile-image"
+    />
   );
 }
 

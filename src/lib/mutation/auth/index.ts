@@ -73,7 +73,7 @@ export const usePostUserDelete = () => {
     (): Promise<AxiosResponse> =>
       axiosInstance.delete('/users/me/delete/account'),
     {
-      onSuccess: data => {
+      onSuccess: () => {
         handleVisible(false);
         navigation.navigate('Home' as never);
       },
