@@ -9,7 +9,7 @@ import {useEmailStore} from 'store/signup/signUpStore';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
-import {saveWebClientId} from 'utils/auth';
+import {saveWebClientId, storeUserSession} from 'utils/auth';
 import {usePostIsSignIn} from 'lib/mutation/auth';
 
 export default function Home() {
@@ -25,6 +25,8 @@ export default function Home() {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const userInfo = await GoogleSignin.signIn();
       handleEmail(userInfo?.user.email);
+
+      await storeUserSession('token', `Bearer ${userInfo.idToken}`);
 
       useSignInMutation.mutate(userInfo?.user.email);
     } catch (error) {

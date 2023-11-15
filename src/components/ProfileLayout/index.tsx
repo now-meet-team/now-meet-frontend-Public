@@ -7,7 +7,7 @@ import {palette} from 'config/globalStyles';
 type ProfileLayoutType = {
   uri: string;
   nickname: string;
-  subText: string;
+  subText?: string;
 };
 
 export default function ProfileLayout(props: ProfileLayoutType) {

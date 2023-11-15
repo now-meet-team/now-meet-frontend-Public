@@ -2,13 +2,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {webClientId} from 'config/env';
 
-import {axiosInstance} from 'lib/axiosConfig';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Keychain from 'react-native-keychain';
-
-export const setAuthToken = (authToken: string | null) => {
-  axiosInstance.defaults.headers.common.Authorization = `Bearer ${authToken}`;
-};
 
 export const saveWebClientId = async () => {
   try {

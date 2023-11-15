@@ -3,7 +3,6 @@ import {useMutation} from '@tanstack/react-query';
 import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {useModalStore} from 'store/modal/modalStore';
-import {setAuthToken, storeUserSession} from 'utils/auth';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
@@ -13,20 +12,17 @@ export const usePostIsSignIn = () => {
     (email: string): Promise<AxiosResponse> =>
       axiosInstance.post('/auth/isuser', {email}),
     {
-      onSuccess: data => {
+      onSuccess: async data => {
         const isUserSignIn = data?.data.data;
-        if (isUserSignIn === null) {
+
+        if (!isUserSignIn) {
           return navigation.navigate('SignUp' as never);
         }
-
-        storeUserSession('token', isUserSignIn.token);
-        setAuthToken(isUserSignIn.token);
 
         return navigation.navigate('Main' as never);
       },
 
       onError: (error: AxiosError) => {
-        console.log('에러에요');
         console.error(error.status);
       },
     },
@@ -47,9 +43,7 @@ export const usePostSignUp = () => {
     (formData: FormData): Promise<AxiosResponse> =>
       axiosInstance.post('/users/signup', formData, config),
     {
-      onSuccess: data => {
-        console.log('data-->', data);
-      },
+      onSuccess: () => {},
       onMutate: data => {
         console.log(data);
       },
@@ -75,7 +69,10 @@ export const usePostUserDelete = () => {
     {
       onSuccess: () => {
         handleVisible(false);
-        navigation.navigate('Home' as never);
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Home' as never}],
+        });
       },
 
       onError: error => {

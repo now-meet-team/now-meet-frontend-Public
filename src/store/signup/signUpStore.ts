@@ -1,7 +1,7 @@
-import {Alert, Platform} from 'react-native';
+import {Alert} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import {create} from 'zustand';
-import fs from 'react-native-fs';
+
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
 type UseNavigationStoreType = {
@@ -44,6 +44,17 @@ type UseNickNameStoreType = {
 export const useNickNameStore = create<UseNickNameStoreType>(set => ({
   nickName: '',
   handleNickName: (text: string) => set({nickName: text}),
+}));
+
+/* 생일 */
+type UseBirthDateStoreType = {
+  birthDate: Date;
+  handleBirthDate: (text: Date) => void;
+};
+
+export const useBirthDateStore = create<UseBirthDateStoreType>(set => ({
+  birthDate: new Date(),
+  handleBirthDate: (text: Date) => set({birthDate: text}),
 }));
 
 /* 성별 */
@@ -162,12 +173,14 @@ export const useSignUpStore = create<UseUserSignUpType>(() => ({
     formData.append('email', useEmailStore.getState().email);
     formData.append('nickname', useNickNameStore.getState().nickName);
     formData.append('sex', useGenderStore.getState().selectGender);
-    formData.append('birthDate', '1994-11-21');
+    formData.append(
+      'birthDate',
+      String(useBirthDateStore.getState().birthDate),
+    );
     formData.append('tall', useHeightStore.getState().height);
     formData.append('job', useJobStore.getState().selectJob);
     formData.append('introduce', useMySelfStore.getState().mySelfValue);
-    // formData.append('preference', useHobbyStore.getState().selectHobby);
-    formData.append('preference', '독서');
+    formData.append('preference', useHobbyStore.getState().selectHobby);
 
     useImageStore.getState().images.map(item => {
       return formData.append('profileImages', {

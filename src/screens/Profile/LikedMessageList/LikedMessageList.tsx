@@ -1,22 +1,14 @@
 import React from 'react';
+
 import {ProfileBottomLine, ProfileSafeAreaView} from '../Profile';
-import ProfileLayout from 'components/ProfileLayout';
+import moment from 'moment';
+import 'moment/locale/ko';
 import {FlatList} from 'react-native';
+import ProfileLayout from 'components/ProfileLayout';
+import {useLikedMessageList} from 'lib/query/profile';
 
 export default function LikedMessageList() {
-  const data = [
-    {key: 'item1', nickname: '사용자1', subText: '필라테스 강사 29'},
-    {key: 'item2', nickname: '사용자2', subText: '요가 강사 35'},
-    {key: 'item3', nickname: '사용자3', subText: '테니스 코치 42'},
-    {key: 'item4', nickname: '사용자4', subText: '스포츠 코디네이터 28'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-    {key: 'item5', nickname: '사용자5', subText: '피트니스 트레이너 31'},
-  ];
+  const {likedListProfileData} = useLikedMessageList();
 
   const loadMoreData = () => {
     console.log('데이터 불러와');
@@ -26,13 +18,19 @@ export default function LikedMessageList() {
     <ProfileSafeAreaView>
       <FlatList
         initialNumToRender={10}
-        keyExtractor={(item, index) => index}
+        keyExtractor={item => String(item.receiverId)}
         onEndReached={loadMoreData}
         onEndReachedThreshold={0.1}
-        data={data}
+        data={likedListProfileData}
         renderItem={({item}) => (
           <>
-            <ProfileLayout nickname={item.nickname} subText={item.subText} />
+            <ProfileLayout
+              uri={item?.profileImages.PreSignedUrl[0]}
+              nickname={item?.receiverNickname}
+              subText={`유효시간 : ${moment(item.expireMatch)
+                .locale('ko')
+                .format('MM월 DD일  HH시mm분')}`}
+            />
             <ProfileBottomLine />
           </>
         )}

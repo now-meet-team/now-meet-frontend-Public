@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet, Text} from 'react-native';
 
 import DatePicker from 'react-native-date-picker';
+import {useBirthDateStore} from 'store/signup/signUpStore';
 
 export default function CustomDatePicker() {
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
 
-  const adultYear = date.getFullYear() - 20;
+  const date = useBirthDateStore(state => state.birthDate);
+  const handleBirthDate = useBirthDateStore(state => state.handleBirthDate);
+
+  const adultYear = new Date(date).getFullYear() - 20;
   const maximumDate = new Date(adultYear + 1, 11, 31);
 
   return (
@@ -14,8 +18,8 @@ export default function CustomDatePicker() {
       <DatePicker
         style={styles.StyledView}
         mode="date"
-        date={date}
-        onDateChange={() => setDate(date)}
+        date={new Date(date)}
+        onDateChange={() => handleBirthDate(date)}
         maximumDate={maximumDate}
       />
     </Text>

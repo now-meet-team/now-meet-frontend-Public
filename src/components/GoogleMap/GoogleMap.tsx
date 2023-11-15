@@ -27,6 +27,8 @@ export default function GoogleMap() {
       position => {
         const {latitude, longitude} = position.coords;
 
+        console.log('position.coords-->>', position.coords);
+
         setLocationMapValue({latitude: latitude, longitude: longitude});
       },
       error => {

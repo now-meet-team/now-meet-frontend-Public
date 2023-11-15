@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 
 import SignUpLayout from '@layout/SignUpLayout/SignUpLayout';
 import CustomDatePicker from '@components/Common/DatePicker/CustomDatePicker';

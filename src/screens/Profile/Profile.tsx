@@ -16,7 +16,6 @@ export default function Profile() {
 
   const {queryProfileData} = useProfileMe();
 
-  console.log(queryProfileData?.user.birthDate);
   return (
     <ProfileSafeAreaView>
       <ProfileLayout
