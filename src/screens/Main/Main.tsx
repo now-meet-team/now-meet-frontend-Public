@@ -4,13 +4,17 @@ import React, {useCallback, useMemo, useRef} from 'react';
 import GoogleMap from 'components/GoogleMap/GoogleMap';
 import BottomSheet, {BottomSheetVirtualizedList} from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+
 import {useNavigation} from '@react-navigation/native';
+import {useLocationProfile} from 'lib/query/googlemap';
 
 export default function Main() {
   const navigation = useNavigation();
-
   const sheetRef = useRef<BottomSheet>(null);
+
+  const {locationProfileData} = useLocationProfile();
+
+  console.log(locationProfileData);
 
   const data = useMemo(
     () =>
@@ -19,52 +23,50 @@ export default function Main() {
         .map((_, index) => `index-${index}`),
     [],
   );
-  const snapPoints = useMemo(() => ['25%', '50%', '100%'], []);
 
-  const renderItem = useCallback(
-    ({item}) => (
-      <View style={styles.itemContainer}>
-        <Text>{item}</Text>
-      </View>
-    ),
-    [],
-  );
+  const snapPoints = useMemo(() => ['15%', '50%'], []);
 
   return (
     <MainContainer>
-      {/* <TouchableOpacity onPress={() => navigation.navigate('Profile' as never)}>
-        <Text>ghi</Text>
-      </TouchableOpacity> */}
-
       <MainWrapper onPress={() => navigation.navigate('Profile' as never)}>
         <Text>프로필</Text>
       </MainWrapper>
 
-      <GoogleMap />
-      <View style={styles.container}>
-        <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
-          <BottomSheetVirtualizedList
-            data={data}
-            keyExtractor={i => i}
-            getItemCount={data => data.length}
-            getItem={(data, index) => data[index]}
-            renderItem={renderItem}
-            contentContainerStyle={styles.contentContainer}
-          />
-        </BottomSheet>
-      </View>
+      <GoogleMap locationProfileData={locationProfileData || undefined} />
+
+      <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
+        <BottomSheetVirtualizedList
+          data={data}
+          keyExtractor={i => i}
+          getItemCount={data => data.length}
+          getItem={(data, index) => data[index]}
+          renderItem={useCallback(
+            ({item}: {item: any}) => (
+              <View style={styles.itemContainer}>
+                <Text>{item}</Text>
+              </View>
+            ),
+            [],
+          )}
+          contentContainerStyle={styles.contentContainer}
+        />
+      </BottomSheet>
     </MainContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 500,
     left: 0,
     right: 0,
+
     bottom: 0,
-    paddingTop: 200,
+
     position: 'absolute',
+
+    backgroundColor: 'red',
+
+    height: 50,
   },
   contentContainer: {
     backgroundColor: 'white',

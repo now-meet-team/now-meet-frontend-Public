@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Linking,
   Platform,
   StyleSheet,
-  View,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -13,8 +13,14 @@ import {mapStyle} from './mapStyle';
 
 import {useGoogleMapStore} from 'store/signup/signUpStore';
 import {palette} from 'config/globalStyles';
+import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 
-export default function GoogleMap() {
+type GoogleMapType = {
+  locationProfileData: GoogleMapLocationNearProfileType | undefined;
+};
+
+export default function GoogleMap(props: GoogleMapType) {
+  const {locationProfileData} = props;
   const setLocationMapValue = useGoogleMapStore(
     state => state.setLocationMapValue,
   );
@@ -26,8 +32,6 @@ export default function GoogleMap() {
     await Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-
-        console.log('position.coords-->>', position.coords);
 
         setLocationMapValue({latitude: latitude, longitude: longitude});
       },
@@ -78,22 +82,45 @@ export default function GoogleMap() {
   return (
     <>
       {lat !== 0 && long !== 0 ? (
-        <MapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          customMapStyle={mapStyle}
-          showsUserLocation
-          scrollEnabled={false}
-          toolbarEnabled={false}
-          mapType={Platform.OS === 'android' ? 'none' : 'standard'}
-          minZoomLevel={14}
-          initialRegion={{
-            latitude: lat,
-            longitude: long,
-            latitudeDelta: 1.795218101812615,
-            longitudeDelta: 0.9008869173333,
-          }}
-        />
+        <>
+          <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            customMapStyle={mapStyle}
+            showsUserLocation
+            scrollEnabled={false}
+            toolbarEnabled={false}
+            mapType={Platform.OS === 'android' ? 'none' : 'standard'}
+            minZoomLevel={14}
+            initialRegion={{
+              latitude: lat,
+              longitude: long,
+              latitudeDelta: 1.795218101812615,
+              longitudeDelta: 0.9008869173333,
+            }}>
+            {locationProfileData &&
+              locationProfileData?.nearbyUsers.map(item => {
+                return (
+                  <Marker
+                    onPress={() => {
+                      console.log('marker click');
+                    }}
+                    key={item.nickname}
+                    coordinate={{
+                      latitude: Number(item.latitude),
+                      longitude: Number(item.longitude),
+                    }}>
+                    <Image
+                      source={{
+                        uri: item.PreSignedUrl[0],
+                      }}
+                      style={{width: 65, height: 65, borderRadius: 25}} // 절반 크기로 border radius 적용
+                    />
+                  </Marker>
+                );
+              })}
+          </MapView>
+        </>
       ) : (
         <ActivityIndicator size="large" color={palette.awesome} />
       )}
@@ -105,5 +132,8 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+  },
+  markerContainer: {
+    borderRadius: 150 / 2,
   },
 });

@@ -9,7 +9,7 @@ import {LikedProfileListType} from 'types/profile/likedProfileList';
 const LIKE_MESSAGE_LIST_QUERY_KEY = 'LIKE_MESSAGE_LIST_QUERY_KEY';
 const PROFILE_ME_QUERY_KEY = 'PROFILE_ME_QUERY_KEY';
 
-const handleAxios = async (api: string) => {
+export const handleAxios = async (api: string) => {
   try {
     const response = await axiosInstance.get(api);
     return response.data;

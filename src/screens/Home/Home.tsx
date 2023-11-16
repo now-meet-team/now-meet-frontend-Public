@@ -26,7 +26,9 @@ export default function Home() {
       const userInfo = await GoogleSignin.signIn();
       handleEmail(userInfo?.user.email);
 
-      await storeUserSession('token', `Bearer ${userInfo.idToken}`);
+      const newToken = await GoogleSignin.getTokens();
+
+      await storeUserSession('token', `Bearer ${newToken.idToken}`);
 
       useSignInMutation.mutate(userInfo?.user.email);
     } catch (error) {
