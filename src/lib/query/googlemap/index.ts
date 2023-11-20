@@ -11,7 +11,8 @@ export const useLocationProfile = () => {
 
   const {data: locationProfileData, isLoading: locationProfileLoading} =
     useQuery<GoogleMapLocationNearProfileType>({
-      queryKey: [LOCATION_PROFILE_QUERY_KEY],
+      queryKey: [LOCATION_PROFILE_QUERY_KEY, lat, long],
+      refetchInterval: 15 * 60 * 1000,
 
       queryFn: async () => {
         const {data} = await handleAxios(`/users/location/${long}/${lat}`);

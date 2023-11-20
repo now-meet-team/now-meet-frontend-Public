@@ -9,6 +9,11 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async config => {
     try {
+      const user = await GoogleSignin.getCurrentUser();
+      if (user?.idToken) {
+        await GoogleSignin.clearCachedAccessToken(user.idToken);
+      }
+
       const token = await retrieveUserSession('token');
       console.log(token);
 

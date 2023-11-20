@@ -84,6 +84,7 @@ export default function GoogleMap(props: GoogleMapType) {
       {lat !== 0 && long !== 0 ? (
         <>
           <MapView
+            zoomEnabled={false}
             style={styles.map}
             provider={PROVIDER_GOOGLE}
             customMapStyle={mapStyle}
@@ -102,10 +103,11 @@ export default function GoogleMap(props: GoogleMapType) {
               locationProfileData?.nearbyUsers.map(item => {
                 return (
                   <Marker
+                    key={item.nickname}
                     onPress={() => {
+                      console.log(item);
                       console.log('marker click');
                     }}
-                    key={item.nickname}
                     coordinate={{
                       latitude: Number(item.latitude),
                       longitude: Number(item.longitude),

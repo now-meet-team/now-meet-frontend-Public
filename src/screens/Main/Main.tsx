@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useCallback, useMemo, useRef} from 'react';
 
 import GoogleMap from 'components/GoogleMap/GoogleMap';
@@ -7,14 +7,13 @@ import styled from 'styled-components/native';
 
 import {useNavigation} from '@react-navigation/native';
 import {useLocationProfile} from 'lib/query/googlemap';
+import {NearbyUsersType} from 'types/googlemap';
 
 export default function Main() {
   const navigation = useNavigation();
   const sheetRef = useRef<BottomSheet>(null);
 
   const {locationProfileData} = useLocationProfile();
-
-  console.log(locationProfileData);
 
   const data = useMemo(
     () =>
@@ -36,14 +35,23 @@ export default function Main() {
 
       <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
         <BottomSheetVirtualizedList
-          data={data}
-          keyExtractor={i => i}
+          data={locationProfileData?.nearbyUsers || []}
+          keyExtractor={item => item.nickname}
           getItemCount={data => data.length}
           getItem={(data, index) => data[index]}
           renderItem={useCallback(
-            ({item}: {item: any}) => (
+            ({item}: {item: NearbyUsersType}) => (
               <View style={styles.itemContainer}>
-                <Text>{item}</Text>
+                <Image
+                  style={styles.images}
+                  source={{
+                    uri: item.PreSignedUrl[0],
+                  }}
+                />
+                <View>
+                  <Text>{item.nickname}</Text>
+                  <Text>{item.job}</Text>
+                </View>
               </View>
             ),
             [],
@@ -72,9 +80,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   itemContainer: {
+    display: 'flex',
+    flexDirection: 'row',
     padding: 6,
     margin: 6,
-    backgroundColor: '#eee',
+  },
+  images: {
+    width: 80,
+    height: 80,
+    marginRight: 20,
   },
 });
 
