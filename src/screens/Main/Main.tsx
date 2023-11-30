@@ -15,14 +15,6 @@ export default function Main() {
 
   const {locationProfileData} = useLocationProfile();
 
-  const data = useMemo(
-    () =>
-      Array(50)
-        .fill(0)
-        .map((_, index) => `index-${index}`),
-    [],
-  );
-
   const snapPoints = useMemo(() => ['15%', '50%'], []);
 
   return (

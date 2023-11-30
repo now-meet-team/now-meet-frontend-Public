@@ -1,5 +1,5 @@
-import {Button, Text, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {Button, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignUp from '../screens/SignUp/SignUp';
@@ -17,6 +17,7 @@ import {retrieveUserSession} from 'utils/auth';
 
 import {useNavigation} from '@react-navigation/native';
 import LikedMessageList from 'screens/Profile/LikedMessageList/LikedMessageList';
+import EditUserProfile from 'screens/Profile/EditUserProfile/EditUserProfile';
 
 const Stack = createNativeStackNavigator();
 export default function Routes() {
@@ -26,7 +27,7 @@ export default function Routes() {
 
   const checkAutoLogin = useCallback(async () => {
     try {
-      const getToken = await retrieveUserSession('token');
+      const getToken = await retrieveUserSession('idToken');
 
       if (getToken) {
         navigation.navigate('Main' as never);
@@ -35,16 +36,6 @@ export default function Routes() {
       console.error('자동 로그인 오류:', error);
     }
   }, [navigation]);
-
-  // const unsubscribe = NetInfo.addEventListener(state => {
-  //   if (!state.isConnected) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Network',
-  //       text2: '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
-  //     });
-  //   }
-  // });
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -130,6 +121,28 @@ export default function Routes() {
               );
             },
           }}
+        />
+
+        <Stack.Screen
+          name="EditUserProfile"
+          component={EditUserProfile}
+          options={({navigation}) => ({
+            title: '프로필 수정',
+
+            headerLeft: () => (
+              <View>
+                <Button
+                  title="<"
+                  color="black"
+                  onPress={() => {
+                    if (navigation.canGoBack()) {
+                      navigation.goBack();
+                    }
+                  }}
+                />
+              </View>
+            ),
+          })}
         />
 
         <Stack.Screen

@@ -31,7 +31,9 @@ export default function Profile() {
       <ProfileButton
         title="프로필 수정"
         padding={'12px 24px'}
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate('EditUserProfile' as never);
+        }}
       />
 
       <ProfileBottomLine />

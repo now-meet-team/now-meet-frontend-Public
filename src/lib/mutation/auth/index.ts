@@ -1,8 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
-import {AxiosError, AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {useModalStore} from 'store/modal/modalStore';
+import {storeUserSession} from 'utils/auth';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
@@ -85,3 +86,49 @@ export const usePostUserDelete = () => {
     useUserDeleteMutation,
   };
 };
+
+/** Refresh Token **/
+export const useGetRefreshToken = () => {
+  const useGetRefreshTokenMutation = useMutation(
+    (serverAuthCode: string): Promise<AxiosResponse> =>
+      axiosInstance.post('/auth/getRefreshToken', {code: serverAuthCode}),
+    {
+      onSuccess: async data => {
+        const tokenResult = data.data.data;
+
+        await storeUserSession(
+          'idToken',
+          `${tokenResult.token_type} ${tokenResult.id_token}`,
+        );
+      },
+
+      onError: error => {
+        console.log('에러?');
+        console.log(error);
+      },
+    },
+  );
+
+  return {
+    useGetRefreshTokenMutation,
+  };
+};
+
+// export const getRefreshToken = async (serverAuthCode: string) => {
+//   try {
+//     const response = await axiosInstance.post('/auth/getRefreshToken', {
+//       code: serverAuthCode,
+//     });
+
+//     const refreshToken = response.data.data;
+//     console.log('refreshToken--->>', refreshToken);
+
+//     // If you want to do something with the refreshToken, you can do it here.
+//     // Example: await storeUserSession('token', `Bearer ${userInfo.idToken}`);
+
+//     return refreshToken;
+//   } catch (error) {
+//     console.error('Error fetching refresh token:', error);
+//     throw error; // You can handle the error as needed
+//   }
+// };

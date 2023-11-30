@@ -10,11 +10,12 @@ import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
 import {saveWebClientId, storeUserSession} from 'utils/auth';
-import {usePostIsSignIn} from 'lib/mutation/auth';
+import {useGetRefreshToken, usePostIsSignIn} from 'lib/mutation/auth';
 
 export default function Home() {
   const handleEmail = useEmailStore(state => state.handleEmail);
   const {useSignInMutation} = usePostIsSignIn();
+  const {useGetRefreshTokenMutation} = useGetRefreshToken();
 
   useEffect(() => {
     saveWebClientId();
@@ -25,12 +26,11 @@ export default function Home() {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
 
       const userInfo = await GoogleSignin.signIn();
+
+      // await storeUserSession('token', `${userInfo.idToken}`);
+      useGetRefreshTokenMutation.mutate(userInfo?.serverAuthCode || '');
+
       handleEmail(userInfo?.user.email);
-
-      const newToken = await GoogleSignin.getTokens();
-
-      await storeUserSession('token', `Bearer ${newToken.idToken}`);
-
       useSignInMutation.mutate(userInfo?.user.email);
     } catch (error) {
       console.log(error);

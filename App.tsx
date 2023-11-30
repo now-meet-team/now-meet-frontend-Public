@@ -3,7 +3,7 @@ import Routes from './src/navigation/Routes';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 
 // Create a client
 const queryClient = new QueryClient();
