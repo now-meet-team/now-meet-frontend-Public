@@ -6,34 +6,34 @@ import {
   FlatList,
 } from 'react-native';
 import React from 'react';
-import {useImageStore} from 'store/signup/signUpStore';
+import {Asset} from 'react-native-image-picker';
 
 type ImageUploadContainerType = {
-  onUpload: (index: number) => void;
+  type: string;
+  onUpload: (type: string, index: number) => void;
+  initialImages: Array<Asset>;
 };
 
 export default function ImageUploadContainer(props: ImageUploadContainerType) {
-  const {onUpload} = props;
-
-  const images = useImageStore(state => state.images);
+  const {type = 'create', onUpload, initialImages} = props;
 
   return (
     <View style={styles.imageRow}>
       <FlatList
         horizontal
-        data={images}
+        data={initialImages}
         renderItem={({item, index}) => {
           return (
             <>
               <TouchableOpacity
                 style={styles.imageContainer}
-                onPress={() => onUpload(index)}>
+                onPress={() => onUpload(type, index)}>
                 <Image source={{uri: item?.uri}} style={styles.image} />
               </TouchableOpacity>
             </>
           );
         }}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => String(`${item.fileName} + ${index}`)}
         contentContainerStyle={styles.contentContainerStyle}
       />
     </View>

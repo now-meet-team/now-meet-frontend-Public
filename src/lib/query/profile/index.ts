@@ -1,6 +1,7 @@
 /** Liked Message List **/
 
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {AxiosResponse} from 'axios';
 
 import {axiosInstance} from 'lib/axiosConfig';
 import {ProfileUserType} from 'types/profile';
@@ -46,4 +47,42 @@ export const useLikedMessageList = () => {
   });
 
   return {likedListProfileData, queryProfileLoading};
+};
+
+//PUT 내 프로필 사진 추가 및 수정 /users/me/update/profileImage/{index}
+
+export const useUpdateProfileImage = () => {
+  const queryClient = useQueryClient();
+
+  const config = {
+    headers: {'Content-Type': 'multipart/form-data'},
+  };
+
+  const editProfileImageMutation = useMutation(
+    ({
+      formData,
+      index,
+    }: {
+      formData: FormData;
+      index: number;
+    }): Promise<AxiosResponse> =>
+      axiosInstance.put(
+        `/users/me/update/profileImage/${index}`,
+        formData,
+        config,
+      ),
+    {
+      onSuccess: data => {
+        queryClient.invalidateQueries({queryKey: [PROFILE_ME_QUERY_KEY]});
+      },
+
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
+
+  return {
+    editProfileImageMutation,
+  };
 };

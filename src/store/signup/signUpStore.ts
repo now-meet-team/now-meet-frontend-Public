@@ -150,15 +150,27 @@ type UseFileStoreType = {
   image: string;
   images: Array<Asset>;
   handleOnUpload: (image: Asset[] | undefined) => void;
+  getImageFormData: (index: number) => FormData;
 };
 
-export const useImageStore = create<UseFileStoreType>(set => ({
+export const useImageStore = create<UseFileStoreType>((set, get) => ({
   image: '',
   images: ['', '', ''],
   handleOnUpload: (imageURL: Asset[] | undefined) => {
     if (imageURL) {
       set({images: imageURL});
     }
+  },
+  getImageFormData: (index: number) => {
+    const formData = new FormData();
+
+    formData.append('profileImage', {
+      uri: get().images[index].uri,
+      name: get().images[index].fileName,
+      type: get().images[index].type,
+    });
+
+    return formData;
   },
 }));
 

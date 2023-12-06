@@ -1,6 +1,7 @@
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 import axios from 'axios';
-import {retrieveUserSession} from 'utils/auth';
-import {useGetRefreshToken} from './mutation/auth';
+import {retrieveUserSession, storeUserSession} from 'utils/auth';
 
 export const axiosInstance = axios.create({
   baseURL: 'https://nowmeet.org',
@@ -35,12 +36,21 @@ axiosInstance.interceptors.response.use(
       response: {status},
     } = error;
 
-    if (status === 401) {
-      const refreshToken = await retrieveUserSession('idToken');
-      config.headers.authorization = `Bearer ${refreshToken}`;
+    const originalRequest = error.config;
+
+    if (error.response && status === 401) {
+      try {
+        const userInfo = await GoogleSignin.signInSilently();
+
+        await storeUserSession('idToken', `${userInfo.idToken}`);
+
+        config.headers.Authorization = `Bearer ${userInfo.idToken}`;
+        return axios(originalRequest);
+      } catch (err) {
+        throw err;
+      }
     }
 
-    console.log('response error', error);
     return Promise.reject(error);
   },
 );

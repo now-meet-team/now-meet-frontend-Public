@@ -1,35 +1,18 @@
 import React from 'react';
 import SignUpLayout from 'layout/SignUpLayout/SignUpLayout';
 import ImageUploadContainer from 'components/ImageUploadContainer';
-import {
-  ImageLibraryOptions,
-  launchImageLibrary,
-} from 'react-native-image-picker';
-
+import {useImageAndUpload} from 'hooks/useUpload';
 import {useImageStore} from 'store/signup/signUpStore';
-
-const option: ImageLibraryOptions = {
-  mediaType: 'photo',
-  selectionLimit: 1,
-};
+import {Asset} from 'react-native-image-picker';
 
 export default function UploadImageScreen() {
-  const images = useImageStore(state => state.images);
-  const handleOnUpload = useImageStore(state => state.handleOnUpload);
+  const {onUpload} = useImageAndUpload();
 
-  const onUpload = async (index: number) => {
-    const response = await launchImageLibrary(option);
-
-    if (response && response.assets) {
-      const newArray = [...images];
-      newArray[index] = response.assets[0];
-      handleOnUpload(newArray);
-    }
-  };
+  const images: Asset[] = useImageStore(state => state.images);
 
   return (
     <SignUpLayout title={'이미지를 선택해주세요'}>
-      <ImageUploadContainer onUpload={onUpload} />
+      <ImageUploadContainer onUpload={onUpload} initialImages={images} />
     </SignUpLayout>
   );
 }
