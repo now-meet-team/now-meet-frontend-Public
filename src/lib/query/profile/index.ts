@@ -20,18 +20,21 @@ export const handleAxios = async (api: string) => {
 };
 
 export const useProfileMe = () => {
-  const {data: queryProfileData, isLoading: queryProfileLoading} =
-    useQuery<ProfileUserType>({
-      queryKey: [PROFILE_ME_QUERY_KEY],
+  const {
+    data: queryProfileData,
+    isLoading: queryProfileLoading,
+    refetch: queryProfileRefetch,
+  } = useQuery<ProfileUserType>({
+    queryKey: [PROFILE_ME_QUERY_KEY],
 
-      queryFn: async () => {
-        const {data} = await handleAxios('/users/me');
+    queryFn: async () => {
+      const {data} = await handleAxios('/users/me');
 
-        return data;
-      },
-    });
+      return data;
+    },
+  });
 
-  return {queryProfileData, queryProfileLoading};
+  return {queryProfileData, queryProfileLoading, queryProfileRefetch};
 };
 
 export const useLikedMessageList = () => {
@@ -72,7 +75,7 @@ export const useUpdateProfileImage = () => {
         config,
       ),
     {
-      onSuccess: data => {
+      onSuccess: () => {
         queryClient.invalidateQueries({queryKey: [PROFILE_ME_QUERY_KEY]});
       },
 
@@ -84,5 +87,27 @@ export const useUpdateProfileImage = () => {
 
   return {
     editProfileImageMutation,
+  };
+};
+
+export const useDeleteProfileImage = () => {
+  const queryClient = useQueryClient();
+
+  const deleteProfileImageMutation = useMutation(
+    ({index}: {index: number}): Promise<AxiosResponse> =>
+      axiosInstance.put(`/users/me/delete/profileImage/${index}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: [PROFILE_ME_QUERY_KEY]});
+      },
+
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
+
+  return {
+    deleteProfileImageMutation,
   };
 };

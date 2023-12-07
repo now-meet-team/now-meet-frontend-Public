@@ -4,6 +4,7 @@ import {
   Image,
   StyleSheet,
   FlatList,
+  Text,
 } from 'react-native';
 import React from 'react';
 import {Asset} from 'react-native-image-picker';
@@ -11,11 +12,12 @@ import {Asset} from 'react-native-image-picker';
 type ImageUploadContainerType = {
   type: string;
   onUpload: (type: string, index: number) => void;
+  onDelete?: (index: number) => void;
   initialImages: Array<Asset>;
 };
 
 export default function ImageUploadContainer(props: ImageUploadContainerType) {
-  const {type = 'create', onUpload, initialImages} = props;
+  const {type = 'create', onUpload, onDelete, initialImages} = props;
 
   return (
     <View style={styles.imageRow}>
@@ -28,7 +30,15 @@ export default function ImageUploadContainer(props: ImageUploadContainerType) {
               <TouchableOpacity
                 style={styles.imageContainer}
                 onPress={() => onUpload(type, index)}>
-                <Image source={{uri: item?.uri}} style={styles.image} />
+                <Image
+                  progressiveRenderingEnabled
+                  source={{uri: item?.uri}}
+                  style={styles.image}
+                />
+                {type === 'edit' &&
+                  item !== undefined &&
+                  index !== 0 &&
+                  onDelete && <Text onPress={() => onDelete(index)}>X</Text>}
               </TouchableOpacity>
             </>
           );
@@ -58,8 +68,9 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#eee',
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+
+    display: 'flex',
+    flexDirection: 'row',
   },
   image: {
     width: '100%',

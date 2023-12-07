@@ -7,21 +7,22 @@ import ImageUploadContainer from 'components/ImageUploadContainer';
 import {Asset} from 'react-native-image-picker';
 
 import {useImageAndUpload} from 'hooks/useUpload';
+import EditSVG from '../../../assets/svg/Edit.svg';
+import {useNavigation} from '@react-navigation/native';
 
 export default function EditUserProfile() {
-  const {queryProfileData} = useProfileMe();
-  const {onUpload, images} = useImageAndUpload();
+  const navigation = useNavigation();
 
-  const assets: Asset[] = images.map((item, index) => ({
-    uri: item.uri || queryProfileData?.PreSignedUrl[index],
-  }));
+  const {queryProfileData} = useProfileMe();
+  const {onGetImage, onUpload, onDelete} = useImageAndUpload();
 
   return (
     <EditContainer>
       <ImageUploadContainer
         type="edit"
         onUpload={onUpload}
-        initialImages={assets}
+        onDelete={onDelete}
+        initialImages={onGetImage() as Asset[]}
       />
 
       <EditTextContainer style={{marginTop: 25}}>
@@ -39,6 +40,8 @@ export default function EditUserProfile() {
       <EditTextContainer>
         <EditText>직업</EditText>
         <Text>{queryProfileData?.user.job}</Text>
+
+        <EditSVG onPress={() => navigation.navigate('EditJob' as never)} />
       </EditTextContainer>
       <EditTextContainer>
         <EditText>키</EditText>
@@ -47,10 +50,12 @@ export default function EditUserProfile() {
       <EditTextContainer>
         <EditText>자기소개</EditText>
         <Text>{queryProfileData?.user.introduce}</Text>
+        <EditSVG />
       </EditTextContainer>
       <EditTextContainer>
         <EditText>취향</EditText>
         <Text>{queryProfileData?.user.preference}</Text>
+        <EditSVG />
       </EditTextContainer>
     </EditContainer>
   );
