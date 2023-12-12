@@ -19,6 +19,8 @@ import {useNavigation} from '@react-navigation/native';
 import LikedMessageList from 'screens/Profile/LikedMessageList/LikedMessageList';
 import EditUserProfile from 'screens/Profile/EditUserProfile/EditUserProfile';
 import JobScreen from 'screens/SignUp/JobScreen/JobScreen';
+import SelfScreen from 'screens/SignUp/SelfScreen/SelfScreen';
+import HobbyScreen from 'screens/SignUp/HobbyScreen/HobbyScreen';
 
 const Stack = createNativeStackNavigator();
 export default function Routes() {
@@ -237,15 +239,73 @@ export default function Routes() {
         <Stack.Screen
           name="EditJob"
           component={JobScreen}
-          options={{
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                {/* 커스텀 버튼 또는 요소 */}
-                <Text style={{marginLeft: 10}}>Back</Text>
-              </TouchableOpacity>
-            ),
-            // 다른 옵션들 설정 가능
-          }}
+          options={({navigation}) => ({
+            title: '직업 수정',
+
+            headerLeft: () => {
+              return (
+                <View>
+                  <Button
+                    title="<"
+                    color="black"
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
+                  />
+                </View>
+              );
+            },
+          })}
+        />
+
+        <Stack.Screen
+          name="EditIntroduction"
+          component={SelfScreen}
+          options={({navigation}) => ({
+            title: '자기소개 수정',
+
+            headerLeft: () => {
+              return (
+                <View>
+                  <Button
+                    title="<"
+                    color="black"
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
+                  />
+                </View>
+              );
+            },
+          })}
+        />
+
+        <Stack.Screen
+          name="EditPreference"
+          component={HobbyScreen}
+          options={({navigation}) => ({
+            title: '취향 수정',
+
+            headerLeft: () => {
+              return (
+                <View>
+                  <Button
+                    title="<"
+                    color="black"
+                    onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack();
+                      }
+                    }}
+                  />
+                </View>
+              );
+            },
+          })}
         />
       </Stack.Navigator>
 

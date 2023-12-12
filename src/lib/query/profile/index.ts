@@ -1,9 +1,15 @@
 /** Liked Message List **/
 
+import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {AxiosResponse} from 'axios';
 
 import {axiosInstance} from 'lib/axiosConfig';
+import {
+  useHobbyStore,
+  useJobStore,
+  useMySelfStore,
+} from 'store/signup/signUpStore';
 import {ProfileUserType} from 'types/profile';
 import {LikedProfileListType} from 'types/profile/likedProfileList';
 
@@ -53,7 +59,6 @@ export const useLikedMessageList = () => {
 };
 
 //PUT 내 프로필 사진 추가 및 수정 /users/me/update/profileImage/{index}
-
 export const useUpdateProfileImage = () => {
   const queryClient = useQueryClient();
 
@@ -109,5 +114,84 @@ export const useDeleteProfileImage = () => {
 
   return {
     deleteProfileImageMutation,
+  };
+};
+
+export const useEditJobProfile = () => {
+  const queryClient = useQueryClient();
+  const selectJob = useJobStore(state => state.selectJob);
+  const navigation = useNavigation();
+
+  const editJobProfileMutation = useMutation(
+    (): Promise<AxiosResponse> =>
+      axiosInstance.put('/users/me/update/job', {job: selectJob}),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: [PROFILE_ME_QUERY_KEY]});
+        navigation.goBack();
+      },
+
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
+
+  return {
+    editJobProfileMutation,
+  };
+};
+
+export const useEditMyselfProfile = () => {
+  const queryClient = useQueryClient();
+  const selfValueText = useMySelfStore(state => state.mySelfValue);
+  const navigation = useNavigation();
+
+  const editMyselfMutation = useMutation(
+    (): Promise<AxiosResponse> =>
+      axiosInstance.put('/users/me/update/introduce', {
+        introduce: selfValueText,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: [PROFILE_ME_QUERY_KEY]});
+        navigation.goBack();
+      },
+
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
+
+  return {
+    editMyselfMutation,
+  };
+};
+
+export const useEditPreferenceProfile = () => {
+  const queryClient = useQueryClient();
+  const preferenceSelectValue = useHobbyStore(state => state.selectHobby);
+  const navigation = useNavigation();
+
+  const editPreferenceMutation = useMutation(
+    (): Promise<AxiosResponse> =>
+      axiosInstance.put('/users/me/update/preference', {
+        preference: preferenceSelectValue,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: [PROFILE_ME_QUERY_KEY]});
+        navigation.goBack();
+      },
+
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
+
+  return {
+    editPreferenceMutation,
   };
 };

@@ -130,10 +130,12 @@ export const useMySelfStore = create<UseMySelfStoreType>(set => ({
 type UseHobbyStoreType = {
   selectHobby: Array<string>;
   handleSelectHobby: (value: string) => void;
+  handleHobbyReset: () => void;
 };
 
 export const useHobbyStore = create<UseHobbyStoreType>((set, get) => ({
   selectHobby: [],
+
   handleSelectHobby: (chipId: string) => {
     if (get().selectHobby.includes(chipId)) {
       set({selectHobby: get().selectHobby.filter(hobby => hobby !== chipId)});
@@ -142,6 +144,9 @@ export const useHobbyStore = create<UseHobbyStoreType>((set, get) => ({
     } else {
       Alert.alert('최대 3개까지 선택 가능합니다');
     }
+  },
+  handleHobbyReset: () => {
+    set({selectHobby: []});
   },
 }));
 

@@ -6,10 +6,18 @@ import {jobData} from './data/data';
 import styled from 'styled-components/native';
 import {TextInput, View} from 'react-native';
 import {useJobStore} from 'store/signup/signUpStore';
+import {useRoute} from '@react-navigation/native';
+import {ProfileType} from 'types/profile';
 
 export default function JobScreen() {
+  const {params} = useRoute();
+
+  const modeFromParams = (params as {mode: string})?.mode;
+  const typeFromParams = (params as {type: string})?.type;
+  const jobFromParams = (params as ProfileType)?.job;
+
   //직업 선택
-  const selectJob = useJobStore(state => state.selectJob);
+  const selectJob = useJobStore(state => state.selectJob) || jobFromParams;
   const handleSelectJob = useJobStore(state => state.handleSelectJob);
 
   //직접 입력
@@ -17,7 +25,10 @@ export default function JobScreen() {
   const handleEtcJob = useJobStore(state => state.handleEtcJob);
 
   return (
-    <SignUpLayout title={'직업을 선택해주세요'}>
+    <SignUpLayout
+      mode={modeFromParams}
+      type={typeFromParams}
+      title={'직업을 선택해주세요'}>
       <StyledJobChipContainer>
         {jobData?.map(job => {
           return (

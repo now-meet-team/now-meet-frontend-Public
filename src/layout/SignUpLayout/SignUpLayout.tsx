@@ -10,8 +10,15 @@ import Button from '../../components/Common/Button/Button';
 import ProgressBar from 'components/ProgressBar';
 import {usePostSignUp} from 'lib/mutation/auth';
 import {useNavigation} from '@react-navigation/native';
+import {
+  useEditJobProfile,
+  useEditMyselfProfile,
+  useEditPreferenceProfile,
+} from 'lib/query/profile';
 
 type SignUpLayoutType = {
+  mode?: string;
+  type?: string;
   title: string;
   subTitle?: string;
   children?: React.ReactNode;
@@ -19,7 +26,7 @@ type SignUpLayoutType = {
 };
 
 export default function SignUpLayout(props: SignUpLayoutType) {
-  const {title, subTitle, children, disabled} = props;
+  const {mode = 'create', type, title, subTitle, children, disabled} = props;
 
   const navigation = useNavigation();
 
@@ -29,17 +36,53 @@ export default function SignUpLayout(props: SignUpLayoutType) {
   const handleUserSignUp = useSignUpStore(state => state.handleUserSignUp);
 
   const {useSignUpMutation} = usePostSignUp();
+  const {editJobProfileMutation} = useEditJobProfile();
+  const {editMyselfMutation} = useEditMyselfProfile();
+  const {editPreferenceMutation} = useEditPreferenceProfile();
 
-  const finalSignUp = () => {
+  const handleSignUp = () => {
     const formData = handleUserSignUp();
     useSignUpMutation.mutate(formData);
     navigation.navigate('Main' as never);
   };
 
+  const handleEditMode = () => {
+    switch (type) {
+      case 'editJob':
+        editJobProfileMutation.mutate();
+        break;
+      case 'editIntroduction':
+        editMyselfMutation.mutate();
+        break;
+      case 'editPreferences':
+        editPreferenceMutation.mutate();
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleButtonPress = () => {
+    if (mode === 'edit') {
+      handleEditMode();
+      return;
+    }
+
+    if (pageNumber === 9) {
+      handleSignUp();
+      return;
+    }
+
+    nextPage();
+  };
+
   return (
     <SignUpLayoutContainer>
-      <ProgressBar />
-      <SignUpText>{title}</SignUpText>
+      {mode === 'create' && <ProgressBar />}
+
+      <SignUpText style={{marginTop: mode === 'edit' ? 30 : 0}}>
+        {title}
+      </SignUpText>
       <SignUpSubText>{subTitle}</SignUpSubText>
       <ViewChildrenStyled>{children}</ViewChildrenStyled>
       <ButtonContainer>
@@ -47,8 +90,8 @@ export default function SignUpLayout(props: SignUpLayoutType) {
           padding="12px 24px"
           disabled={disabled}
           backgroundColor={disabled ? palette.gray : palette.awesome}
-          title={pageNumber === 9 ? '완료' : '다음'}
-          onPress={pageNumber === 9 ? finalSignUp : nextPage}
+          title={pageNumber === 9 || mode === 'edit' ? '완료' : '다음'}
+          onPress={handleButtonPress}
         />
       </ButtonContainer>
     </SignUpLayoutContainer>

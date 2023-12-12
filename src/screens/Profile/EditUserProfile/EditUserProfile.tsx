@@ -1,4 +1,4 @@
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
@@ -8,14 +8,22 @@ import {Asset} from 'react-native-image-picker';
 
 import {useImageAndUpload} from 'hooks/useUpload';
 import EditSVG from '../../../assets/svg/Edit.svg';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+
+type ParamListType = {
+  EditJob: {mode: string; type: string; job: string};
+  EditIntroduction: {mode: string; type: string; introduce: string};
+  EditPreference: {mode: string; type: string; preference: string[]};
+};
 
 export default function EditUserProfile() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<ParamListType>>();
 
   const {queryProfileData} = useProfileMe();
   const {onGetImage, onUpload, onDelete} = useImageAndUpload();
 
+  console.log(queryProfileData?.user);
   return (
     <EditContainer>
       <ImageUploadContainer
@@ -31,7 +39,7 @@ export default function EditUserProfile() {
       </EditTextContainer>
       <EditTextContainer>
         <EditText>생년월일</EditText>
-        <Text>ㅁㄴㅇ</Text>
+        <Text>{queryProfileData?.user.birthDate}</Text>
       </EditTextContainer>
       <EditTextContainer>
         <EditText>성별</EditText>
@@ -39,9 +47,21 @@ export default function EditUserProfile() {
       </EditTextContainer>
       <EditTextContainer>
         <EditText>직업</EditText>
-        <Text>{queryProfileData?.user.job}</Text>
 
-        <EditSVG onPress={() => navigation.navigate('EditJob' as never)} />
+        <EditBox>
+          <Text>{queryProfileData?.user.job}</Text>
+
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('EditJob', {
+                mode: 'edit',
+                type: 'editJob',
+                job: queryProfileData?.user.job || '',
+              })
+            }>
+            <EditSVG />
+          </TouchableOpacity>
+        </EditBox>
       </EditTextContainer>
       <EditTextContainer>
         <EditText>키</EditText>
@@ -49,14 +69,43 @@ export default function EditUserProfile() {
       </EditTextContainer>
       <EditTextContainer>
         <EditText>자기소개</EditText>
-        <Text>{queryProfileData?.user.introduce}</Text>
-        <EditSVG />
+        <EditBox>
+          <Text>{queryProfileData?.user.introduce}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('EditIntroduction', {
+                mode: 'edit',
+                type: 'editIntroduction',
+                introduce: queryProfileData?.user.introduce || '',
+              })
+            }>
+            <EditSVG />
+          </TouchableOpacity>
+        </EditBox>
       </EditTextContainer>
-      <EditTextContainer>
+      <EditColumContainer>
         <EditText>취향</EditText>
-        <Text>{queryProfileData?.user.preference}</Text>
-        <EditSVG />
-      </EditTextContainer>
+
+        <ContentWrapper>
+          <PreferenceChipContainer>
+            {queryProfileData?.user.preference.map(item => {
+              console.log('item-->>', item);
+              return <MyProfilePreferenceChip>{item}</MyProfilePreferenceChip>;
+            })}
+          </PreferenceChipContainer>
+
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('EditPreference', {
+                mode: 'edit',
+                type: 'editPreferences',
+                preference: queryProfileData?.user.preference || [],
+              })
+            }>
+            <EditSVG />
+          </TouchableOpacity>
+        </ContentWrapper>
+      </EditColumContainer>
     </EditContainer>
   );
 }
@@ -74,7 +123,43 @@ const EditTextContainer = styled.View`
   margin-bottom: 25px;
 `;
 
+const EditColumContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 export const EditText = styled.Text`
   color: ${palette.gray};
   font-size: 15px;
+`;
+
+const EditBox = styled.View`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ContentWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const PreferenceChipContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`;
+
+const MyProfilePreferenceChip = styled.Text`
+  border-width: 1;
+  border-radius: 16px;
+
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
 `;

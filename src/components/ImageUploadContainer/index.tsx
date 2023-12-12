@@ -36,7 +36,7 @@ export default function ImageUploadContainer(props: ImageUploadContainerType) {
                   style={styles.image}
                 />
                 {type === 'edit' &&
-                  item !== undefined &&
+                  item.uri !== 'undefined' &&
                   index !== 0 &&
                   onDelete && <Text onPress={() => onDelete(index)}>X</Text>}
               </TouchableOpacity>
