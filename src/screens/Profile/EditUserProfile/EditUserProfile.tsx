@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
@@ -23,7 +23,6 @@ export default function EditUserProfile() {
   const {queryProfileData} = useProfileMe();
   const {onGetImage, onUpload, onDelete} = useImageAndUpload();
 
-  console.log(queryProfileData?.user);
   return (
     <EditContainer>
       <ImageUploadContainer
@@ -89,7 +88,6 @@ export default function EditUserProfile() {
         <ContentWrapper>
           <PreferenceChipContainer>
             {queryProfileData?.user.preference.map(item => {
-              console.log('item-->>', item);
               return <MyProfilePreferenceChip>{item}</MyProfilePreferenceChip>;
             })}
           </PreferenceChipContainer>
