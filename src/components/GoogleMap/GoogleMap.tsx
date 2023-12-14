@@ -16,7 +16,7 @@ import {palette} from 'config/globalStyles';
 import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 
 type GoogleMapType = {
-  locationProfileData: GoogleMapLocationNearProfileType | undefined;
+  locationProfileData?: GoogleMapLocationNearProfileType | undefined;
 };
 
 export default function GoogleMap(props: GoogleMapType) {
