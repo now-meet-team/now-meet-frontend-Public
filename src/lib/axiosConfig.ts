@@ -42,9 +42,9 @@ axiosInstance.interceptors.response.use(
       try {
         const userInfo = await GoogleSignin.signInSilently();
 
+        config.headers.Authorization = `Bearer ${userInfo.idToken}`;
         await storeUserSession('idToken', `${userInfo.idToken}`);
 
-        config.headers.Authorization = `Bearer ${userInfo.idToken}`;
         return axios(originalRequest);
       } catch (err) {
         throw err;

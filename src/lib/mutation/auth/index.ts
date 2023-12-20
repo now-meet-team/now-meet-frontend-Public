@@ -3,7 +3,6 @@ import {useMutation} from '@tanstack/react-query';
 import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {useModalStore} from 'store/modal/modalStore';
-import {storeUserSession} from 'utils/auth';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
@@ -88,19 +87,14 @@ export const usePostUserDelete = () => {
 };
 
 /** Refresh Token **/
-export const useGetRefreshToken = () => {
-  const useGetRefreshTokenMutation = useMutation(
+export const useGoogleGetRefreshToken = () => {
+  const useGetGoogleRefreshTokenMutation = useMutation(
     (serverAuthCode: string): Promise<AxiosResponse> =>
-      axiosInstance.post('/auth/getRefreshToken', {code: serverAuthCode}),
+      axiosInstance.post('/auth/getRefreshToken/google', {
+        code: serverAuthCode,
+      }),
     {
-      onSuccess: async data => {
-        const tokenResult = data.data.data;
-
-        await storeUserSession(
-          'idToken',
-          `${tokenResult.token_type} ${tokenResult.id_token}`,
-        );
-      },
+      onSuccess: () => {},
 
       onError: error => {
         console.log(error);
@@ -109,6 +103,6 @@ export const useGetRefreshToken = () => {
   );
 
   return {
-    useGetRefreshTokenMutation,
+    useGetGoogleRefreshTokenMutation,
   };
 };

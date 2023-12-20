@@ -1,50 +1,17 @@
-import React, {useEffect} from 'react';
-
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from '@react-native-google-signin/google-signin';
-import {useEmailStore} from 'store/signup/signUpStore';
+import React from 'react';
 
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
-import {saveWebClientId} from 'utils/auth';
-import {useGetRefreshToken, usePostIsSignIn} from 'lib/mutation/auth';
+import AppleSigninButton from 'components/Common/Button/AppleSigninButton/AppleSigninButton';
+import GoogleLoginButton from 'components/Common/Button/GoogleLoginButton/GoogleLoginButton';
 
 export default function Home() {
-  const handleEmail = useEmailStore(state => state.handleEmail);
-  const {useSignInMutation} = usePostIsSignIn();
-  const {useGetRefreshTokenMutation} = useGetRefreshToken();
-
-  useEffect(() => {
-    saveWebClientId();
-  }, []);
-
-  const googleLogin = async () => {
-    try {
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-
-      const userInfo = await GoogleSignin.signIn();
-      useGetRefreshTokenMutation.mutate(userInfo?.serverAuthCode || '');
-
-      console.log(userInfo.idToken);
-      handleEmail(userInfo?.user.email);
-      useSignInMutation.mutate(userInfo?.user.email);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <HomeContainer>
       <ButtonContainer>
-        <GoogleSigninButton
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={googleLogin}
-          disabled={false}
-        />
+        <AppleSigninButton />
+        <GoogleLoginButton />
       </ButtonContainer>
     </HomeContainer>
   );

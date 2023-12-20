@@ -11,6 +11,8 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need microphone access for uploading audio</string>
 
+<key>CFBundleIconName</key>
+<string>AppIcon</string>
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
