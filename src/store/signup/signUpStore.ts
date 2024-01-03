@@ -2,12 +2,11 @@ import {Alert} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import {create} from 'zustand';
 
-global.Buffer = global.Buffer || require('buffer').Buffer;
-
 type UseNavigationStoreType = {
   pageNumber: number;
   handleNextPage: () => void;
   handlePrevPage: () => void;
+  resetPageNumber: () => void;
 };
 
 /* 페이지 이동 */
@@ -20,6 +19,9 @@ export const useNavigationStore = create<UseNavigationStoreType>(
         return;
       }
       set(state => ({pageNumber: state.pageNumber - 1}));
+    },
+    resetPageNumber: () => {
+      set({pageNumber: 0});
     },
   }),
 );
@@ -137,10 +139,10 @@ export const useHobbyStore = create<UseHobbyStoreType>((set, get) => ({
   selectHobby: [],
 
   handleSelectHobby: (chipId: string) => {
-    if (get().selectHobby.includes(chipId)) {
-      set({selectHobby: get().selectHobby.filter(hobby => hobby !== chipId)});
-    } else if (get().selectHobby.length < 3) {
-      set({selectHobby: [...get().selectHobby, chipId]});
+    if (get().selectHobby?.includes(chipId)) {
+      set({selectHobby: get().selectHobby?.filter(hobby => hobby !== chipId)});
+    } else if (get().selectHobby?.length < 3) {
+      set({selectHobby: [...get()?.selectHobby, chipId]});
     } else {
       Alert.alert('최대 3개까지 선택 가능합니다');
     }

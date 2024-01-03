@@ -20,14 +20,16 @@ export default function HobbyScreen() {
   const handleSelectHobby = useHobbyStore(state => state.handleSelectHobby);
 
   useEffect(() => {
-    useHobbyStore.setState({selectHobby: preferenceFromParams});
-  }, [preferenceFromParams]);
+    if (modeFromParams === 'edit') {
+      useHobbyStore.setState({selectHobby: preferenceFromParams});
+    }
+  }, []);
 
   return (
     <SignUpLayout
       mode={modeFromParams}
       type={typeFromParams}
-      disabled={selectHobby.length === 0}
+      disabled={selectHobby?.length === 0}
       title={'취향을 골라주세요'}
       subTitle="최대 3개까지 선택 가능합니다">
       <StyledJobChipContainer style={{marginTop: 26}}>
@@ -36,7 +38,7 @@ export default function HobbyScreen() {
             <View key={hobby.id}>
               <Chip
                 label={hobby.label}
-                select={selectHobby.includes(hobby.label)}
+                select={selectHobby?.includes(hobby.label)}
                 onPress={() => handleSelectHobby(hobby.label)}
               />
             </View>

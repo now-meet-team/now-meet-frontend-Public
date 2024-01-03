@@ -15,18 +15,17 @@ import Toast from 'react-native-toast-message';
 import 'react-native-gesture-handler';
 import {retrieveUserSession} from 'utils/auth';
 
-import {useNavigation} from '@react-navigation/native';
 import LikedMessageList from 'screens/Profile/LikedMessageList/LikedMessageList';
 import EditUserProfile from 'screens/Profile/EditUserProfile/EditUserProfile';
 import JobScreen from 'screens/SignUp/JobScreen/JobScreen';
 import SelfScreen from 'screens/SignUp/SelfScreen/SelfScreen';
 import HobbyScreen from 'screens/SignUp/HobbyScreen/HobbyScreen';
+import {useNavigation} from '@react-navigation/native';
+import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 
 const Stack = createNativeStackNavigator();
 export default function Routes() {
   const navigation = useNavigation();
-
-  const handlePrevPage = useNavigationStore(state => state.handlePrevPage);
 
   const checkAutoLogin = useCallback(async () => {
     try {
@@ -41,6 +40,7 @@ export default function Routes() {
   }, [navigation]);
 
   useEffect(() => {
+    // checkAutoLogin();
     const unsubscribe = NetInfo.addEventListener(state => {
       if (!state.isConnected) {
         Toast.show({
@@ -50,16 +50,16 @@ export default function Routes() {
             '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
         });
       }
-
-      // 컴포넌트 언마운트 시 구독 취소
       return () => {
         unsubscribe();
       };
     });
+  }, []);
 
-    // 컴포넌트가 마운트될 때 자동 로그인 체크
-    checkAutoLogin();
-  }, [checkAutoLogin]);
+  const MemoizedNavigateBackComponent = React.useCallback(
+    () => <NavigateBack />,
+    [],
+  );
 
   return (
     <>
@@ -87,20 +87,12 @@ export default function Routes() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{
+          options={() => ({
             headerShadowVisible: false,
             headerTitle: '',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  onPress={() => handlePrevPage()}
-                  title="<"
-                  color="black"
-                />
-              </View>
-            ),
-          }}
+            headerLeft: () => MemoizedNavigateBackComponent(),
+          })}
         />
 
         <Stack.Screen
@@ -108,203 +100,87 @@ export default function Routes() {
           component={Profile}
           options={{
             headerTitle: '',
-            headerLeft: () => {
-              return (
-                <View>
-                  <Button
-                    onPress={() => {
-                      if (navigation.canGoBack()) {
-                        navigation.goBack();
-                      }
-                    }}
-                    title="<"
-                    color="black"
-                  />
-                </View>
-              );
-            },
+            headerLeft: () => MemoizedNavigateBackComponent(),
           }}
         />
 
         <Stack.Screen
           name="EditUserProfile"
           component={EditUserProfile}
-          options={({navigation}) => ({
+          options={() => ({
             title: '프로필 수정',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  title="<"
-                  color="black"
-                  onPress={() => {
-                    if (navigation.canGoBack()) {
-                      navigation.goBack();
-                    }
-                  }}
-                />
-              </View>
-            ),
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="Setting"
           component={Setting}
-          options={({navigation}) => ({
+          options={() => ({
             title: '환경설정',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  title="<"
-                  color="black"
-                  onPress={() => {
-                    if (navigation.canGoBack()) {
-                      navigation.goBack();
-                    }
-                  }}
-                />
-              </View>
-            ),
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="LikedMessageList"
           component={LikedMessageList}
-          options={({navigation}) => ({
+          options={() => ({
             title: '좋아요 발신함',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  title="<"
-                  color="black"
-                  onPress={() => {
-                    if (navigation.canGoBack()) {
-                      navigation.goBack();
-                    }
-                  }}
-                />
-              </View>
-            ),
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="Account"
           component={Account}
-          options={({navigation}) => ({
+          options={() => ({
             title: '계정',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  title="<"
-                  color="black"
-                  onPress={() => {
-                    if (navigation.canGoBack()) {
-                      navigation.goBack();
-                    }
-                  }}
-                />
-              </View>
-            ),
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="UserDelete"
           component={UserDelete}
-          options={({navigation}) => ({
+          options={() => ({
             title: '계정 삭제',
 
-            headerLeft: () => (
-              <View>
-                <Button
-                  title="<"
-                  color="black"
-                  onPress={() => {
-                    if (navigation.canGoBack()) {
-                      navigation.goBack();
-                    }
-                  }}
-                />
-              </View>
-            ),
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="EditJob"
           component={JobScreen}
-          options={({navigation}) => ({
+          options={() => ({
             title: '직업 수정',
 
-            headerLeft: () => {
-              return (
-                <View>
-                  <Button
-                    title="<"
-                    color="black"
-                    onPress={() => {
-                      if (navigation.canGoBack()) {
-                        navigation.goBack();
-                      }
-                    }}
-                  />
-                </View>
-              );
-            },
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="EditIntroduction"
           component={SelfScreen}
-          options={({navigation}) => ({
+          options={() => ({
             title: '자기소개 수정',
 
-            headerLeft: () => {
-              return (
-                <View>
-                  <Button
-                    title="<"
-                    color="black"
-                    onPress={() => {
-                      if (navigation.canGoBack()) {
-                        navigation.goBack();
-                      }
-                    }}
-                  />
-                </View>
-              );
-            },
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
 
         <Stack.Screen
           name="EditPreference"
           component={HobbyScreen}
-          options={({navigation}) => ({
+          options={() => ({
             title: '취향 수정',
 
-            headerLeft: () => {
-              return (
-                <View>
-                  <Button
-                    title="<"
-                    color="black"
-                    onPress={() => {
-                      if (navigation.canGoBack()) {
-                        navigation.goBack();
-                      }
-                    }}
-                  />
-                </View>
-              );
-            },
+            headerLeft: () => MemoizedNavigateBackComponent(),
           })}
         />
       </Stack.Navigator>

@@ -16,6 +16,8 @@ import {
   useEditPreferenceProfile,
 } from 'lib/query/profile';
 
+import {KeyboardAvoidingView, Platform} from 'react-native';
+
 type SignUpLayoutType = {
   mode?: string;
   type?: string;
@@ -42,8 +44,8 @@ export default function SignUpLayout(props: SignUpLayoutType) {
 
   const handleSignUp = () => {
     const formData = handleUserSignUp();
+
     useSignUpMutation.mutate(formData);
-    navigation.navigate('Main' as never);
   };
 
   const handleEditMode = () => {
@@ -77,24 +79,32 @@ export default function SignUpLayout(props: SignUpLayoutType) {
   };
 
   return (
-    <SignUpLayoutContainer>
-      {mode === 'create' && <ProgressBar />}
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      keyboardVerticalOffset={50}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <SignUpLayoutContainer>
+        {mode === 'create' && <ProgressBar />}
 
-      <SignUpText style={{marginTop: mode === 'edit' ? 30 : 0}}>
-        {title}
-      </SignUpText>
-      <SignUpSubText>{subTitle}</SignUpSubText>
-      <ViewChildrenStyled>{children}</ViewChildrenStyled>
-      <ButtonContainer>
-        <Button
-          padding="12px 24px"
-          disabled={disabled}
-          backgroundColor={disabled ? palette.gray : palette.awesome}
-          title={pageNumber === 9 || mode === 'edit' ? '완료' : '다음'}
-          onPress={handleButtonPress}
-        />
-      </ButtonContainer>
-    </SignUpLayoutContainer>
+        <SignUpText style={{marginTop: mode === 'edit' ? 30 : 0}}>
+          {title}
+        </SignUpText>
+
+        <SignUpSubText>{subTitle}</SignUpSubText>
+
+        <ViewChildrenStyled>{children}</ViewChildrenStyled>
+
+        <ButtonContainer>
+          <Button
+            padding="12px 24px"
+            disabled={disabled}
+            backgroundColor={disabled ? palette.gray : palette.awesome}
+            title={pageNumber === 9 || mode === 'edit' ? '완료' : '다음'}
+            onPress={handleButtonPress}
+          />
+        </ButtonContainer>
+      </SignUpLayoutContainer>
+    </KeyboardAvoidingView>
   );
 }
 

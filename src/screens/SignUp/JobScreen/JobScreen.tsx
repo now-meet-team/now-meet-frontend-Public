@@ -28,6 +28,7 @@ export default function JobScreen() {
     <SignUpLayout
       mode={modeFromParams}
       type={typeFromParams}
+      disabled={!selectJob}
       title={'직업을 선택해주세요'}>
       <StyledJobChipContainer>
         {jobData?.map(job => {

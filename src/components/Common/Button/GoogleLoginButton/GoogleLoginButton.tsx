@@ -6,6 +6,7 @@ import {
 import {usePostIsSignIn} from 'lib/mutation/auth';
 
 import {saveWebClientId, storeUserSession} from 'utils/auth';
+import {useNavigationStore} from 'store/signup/signUpStore';
 
 export default function GoogleLoginButton() {
   const {useSignInMutation} = usePostIsSignIn();
@@ -21,7 +22,8 @@ export default function GoogleLoginButton() {
       const userInfo = await GoogleSignin.signIn();
       await storeUserSession('idToken', `${userInfo.idToken}`);
 
-      console.log(userInfo.serverAuthCode);
+      console.log('android-->', userInfo.idToken);
+
       useSignInMutation.mutate(userInfo?.user.email);
     } catch (error) {
       console.log(error);

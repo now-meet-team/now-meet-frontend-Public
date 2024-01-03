@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
+import {ScrollView} from 'react-native-gesture-handler';
+
 type TextAreaType = {
   value: string;
   onChangeText: (value: string) => void;
@@ -13,6 +15,7 @@ export default function TextArea(props: TextAreaType) {
         placeholder="자기소개를 입력해주세요 (최대 200자)"
         maxLength={200}
         multiline={true}
+        blurOnSubmit
         numberOfLines={10}
         value={props.value}
         onChangeText={text => props.onChangeText(text)}

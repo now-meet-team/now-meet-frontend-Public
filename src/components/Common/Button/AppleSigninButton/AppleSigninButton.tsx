@@ -3,12 +3,14 @@ import React, {useEffect} from 'react';
 import {
   AppleButton,
   appleAuth,
-  appleAuthAndroid,
 } from '@invertase/react-native-apple-authentication';
 import {useNavigation} from '@react-navigation/native';
+import {storeUserSession} from 'utils/auth';
+import {usePostIsSignIn} from 'lib/mutation/auth';
 
 export default function AppleSigninButton() {
   const navigation = useNavigation();
+  const {useSignInMutation} = usePostIsSignIn();
 
   useEffect(() => {
     return appleAuth.onCredentialRevoked(async () => {
@@ -30,9 +32,14 @@ export default function AppleSigninButton() {
 
     // use credentialState response to ensure the user is authenticated
     if (credentialState === appleAuth.State.AUTHORIZED) {
-      // user is authenticated
-      console.log(appleAuthRequestResponse);
-      console.log('로구인!!');
+      await storeUserSession(
+        'idToken',
+        `${appleAuthRequestResponse?.identityToken}`,
+      );
+
+      console.log('ios-->', appleAuthRequestResponse?.identityToken);
+
+      useSignInMutation.mutate(appleAuthRequestResponse.user);
     }
   }
 
@@ -44,7 +51,6 @@ export default function AppleSigninButton() {
         style={{
           width: '100%',
           height: 40,
-          borderRadius: 15,
           backgroundColor: 'black',
         }}
         onPress={() => onAppleButtonPress()}

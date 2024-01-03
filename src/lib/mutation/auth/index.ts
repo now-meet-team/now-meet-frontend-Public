@@ -2,15 +2,17 @@ import {useNavigation} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
 import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
+import {Alert} from 'react-native';
 import {useModalStore} from 'store/modal/modalStore';
+import {retrieveUserSession} from 'utils/auth';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
   const navigation = useNavigation();
 
   const useSignInMutation = useMutation(
-    (email: string): Promise<AxiosResponse> =>
-      axiosInstance.post('/auth/isuser', {email}),
+    (uuid: string | null): Promise<AxiosResponse> =>
+      axiosInstance.post('/auth/isuser', {uuid}),
     {
       onSuccess: async data => {
         const isUserSignIn = data?.data.data;
@@ -35,6 +37,8 @@ export const usePostIsSignIn = () => {
 
 /** 회원가입  **/
 export const usePostSignUp = () => {
+  const navigation = useNavigation();
+
   const config = {
     headers: {'Content-Type': 'multipart/form-data'},
   };
@@ -43,12 +47,16 @@ export const usePostSignUp = () => {
     (formData: FormData): Promise<AxiosResponse> =>
       axiosInstance.post('/users/signup', formData, config),
     {
-      onSuccess: () => {},
-      onMutate: data => {
+      onSuccess: data => {
         console.log(data);
+        navigation.navigate('Main' as never);
+      },
+      onMutate: async () => {
+        const token = await retrieveUserSession('idToken');
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
       },
       onError: error => {
-        console.log(error);
+        Alert.alert(error as string);
       },
     },
   );

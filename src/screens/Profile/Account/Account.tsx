@@ -18,7 +18,7 @@ export default function Account() {
     try {
       await GoogleSignin.signOut();
       handleVisible(false);
-      await removeUserSession('token');
+      await removeUserSession('idToken');
       navigation.navigate('Home' as never);
     } catch (error) {
       console.error(error);

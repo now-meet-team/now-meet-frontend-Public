@@ -8,7 +8,7 @@ export default function HeightScreen() {
   const handleSelectGender = useHeightStore(state => state.handleSelectGender);
 
   return (
-    <SignUpLayout title={'키를 입력해주세요'}>
+    <SignUpLayout title={'키를 입력해주세요'} disabled={!height}>
       <Input
         maxLength={3}
         onChangeText={handleSelectGender}

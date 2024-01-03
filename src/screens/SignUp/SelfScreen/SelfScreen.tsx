@@ -25,6 +25,7 @@ export default function SelfScreen() {
 
   return (
     <SignUpLayout
+      disabled={!mySelfValue}
       mode={modeFromParams}
       type={typeFromParams}
       title={'자기소개 해주세요'}>
