@@ -56,11 +56,6 @@ export default function Routes() {
     });
   }, []);
 
-  const MemoizedNavigateBackComponent = React.useCallback(
-    () => <NavigateBack />,
-    [],
-  );
-
   return (
     <>
       <Stack.Navigator initialRouteName="Home">
@@ -91,7 +86,7 @@ export default function Routes() {
             headerShadowVisible: false,
             headerTitle: '',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: () => <NavigateBack label={'SignUp'} />,
           })}
         />
 
@@ -100,7 +95,7 @@ export default function Routes() {
           component={Profile}
           options={{
             headerTitle: '',
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           }}
         />
 
@@ -110,7 +105,7 @@ export default function Routes() {
           options={() => ({
             title: '프로필 수정',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -120,7 +115,7 @@ export default function Routes() {
           options={() => ({
             title: '환경설정',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -130,7 +125,7 @@ export default function Routes() {
           options={() => ({
             title: '좋아요 발신함',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -140,7 +135,7 @@ export default function Routes() {
           options={() => ({
             title: '계정',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -150,7 +145,7 @@ export default function Routes() {
           options={() => ({
             title: '계정 삭제',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -160,7 +155,7 @@ export default function Routes() {
           options={() => ({
             title: '직업 수정',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -170,7 +165,7 @@ export default function Routes() {
           options={() => ({
             title: '자기소개 수정',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
 
@@ -180,7 +175,7 @@ export default function Routes() {
           options={() => ({
             title: '취향 수정',
 
-            headerLeft: () => MemoizedNavigateBackComponent(),
+            headerLeft: props => <NavigateBack label={props.label || ''} />,
           })}
         />
       </Stack.Navigator>

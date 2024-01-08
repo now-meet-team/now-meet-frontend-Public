@@ -80,7 +80,7 @@ export const useImageAndUpload = () => {
       updateImages(index, response.assets[0]);
       let formImage = getFormDataImage(index);
 
-      mutateImageUpload(type, formImage, index);
+      // mutateImageUpload(type, formImage, index);
     }
   };
 

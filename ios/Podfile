@@ -1,6 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
+
 platform :ios, 13
 prepare_react_native_project!
 
@@ -29,6 +30,7 @@ target 'nowmeetfrontend' do
   # The following line is only needed if building on an Apple silicon Mac without rosetta.
   pod 'Google-Maps-iOS-Utils', :git => 'https://github.com/Simon-TechForm/google-maps-ios-utils.git', :branch => 'feat/support-apple-silicon'
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
 
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path

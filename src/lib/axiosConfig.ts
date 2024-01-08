@@ -2,7 +2,6 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import axios from 'axios';
 import {retrieveUserSession, storeUserSession} from 'utils/auth';
-import {useGoogleGetRefreshToken} from './mutation/auth';
 
 export const axiosInstance = axios.create({
   baseURL: 'https://nowmeet.org',

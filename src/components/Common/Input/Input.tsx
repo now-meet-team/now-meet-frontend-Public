@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from '../../../config/globalStyles';
 
@@ -24,7 +25,9 @@ const StyledInput = styled.TextInput`
   height: 40px;
   margin: 12px;
   padding: 10px;
-  border-width: 1px;
-  border-radius: 30px;
+
+  border-bottom-width: 1px;
   border-color: ${palette.inputColor};
+
+  font-size: 18px;
 `;

@@ -12,7 +12,11 @@ export default function UploadImageScreen() {
 
   return (
     <SignUpLayout title={'이미지를 선택해주세요'}>
-      <ImageUploadContainer onUpload={onUpload} initialImages={images} />
+      <ImageUploadContainer
+        type="create"
+        onUpload={onUpload}
+        initialImages={images}
+      />
     </SignUpLayout>
   );
 }

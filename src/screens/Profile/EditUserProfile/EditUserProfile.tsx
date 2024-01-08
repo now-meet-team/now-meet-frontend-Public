@@ -88,7 +88,11 @@ export default function EditUserProfile() {
         <ContentWrapper>
           <PreferenceChipContainer>
             {queryProfileData?.user.preference.map(item => {
-              return <MyProfilePreferenceChip>{item}</MyProfilePreferenceChip>;
+              return (
+                <MyProfilePreferenceChip key={item}>
+                  {item}
+                </MyProfilePreferenceChip>
+              );
             })}
           </PreferenceChipContainer>
 

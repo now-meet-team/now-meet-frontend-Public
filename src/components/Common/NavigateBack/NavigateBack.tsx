@@ -3,13 +3,16 @@ import React from 'react';
 import {useNavigationStore} from 'store/signup/signUpStore';
 import {useNavigation} from '@react-navigation/native';
 
-export default function NavigateBack() {
+export default function NavigateBack(props: {label: string}) {
+  const {label} = props;
+
   const navigation = useNavigation();
   const pageNumber = useNavigationStore(state => state.pageNumber);
   const handlePrevPage = useNavigationStore(state => state.handlePrevPage);
 
   const signUpBackNavigate = () => {
-    if (navigation.getState().routes[1].name === 'SignUp' && pageNumber === 0) {
+    console.log(pageNumber);
+    if (label === 'SignUp' && pageNumber === 0) {
       navigation.navigate('Home' as never);
     }
 
@@ -26,7 +29,7 @@ export default function NavigateBack() {
     <View>
       <Button
         onPress={() => {
-          if (navigation.getState().routes[1].name === 'SignUp') {
+          if (label === 'SignUp') {
             signUpBackNavigate();
           } else {
             otherBackNavigate();

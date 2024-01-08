@@ -17,6 +17,8 @@ export default function Main() {
 
   const snapPoints = useMemo(() => ['15%', '50%'], []);
 
+  console.log(locationProfileData);
+
   return (
     <MainContainer>
       <MainWrapper onPress={() => navigation.navigate('Profile' as never)}>

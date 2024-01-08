@@ -4,10 +4,11 @@ import Chip from 'components/Chip';
 import {jobData} from './data/data';
 
 import styled from 'styled-components/native';
-import {TextInput, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import {useJobStore} from 'store/signup/signUpStore';
 import {useRoute} from '@react-navigation/native';
 import {ProfileType} from 'types/profile';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function JobScreen() {
   const {params} = useRoute();
@@ -30,20 +31,20 @@ export default function JobScreen() {
       type={typeFromParams}
       disabled={!selectJob}
       title={'직업을 선택해주세요'}>
-      <StyledJobChipContainer>
+      <JobContainer>
         {jobData?.map(job => {
           return (
-            <View key={job.id}>
-              <Chip
-                label={job.label}
-                select={job.label === selectJob}
-                onPress={() => handleSelectJob(job.label)}
-              />
-            </View>
+            <TouchableOpacity
+              key={job.id}
+              onPress={() => handleSelectJob(job.label)}>
+              <JobWrapper>
+                <JobText>{job.label}</JobText>
+              </JobWrapper>
+            </TouchableOpacity>
           );
         })}
 
-        <ChipAndInputContainer>
+        {/* <ChipAndInputContainer>
           <Chip
             label={selectJob === 'custom' ? ' ' : etcJob || '직접 입력'}
             select={selectJob === 'custom'}
@@ -60,8 +61,8 @@ export default function JobScreen() {
               />
             </StyledCustomJobContainer>
           )}
-        </ChipAndInputContainer>
-      </StyledJobChipContainer>
+        </ChipAndInputContainer> */}
+      </JobContainer>
     </SignUpLayout>
   );
 }
@@ -84,4 +85,20 @@ export const ChipAndInputContainer = styled.View`
 `;
 export const StyledCustomJobContainer = styled.View`
   position: absolute;
+`;
+
+export const JobContainer = styled.View`
+  padding-left: 20px;
+  padding-right: 20px;
+  gap: 20px;
+
+  font-size: 18px;
+`;
+
+export const JobWrapper = styled.View`
+  width: 100%;
+`;
+
+export const JobText = styled.Text`
+  font-size: 18px;
 `;

@@ -4,6 +4,7 @@ import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {Alert} from 'react-native';
 import {useModalStore} from 'store/modal/modalStore';
+import {useNavigationStore} from 'store/signup/signUpStore';
 import {retrieveUserSession} from 'utils/auth';
 
 /** 로그인 **/
@@ -38,6 +39,7 @@ export const usePostIsSignIn = () => {
 /** 회원가입  **/
 export const usePostSignUp = () => {
   const navigation = useNavigation();
+  const resetPageNumber = useNavigationStore(state => state.resetPageNumber);
 
   const config = {
     headers: {'Content-Type': 'multipart/form-data'},
@@ -47,14 +49,11 @@ export const usePostSignUp = () => {
     (formData: FormData): Promise<AxiosResponse> =>
       axiosInstance.post('/users/signup', formData, config),
     {
-      onSuccess: data => {
-        console.log(data);
+      onSuccess: () => {
+        resetPageNumber();
         navigation.navigate('Main' as never);
       },
-      onMutate: async () => {
-        const token = await retrieveUserSession('idToken');
-        axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-      },
+
       onError: error => {
         Alert.alert(error as string);
       },

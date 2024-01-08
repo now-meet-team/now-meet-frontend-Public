@@ -11,7 +11,7 @@ export default function NickNameScreen() {
 
   return (
     <SignUpLayout
-      title={'반갑습니다!\n닉네임을 입력해주세요😊'}
+      title={'안녕하세요!\n닉네임을 입력해주세요.'}
       disabled={!nickName}>
       <Input
         onChangeText={text => handleNickName(text)}
