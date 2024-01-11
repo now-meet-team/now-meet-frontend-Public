@@ -31,6 +31,7 @@ export default function GoogleMap(props: GoogleMapType) {
   const getCurrentPosition = useCallback(async () => {
     await Geolocation.getCurrentPosition(
       position => {
+        console.log(position);
         const {latitude, longitude} = position.coords;
 
         setLocationMapValue({latitude: latitude, longitude: longitude});

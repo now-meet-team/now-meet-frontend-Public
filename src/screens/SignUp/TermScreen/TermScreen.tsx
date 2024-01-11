@@ -13,7 +13,7 @@ export default function TermScreen() {
       term: state.term,
       privacy: state.privacy,
       locationCheck: state.locationCheck,
-      sensitiveCheck: state.sensitiveCheck,
+
       marketingCheck: state.marketingCheck,
     }),
     shallow,
@@ -29,11 +29,11 @@ export default function TermScreen() {
       disabled={
         !termCheckValue.term ||
         !termCheckValue.privacy ||
-        !termCheckValue.locationCheck ||
-        !termCheckValue.sensitiveCheck
+        !termCheckValue.locationCheck
       }>
       <StyledTermTextContainer>
         <TermTextBox
+          url="https://happy-paper-ff2.notion.site/b92587ae482c47638dd679fb694f2804?pvs=74"
           isCheck={termCheckValue.term}
           handleCheck={() => {
             useTermsStore.setState({term: !termCheckValue.term});
@@ -43,6 +43,7 @@ export default function TermScreen() {
         />
 
         <TermTextBox
+          url="https://happy-paper-ff2.notion.site/a7ec4240b2454e9fbe0be40179a8bab4"
           isCheck={termCheckValue.privacy}
           handleCheck={() => {
             useTermsStore.setState({privacy: !termCheckValue.privacy});
@@ -52,6 +53,7 @@ export default function TermScreen() {
         />
 
         <TermTextBox
+          url="https://happy-paper-ff2.notion.site/982a037eefa9441cb472a2ad5daddcc9?pvs=74"
           isCheck={termCheckValue.locationCheck}
           handleCheck={() => {
             useTermsStore.setState({
@@ -63,17 +65,7 @@ export default function TermScreen() {
         />
 
         <TermTextBox
-          isCheck={termCheckValue.sensitiveCheck}
-          handleCheck={() => {
-            useTermsStore.setState({
-              sensitiveCheck: !termCheckValue.sensitiveCheck,
-            });
-          }}
-          lineText="민감정보 이용 동의"
-          requiredText="필수"
-        />
-
-        <TermTextBox
+          url=""
           isCheck={termCheckValue.marketingCheck}
           handleCheck={() => {
             useTermsStore.setState({
@@ -87,13 +79,16 @@ export default function TermScreen() {
 
         <AllTermCheckbox
           label="전체동의"
-          isCheck={allChecked}
+          isCheck={
+            termCheckValue.term &&
+            termCheckValue.privacy &&
+            termCheckValue.locationCheck
+          }
           handleCheck={() => {
             useTermsStore.setState({
               term: !allChecked,
               privacy: !allChecked,
               locationCheck: !allChecked,
-              sensitiveCheck: !allChecked,
               marketingCheck: !allChecked,
             });
           }}

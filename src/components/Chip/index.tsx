@@ -25,7 +25,7 @@ const StyledChip = styled.TouchableOpacity<StyledChipType>`
   width: 164px;
   height: 48px;
 
-  border-radius: 30px;
+  border-radius: 8px;
 
   display: flex;
   justify-content: center;

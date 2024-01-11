@@ -11,3 +11,7 @@ export {default as SettingSVG} from './svg/profile/setting.svg';
 export {default as RightSVG} from './svg/profile/rightArrow.svg';
 
 export {default as EditSVG} from './svg/Edit.svg';
+
+//signUp
+export {default as CheckSVG} from './svg/Check.svg';
+export {default as AdviseSVG} from './svg/Advise.svg';

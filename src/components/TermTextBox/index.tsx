@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {Linking, View} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
@@ -11,15 +11,25 @@ export type TermTextBoxType = {
   isBorder?: boolean | undefined;
   isCheck?: boolean;
   handleCheck: () => void;
+  url: string;
 };
 
 export default function TermTextBox(props: TermTextBoxType) {
-  const {lineText, requiredText, isBorder = true, isCheck, handleCheck} = props;
+  const {
+    lineText,
+    requiredText,
+    isBorder = true,
+    isCheck,
+    handleCheck,
+    url,
+  } = props;
   return (
     <StyledLineTextContainer isBorder={isBorder}>
       <StyledTermText>
         <StyledTermContainer>
-          <StyledTermsText>{lineText}</StyledTermsText>
+          <StyledTermsText onPress={() => Linking.openURL(url)}>
+            {lineText}
+          </StyledTermsText>
           <StyledRequiredText>{requiredText}</StyledRequiredText>
         </StyledTermContainer>
 

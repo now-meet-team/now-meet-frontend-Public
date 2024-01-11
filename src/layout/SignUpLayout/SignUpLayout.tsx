@@ -30,8 +30,6 @@ type SignUpLayoutType = {
 export default function SignUpLayout(props: SignUpLayoutType) {
   const {mode = 'create', type, title, subTitle, children, disabled} = props;
 
-  const navigation = useNavigation();
-
   const pageNumber = useNavigationStore(state => state.pageNumber);
   const nextPage = useNavigationStore(state => state.handleNextPage);
 
@@ -81,7 +79,7 @@ export default function SignUpLayout(props: SignUpLayoutType) {
   return (
     <KeyboardAvoidingView
       style={{flex: 1}}
-      keyboardVerticalOffset={50}
+      keyboardVerticalOffset={60}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SignUpLayoutContainer>
         {mode === 'create' && <ProgressBar />}

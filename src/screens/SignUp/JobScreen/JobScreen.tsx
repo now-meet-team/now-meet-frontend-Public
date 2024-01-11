@@ -8,7 +8,8 @@ import {Text, TextInput, View} from 'react-native';
 import {useJobStore} from 'store/signup/signUpStore';
 import {useRoute} from '@react-navigation/native';
 import {ProfileType} from 'types/profile';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import CheckSVG from '../../../assets/svg/Check.svg';
 
 export default function JobScreen() {
   const {params} = useRoute();
@@ -30,21 +31,26 @@ export default function JobScreen() {
       mode={modeFromParams}
       type={typeFromParams}
       disabled={!selectJob}
-      title={'직업을 선택해주세요'}>
-      <JobContainer>
-        {jobData?.map(job => {
-          return (
-            <TouchableOpacity
-              key={job.id}
-              onPress={() => handleSelectJob(job.label)}>
-              <JobWrapper>
-                <JobText>{job.label}</JobText>
-              </JobWrapper>
-            </TouchableOpacity>
-          );
-        })}
+      title={'직업을 선택해주세요.'}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 180}}>
+        <JobContainer>
+          {jobData?.map(job => {
+            return (
+              <TouchableOpacity
+                key={job.id}
+                onPress={() => handleSelectJob(job.label)}>
+                <JobWrapper>
+                  <JobText>{job.label}</JobText>
+                  {job.label === selectJob && <CheckSVG fill={'#000'} />}
+                </JobWrapper>
+              </TouchableOpacity>
+            );
+          })}
 
-        {/* <ChipAndInputContainer>
+          {/* <ChipAndInputContainer>
           <Chip
             label={selectJob === 'custom' ? ' ' : etcJob || '직접 입력'}
             select={selectJob === 'custom'}
@@ -62,7 +68,8 @@ export default function JobScreen() {
             </StyledCustomJobContainer>
           )}
         </ChipAndInputContainer> */}
-      </JobContainer>
+        </JobContainer>
+      </ScrollView>
     </SignUpLayout>
   );
 }
@@ -75,7 +82,7 @@ export const StyledJobChipContainer = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 5px;
+  gap: 15px;
 `;
 
 export const ChipAndInputContainer = styled.View`
@@ -90,13 +97,17 @@ export const StyledCustomJobContainer = styled.View`
 export const JobContainer = styled.View`
   padding-left: 20px;
   padding-right: 20px;
-  gap: 20px;
 
   font-size: 18px;
 `;
 
 export const JobWrapper = styled.View`
   width: 100%;
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const JobText = styled.Text`

@@ -12,12 +12,12 @@ const ProgressBar = () => {
     <BarView>
       <Bar>
         <Progress.Bar
+          style={{borderRadius: 0}}
           color={palette.bittersweet}
           borderColor={palette.white}
           progress={convertProgressToPage(pageNumbers, 10)}
           width={null}
           height={8}
-          borderRadius={8}
           animated
         />
       </Bar>
@@ -29,12 +29,12 @@ export default ProgressBar;
 
 const BarView = styled.View`
   width: 100%;
-  padding: 0 15px;
   flex-direction: row;
+  margin-bottom: 24px;
 `;
 
 const Bar = styled.View`
-  margin: 10px 0;
   flex: 1;
+
   background-color: ${palette.progressColor};
 `;

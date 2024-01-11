@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 
-import {ScrollView} from 'react-native-gesture-handler';
-
 type TextAreaType = {
   value: string;
   onChangeText: (value: string) => void;
@@ -12,10 +10,9 @@ export default function TextArea(props: TextAreaType) {
   return (
     <StyledContainer>
       <StyledTextInput
-        placeholder="자기소개를 입력해주세요 (최대 200자)"
+        placeholder={'자신을 자유롭게 나타내주세요 :) (최대 200자)'}
         maxLength={200}
         multiline={true}
-        blurOnSubmit
         numberOfLines={10}
         value={props.value}
         onChangeText={text => props.onChangeText(text)}
@@ -34,7 +31,8 @@ const StyledTextInput = styled.TextInput`
   border: 1px solid ${palette.inputColor};
   width: 345px;
   height: 311px;
-  border-radius: 30px;
+  border-radius: 8px;
 
-  padding: 17px 20px;
+  padding: 30px 20px;
+  font-size: 16px;
 `;

@@ -7,6 +7,7 @@ import Chip from 'components/Chip';
 import {useHobbyStore} from 'store/signup/signUpStore';
 import {ProfileType} from 'types/profile';
 import {useRoute} from '@react-navigation/native';
+import styled from 'styled-components/native';
 
 export default function HobbyScreen() {
   const {params} = useRoute();
@@ -30,7 +31,7 @@ export default function HobbyScreen() {
       mode={modeFromParams}
       type={typeFromParams}
       disabled={selectHobby?.length === 0}
-      title={'취향을 골라주세요'}
+      title={'취향을 선택해주세요!'}
       subTitle="최대 3개까지 선택 가능합니다">
       <StyledJobChipContainer style={{marginTop: 26}}>
         {hobbyData.map(hobby => {

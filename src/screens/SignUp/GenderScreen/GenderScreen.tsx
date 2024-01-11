@@ -10,7 +10,7 @@ export default function GenderScreen() {
 
   return (
     <>
-      <SignUpLayout title={'성별을 골라주세요'}>
+      <SignUpLayout title={'성별을 골라주세요.'}>
         <StyledChipContainer>
           <Chip
             label="남성"

@@ -5,7 +5,6 @@ import {axiosInstance} from 'lib/axiosConfig';
 import {Alert} from 'react-native';
 import {useModalStore} from 'store/modal/modalStore';
 import {useNavigationStore} from 'store/signup/signUpStore';
-import {retrieveUserSession} from 'utils/auth';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
