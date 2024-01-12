@@ -4,6 +4,7 @@ import {palette} from '../../../config/globalStyles';
 
 type InputType = {
   onChangeText: ((text: string) => void) | undefined;
+
   value: string;
   placeholder?: string;
   maxLength?: number;

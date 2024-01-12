@@ -4,7 +4,7 @@ import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
 import {Alert} from 'react-native';
 import {useModalStore} from 'store/modal/modalStore';
-import {useNavigationStore} from 'store/signup/signUpStore';
+import {useNavigationStore, useNickNameStore} from 'store/signup/signUpStore';
 
 /** 로그인 **/
 export const usePostIsSignIn = () => {
@@ -38,6 +38,7 @@ export const usePostIsSignIn = () => {
 /** 회원가입  **/
 export const usePostSignUp = () => {
   const navigation = useNavigation();
+  const handleNickName = useNickNameStore(state => state.handleNickName);
   const resetPageNumber = useNavigationStore(state => state.resetPageNumber);
 
   const config = {
@@ -49,6 +50,7 @@ export const usePostSignUp = () => {
       axiosInstance.post('/users/signup', formData, config),
     {
       onSuccess: () => {
+        handleNickName('');
         resetPageNumber();
         navigation.navigate('Main' as never);
       },

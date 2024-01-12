@@ -13,7 +13,8 @@ type UseNavigationStoreType = {
 export const useNavigationStore = create<UseNavigationStoreType>(
   (set, get) => ({
     pageNumber: 0,
-    handleNextPage: () => set(state => ({pageNumber: state.pageNumber + 1})),
+    handleNextPage: () =>
+      set(state => ({pageNumber: state.pageNumber + 1, isClick: true})),
     handlePrevPage: () => {
       if (get().pageNumber === 0) {
         return;
@@ -45,7 +46,10 @@ type UseNickNameStoreType = {
 
 export const useNickNameStore = create<UseNickNameStoreType>(set => ({
   nickName: '',
-  handleNickName: (text: string) => set({nickName: text}),
+
+  handleNickName: (text: string) => {
+    set({nickName: text});
+  },
 }));
 
 /* 생일 */
@@ -125,7 +129,13 @@ type UseMySelfStoreType = {
 
 export const useMySelfStore = create<UseMySelfStoreType>(set => ({
   mySelfValue: '',
-  handleMySelfValue: (value: string) => set({mySelfValue: value}),
+  handleMySelfValue: (value: string) => {
+    const lines = value.split('\n');
+
+    if (lines.length <= 8) {
+      set({mySelfValue: value});
+    }
+  },
 }));
 
 /* 취미 */
