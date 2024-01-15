@@ -8,21 +8,32 @@ import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import {useLocationProfile} from 'lib/query/googlemap';
 import {NearbyUsersType} from 'types/googlemap';
+import {palette} from 'config/globalStyles';
+import {calculateAge} from 'utils/calculateAge';
+import {LeftArrowSVG, ProfileSVG, MessageSVG} from '../../assets';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {RootStackNavigationProp} from 'navigation/Routes';
 
 export default function Main() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<RootStackNavigationProp>();
   const sheetRef = useRef<BottomSheet>(null);
 
   const {locationProfileData} = useLocationProfile();
 
   const snapPoints = useMemo(() => ['15%', '50%'], []);
 
-  console.log(locationProfileData);
-
   return (
     <MainContainer>
-      <MainWrapper onPress={() => navigation.navigate('Profile' as never)}>
-        <Text>프로필</Text>
+      <MainWrapper
+        right={'3%'}
+        onPress={() => navigation.navigate('Profile' as never)}>
+        <ProfileSVG />
+      </MainWrapper>
+
+      <MainWrapper
+        right={'16%'}
+        onPress={() => navigation.navigate('Profile' as never)}>
+        <MessageSVG />
       </MainWrapper>
 
       <GoogleMap locationProfileData={locationProfileData || undefined} />
@@ -36,19 +47,29 @@ export default function Main() {
           renderItem={useCallback(
             ({item}: {item: NearbyUsersType}) => (
               <View style={styles.itemContainer}>
-                <Image
-                  style={styles.images}
-                  source={{
-                    uri: item.PreSignedUrl[0],
-                  }}
-                />
-                <View>
-                  <Text>{item.nickname}</Text>
-                  <Text>{item.job}</Text>
-                </View>
+                <MainDetailFlexList
+                  onPress={() =>
+                    navigation.navigate('UserDetail', {nickname: '1'})
+                  }>
+                  <Image
+                    style={styles.images}
+                    source={{
+                      uri: item.PreSignedUrl[0],
+                    }}
+                  />
+                  <View>
+                    <ListNickName>{item.nickname}</ListNickName>
+                    <ListUserInfo>
+                      {item.sex === 'men' ? '남성' : '여성'} ·{' '}
+                      {`${calculateAge(item.birthDate)}살`} · {item.job}
+                    </ListUserInfo>
+                  </View>
+                </MainDetailFlexList>
+
+                <LeftArrowSVG />
               </View>
             ),
-            [],
+            [navigation],
           )}
           contentContainerStyle={styles.contentContainer}
         />
@@ -76,25 +97,42 @@ const styles = StyleSheet.create({
   itemContainer: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 6,
     margin: 6,
   },
   images: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
     marginRight: 20,
+    borderRadius: 50,
   },
 });
+
+export const MainWrapper = styled.TouchableOpacity<{right: string}>`
+  position: absolute;
+  top: 80px;
+  right: ${props => props.right || '3%'};
+
+  z-index: 2;
+`;
+
+export const MainDetailFlexList = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
 
 export const MainContainer = styled.SafeAreaView`
   position: relative;
 `;
 
-export const MainWrapper = styled.TouchableOpacity`
-  position: absolute;
-  top: 120px;
-  left: 80%;
-  right: 0px;
+export const ListNickName = styled.Text`
+  font-size: 20px;
+  font-weight: 600;
+`;
 
-  z-index: 2;
+export const ListUserInfo = styled.Text`
+  color: ${palette.gray};
 `;

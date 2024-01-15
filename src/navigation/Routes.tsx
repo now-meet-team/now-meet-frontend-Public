@@ -1,7 +1,10 @@
 import {Button, View} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
 
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import SignUp from '../screens/SignUp/SignUp';
 import {useNavigationStore} from 'store/signup/signUpStore';
 import Home from 'screens/Home/Home';
@@ -22,8 +25,28 @@ import SelfScreen from 'screens/SignUp/SelfScreen/SelfScreen';
 import HobbyScreen from 'screens/SignUp/HobbyScreen/HobbyScreen';
 import {useNavigation} from '@react-navigation/native';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
+import UserDetail from 'screens/UserDetail/UserDetail';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  Main: undefined;
+  SignUp: undefined;
+  Profile: undefined;
+  LikedMessageList: undefined;
+  EditUserProfile: undefined;
+  Setting: undefined;
+  Account: undefined;
+  UserDelete: undefined;
+  EditJob: undefined;
+  EditIntroduction: undefined;
+  EditPreference: undefined;
+  UserDetail: {nickname: string};
+};
+
+export type RootStackNavigationProp =
+  NativeStackNavigationProp<RootStackParamList>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function Routes() {
   const navigation = useNavigation();
 
@@ -176,6 +199,14 @@ export default function Routes() {
             title: '취향 수정',
 
             headerLeft: props => <NavigateBack label={props.label || ''} />,
+          })}
+        />
+
+        <Stack.Screen
+          name="UserDetail"
+          component={UserDetail}
+          options={() => ({
+            title: '',
           })}
         />
       </Stack.Navigator>

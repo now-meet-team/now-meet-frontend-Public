@@ -11,6 +11,8 @@ export const palette = {
   requiredText: '#aaa',
 
   progressColor: '#f4f4f4',
+
+  redText: '#ED4141',
 };
 
 export type PaletteKeyTypes = keyof typeof palette;

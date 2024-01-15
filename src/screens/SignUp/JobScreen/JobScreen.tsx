@@ -1,15 +1,16 @@
 import React from 'react';
 import SignUpLayout from '@layout/SignUpLayout/SignUpLayout';
-import Chip from 'components/Chip';
+
 import {jobData} from './data/data';
 
 import styled from 'styled-components/native';
-import {Text, TextInput, View} from 'react-native';
+
 import {useJobStore} from 'store/signup/signUpStore';
 import {useRoute} from '@react-navigation/native';
 import {ProfileType} from 'types/profile';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import CheckSVG from '../../../assets/svg/Check.svg';
+import Input from 'components/Common/Input/Input';
 
 export default function JobScreen() {
   const {params} = useRoute();
@@ -26,6 +27,7 @@ export default function JobScreen() {
   const etcJob = useJobStore(state => state.etcJob);
   const handleEtcJob = useJobStore(state => state.handleEtcJob);
 
+  console.log(selectJob === '기타');
   return (
     <SignUpLayout
       mode={modeFromParams}
@@ -49,26 +51,18 @@ export default function JobScreen() {
               </TouchableOpacity>
             );
           })}
-
-          {/* <ChipAndInputContainer>
-          <Chip
-            label={selectJob === 'custom' ? ' ' : etcJob || '직접 입력'}
-            select={selectJob === 'custom'}
-            onPress={() => handleSelectJob('custom')}
-          />
-          {selectJob === 'custom' && (
-            <StyledCustomJobContainer>
-              <TextInput
-                maxLength={6}
-                placeholder="직접 입력"
-                placeholderTextColor="white"
-                value={etcJob}
-                onChangeText={handleEtcJob}
-              />
-            </StyledCustomJobContainer>
-          )}
-        </ChipAndInputContainer> */}
         </JobContainer>
+
+        {selectJob === '기타' && (
+          <StyledCustomJobContainer>
+            <Input
+              maxLength={6}
+              placeholder="직업을 입력해주세요."
+              value={etcJob}
+              onChangeText={handleEtcJob}
+            />
+          </StyledCustomJobContainer>
+        )}
       </ScrollView>
     </SignUpLayout>
   );
@@ -91,7 +85,10 @@ export const ChipAndInputContainer = styled.View`
   align-items: center;
 `;
 export const StyledCustomJobContainer = styled.View`
-  position: absolute;
+  flex: 1;
+  width: 100%;
+  padding-left: 0;
+  margin: 0;
 `;
 
 export const JobContainer = styled.View`

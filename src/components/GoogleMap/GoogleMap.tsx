@@ -6,6 +6,7 @@ import {
   Linking,
   Platform,
   StyleSheet,
+  View,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -14,6 +15,9 @@ import {mapStyle} from './mapStyle';
 import {useGoogleMapStore} from 'store/signup/signUpStore';
 import {palette} from 'config/globalStyles';
 import {GoogleMapLocationNearProfileType} from 'types/googlemap';
+
+import styled from 'styled-components/native';
+import MarkerUser from 'components/MarkerUser';
 
 type GoogleMapType = {
   locationProfileData?: GoogleMapLocationNearProfileType | undefined;
@@ -113,12 +117,7 @@ export default function GoogleMap(props: GoogleMapType) {
                       latitude: Number(item.latitude),
                       longitude: Number(item.longitude),
                     }}>
-                    <Image
-                      source={{
-                        uri: item.PreSignedUrl[0],
-                      }}
-                      style={{width: 65, height: 65, borderRadius: 25}} // 절반 크기로 border radius 적용
-                    />
+                    <MarkerUser preSignedUrl={item.PreSignedUrl[0]} />
                   </Marker>
                 );
               })}
@@ -136,7 +135,29 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  markerContainer: {
-    borderRadius: 150 / 2,
+
+  markerTail: {
+    position: 'absolute',
+    bottom: 0,
+    left: '20%',
+    transform: [{translateX: -10}],
+    width: 0,
+    height: 0,
+    borderStyle: 'solid',
+    borderWidth: 0,
+    borderTopWidth: 20, // 꼬리의 크기를 조절합니다
+
+    backgroundColor: 'red',
+  },
+
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    position: 'absolute',
+    left: '15%',
+    right: 0,
+    bottom: 0,
+    top: '15%',
   },
 });

@@ -9,7 +9,7 @@ import {Asset} from 'react-native-image-picker';
 import {useImageAndUpload} from 'hooks/useUpload';
 import EditSVG from '../../../assets/svg/Edit.svg';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 type ParamListType = {
   EditJob: {mode: string; type: string; job: string};
@@ -24,91 +24,94 @@ export default function EditUserProfile() {
   const {onGetImage, onUpload, onDelete} = useImageAndUpload();
 
   return (
-    <EditContainer>
-      <ImageUploadContainer
-        type="edit"
-        onUpload={onUpload}
-        onDelete={onDelete}
-        initialImages={onGetImage() as Asset[]}
-      />
+    <ScrollView>
+      <EditContainer>
+        <ImageUploadContainer
+          type="edit"
+          onUpload={onUpload}
+          onDelete={onDelete}
+          initialImages={onGetImage() as Asset[]}
+        />
 
-      <EditTextContainer style={{marginTop: 25}}>
-        <EditText>닉네임</EditText>
-        <Text>{queryProfileData?.user.nickname}</Text>
-      </EditTextContainer>
-      <EditTextContainer>
-        <EditText>생년월일</EditText>
-        <Text>{queryProfileData?.user.birthDate}</Text>
-      </EditTextContainer>
-      <EditTextContainer>
-        <EditText>성별</EditText>
-        <Text>{queryProfileData?.user.sex === 'men' ? '남' : '여'}</Text>
-      </EditTextContainer>
-      <EditTextContainer>
-        <EditText>직업</EditText>
+        <EditTextContainer style={{marginTop: 25}}>
+          <EditText>닉네임</EditText>
+          <Text>{queryProfileData?.user.nickname}</Text>
+        </EditTextContainer>
+        <EditTextContainer>
+          <EditText>생년월일</EditText>
+          <Text>{queryProfileData?.user.birthDate}</Text>
+        </EditTextContainer>
+        <EditTextContainer>
+          <EditText>성별</EditText>
+          <Text>{queryProfileData?.user.sex === 'men' ? '남' : '여'}</Text>
+        </EditTextContainer>
+        <EditTextContainer>
+          <EditText>직업</EditText>
 
-        <EditBox>
-          <Text>{queryProfileData?.user.job}</Text>
+          <EditBox>
+            <Text>{queryProfileData?.user.job}</Text>
 
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('EditJob', {
-                mode: 'edit',
-                type: 'editJob',
-                job: queryProfileData?.user.job || '',
-              })
-            }>
-            <EditSVG />
-          </TouchableOpacity>
-        </EditBox>
-      </EditTextContainer>
-      <EditTextContainer>
-        <EditText>키</EditText>
-        <Text>{queryProfileData?.user.tall}</Text>
-      </EditTextContainer>
-      <EditTextContainer>
-        <EditText>자기소개</EditText>
-        <EditBox>
-          <Text>{queryProfileData?.user.introduce}</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('EditIntroduction', {
-                mode: 'edit',
-                type: 'editIntroduction',
-                introduce: queryProfileData?.user.introduce || '',
-              })
-            }>
-            <EditSVG />
-          </TouchableOpacity>
-        </EditBox>
-      </EditTextContainer>
-      <EditColumContainer>
-        <EditText>취향</EditText>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('EditJob', {
+                  mode: 'edit',
+                  type: 'editJob',
+                  job: queryProfileData?.user.job || '',
+                })
+              }>
+              <EditSVG />
+            </TouchableOpacity>
+          </EditBox>
+        </EditTextContainer>
+        <EditTextContainer>
+          <EditText>키</EditText>
+          <Text>{queryProfileData?.user.tall}</Text>
+        </EditTextContainer>
+        <EditTextContainer>
+          <EditText>자기소개</EditText>
+          <EditBox>
+            <Text>{queryProfileData?.user.introduce}</Text>
+            <TouchableOpacity
+              style={{paddingLeft: 20}}
+              onPress={() =>
+                navigation.navigate('EditIntroduction', {
+                  mode: 'edit',
+                  type: 'editIntroduction',
+                  introduce: queryProfileData?.user.introduce || '',
+                })
+              }>
+              <EditSVG />
+            </TouchableOpacity>
+          </EditBox>
+        </EditTextContainer>
+        <EditColumContainer>
+          <EditText>취향</EditText>
 
-        <ContentWrapper>
-          <PreferenceChipContainer>
-            {queryProfileData?.user.preference.map(item => {
-              return (
-                <MyProfilePreferenceChip key={item}>
-                  {item}
-                </MyProfilePreferenceChip>
-              );
-            })}
-          </PreferenceChipContainer>
+          <ContentWrapper>
+            <PreferenceChipContainer>
+              {queryProfileData?.user.preference.map(item => {
+                return (
+                  <MyProfilePreferenceChip key={item}>
+                    {item}
+                  </MyProfilePreferenceChip>
+                );
+              })}
+            </PreferenceChipContainer>
 
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('EditPreference', {
-                mode: 'edit',
-                type: 'editPreferences',
-                preference: queryProfileData?.user.preference || [],
-              })
-            }>
-            <EditSVG />
-          </TouchableOpacity>
-        </ContentWrapper>
-      </EditColumContainer>
-    </EditContainer>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('EditPreference', {
+                  mode: 'edit',
+                  type: 'editPreferences',
+                  preference: queryProfileData?.user.preference || [],
+                })
+              }>
+              <EditSVG />
+            </TouchableOpacity>
+          </ContentWrapper>
+        </EditColumContainer>
+      </EditContainer>
+    </ScrollView>
   );
 }
 
@@ -121,6 +124,7 @@ const EditContainer = styled.View`
 const EditTextContainer = styled.View`
   display: flex;
   flex-direction: row;
+
   gap: 20px;
   margin-bottom: 25px;
 `;
@@ -128,6 +132,7 @@ const EditTextContainer = styled.View`
 const EditColumContainer = styled.View`
   display: flex;
   flex-direction: column;
+
   gap: 20px;
 `;
 
@@ -141,7 +146,7 @@ const EditBox = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const ContentWrapper = styled.View`
