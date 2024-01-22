@@ -2,11 +2,9 @@ import React, {useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Image,
   Linking,
   Platform,
   StyleSheet,
-  View,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -16,8 +14,10 @@ import {useGoogleMapStore} from 'store/signup/signUpStore';
 import {palette} from 'config/globalStyles';
 import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 
-import styled from 'styled-components/native';
 import MarkerUser from 'components/MarkerUser';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackNavigationProp} from 'navigation/Routes';
+import {calculateAge} from 'utils/calculateAge';
 
 type GoogleMapType = {
   locationProfileData?: GoogleMapLocationNearProfileType | undefined;
@@ -25,6 +25,9 @@ type GoogleMapType = {
 
 export default function GoogleMap(props: GoogleMapType) {
   const {locationProfileData} = props;
+
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   const setLocationMapValue = useGoogleMapStore(
     state => state.setLocationMapValue,
   );
@@ -110,8 +113,15 @@ export default function GoogleMap(props: GoogleMapType) {
                   <Marker
                     key={item.nickname}
                     onPress={() => {
-                      console.log(item);
-                      console.log('marker click');
+                      navigation.navigate('UserDetail', {
+                        userImage: item.PreSignedUrl,
+                        nickname: item.nickname,
+                        introduce: item.introduce,
+                        sex: item.sex === 'men' ? '남성' : '여성',
+                        age: `${calculateAge(item.birthDate)}살`,
+                        job: item.job,
+                        preference: item.preference,
+                      });
                     }}
                     coordinate={{
                       latitude: Number(item.latitude),

@@ -7,13 +7,11 @@ import {useModalStore} from 'store/modal/modalStore';
 
 type CustomModalType = {
   title: string;
-  leftButtonTitle?: string;
-  rightButtonTitle?: string;
-  onPress: () => void;
+  children: React.ReactNode;
 };
 
 export default function CustomModal(props: CustomModalType) {
-  const {title, leftButtonTitle, rightButtonTitle, onPress} = props;
+  const {title, children} = props;
 
   const visible = useModalStore(state => state.visible);
 
@@ -22,21 +20,7 @@ export default function CustomModal(props: CustomModalType) {
       <View style={modalStyle.modalContainer}>
         <View style={modalStyle.modalContent}>
           <Text style={modalStyle.modalText}>{title}</Text>
-
-          <View style={modalStyle.buttonContainer}>
-            <Button
-              style={[modalStyle.buttonStyle, modalStyle.buttonLogout]}
-              color={palette.awesome}
-              title={leftButtonTitle || ''}
-              onPress={onPress}
-            />
-            <Button
-              style={modalStyle.buttonStyle}
-              backgroundColor={palette.awesome}
-              title={rightButtonTitle || ''}
-              onPress={() => useModalStore.setState({visible: false})}
-            />
-          </View>
+          {children}
         </View>
       </View>
     </Modal>
@@ -58,29 +42,36 @@ export const modalStyle = StyleSheet.create({
     padding: 20,
     borderRadius: 14,
 
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalText: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '400',
+    textAlign: 'center',
   },
 
   buttonContainer: {
-    marginTop: 40,
+    marginTop: 32,
     flexDirection: 'row',
     gap: 6,
   },
 
   buttonStyle: {
-    width: 107,
-    height: 38,
-    borderRadius: 12,
+    width: 100,
+    height: 40,
+    borderRadius: 8,
   },
 
   buttonLogout: {
     backgroundColor: palette.white,
     borderWidth: 1,
     borderColor: palette.awesome,
+  },
+
+  b1ButtonStyle: {
+    backgroundColor: palette.primaryB1,
+    borderWidth: 1,
   },
 });

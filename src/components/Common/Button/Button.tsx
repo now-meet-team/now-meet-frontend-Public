@@ -12,7 +12,9 @@ type ButtonProps = TouchableOpacityProps &
 const Button = ({title, onPress, ...rest}: ButtonProps) => {
   return (
     <StyledButton {...rest} onPress={onPress}>
-      <ButtonText color={rest.color}>{title}</ButtonText>
+      <ButtonText fontSize={rest.fontSize} color={rest.color}>
+        {title}
+      </ButtonText>
     </StyledButton>
   );
 };

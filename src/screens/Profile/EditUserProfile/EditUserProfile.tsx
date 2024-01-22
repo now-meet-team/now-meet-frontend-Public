@@ -24,7 +24,7 @@ export default function EditUserProfile() {
   const {onGetImage, onUpload, onDelete} = useImageAndUpload();
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#fff'}}>
       <EditContainer>
         <ImageUploadContainer
           type="edit"
@@ -67,12 +67,11 @@ export default function EditUserProfile() {
           <EditText>키</EditText>
           <Text>{queryProfileData?.user.tall}</Text>
         </EditTextContainer>
-        <EditTextContainer>
+        <EditTextContainer style={{width: 340}}>
           <EditText>자기소개</EditText>
           <EditBox>
             <Text>{queryProfileData?.user.introduce}</Text>
             <TouchableOpacity
-              style={{paddingLeft: 20}}
               onPress={() =>
                 navigation.navigate('EditIntroduction', {
                   mode: 'edit',

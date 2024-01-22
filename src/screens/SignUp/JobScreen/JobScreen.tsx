@@ -27,7 +27,6 @@ export default function JobScreen() {
   const etcJob = useJobStore(state => state.etcJob);
   const handleEtcJob = useJobStore(state => state.handleEtcJob);
 
-  console.log(selectJob === '기타');
   return (
     <SignUpLayout
       mode={modeFromParams}

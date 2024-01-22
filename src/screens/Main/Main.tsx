@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import React, {useCallback, useMemo, useRef} from 'react';
 
 import GoogleMap from 'components/GoogleMap/GoogleMap';
@@ -11,7 +11,7 @@ import {NearbyUsersType} from 'types/googlemap';
 import {palette} from 'config/globalStyles';
 import {calculateAge} from 'utils/calculateAge';
 import {LeftArrowSVG, ProfileSVG, MessageSVG} from '../../assets';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+
 import {RootStackNavigationProp} from 'navigation/Routes';
 
 export default function Main() {
@@ -29,15 +29,13 @@ export default function Main() {
         onPress={() => navigation.navigate('Profile' as never)}>
         <ProfileSVG />
       </MainWrapper>
-
       <MainWrapper
         right={'16%'}
-        onPress={() => navigation.navigate('Profile' as never)}>
+        onPress={() => navigation.navigate('MessageRoom' as never)}>
         <MessageSVG />
       </MainWrapper>
 
       <GoogleMap locationProfileData={locationProfileData || undefined} />
-
       <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
         <BottomSheetVirtualizedList
           data={locationProfileData?.nearbyUsers || []}
@@ -49,7 +47,15 @@ export default function Main() {
               <View style={styles.itemContainer}>
                 <MainDetailFlexList
                   onPress={() =>
-                    navigation.navigate('UserDetail', {nickname: '1'})
+                    navigation.navigate('UserDetail', {
+                      userImage: item.PreSignedUrl,
+                      nickname: item.nickname,
+                      introduce: item.introduce,
+                      sex: item.sex === 'men' ? '남성' : '여성',
+                      age: `${calculateAge(item.birthDate)}살`,
+                      job: item.job,
+                      preference: item.preference,
+                    })
                   }>
                   <Image
                     style={styles.images}

@@ -6,9 +6,15 @@ import {palette} from 'config/globalStyles';
 import AppleSigninButton from 'components/Common/Button/AppleSigninButton/AppleSigninButton';
 import GoogleLoginButton from 'components/Common/Button/GoogleLoginButton/GoogleLoginButton';
 
+import {LogoSVG} from '../../assets';
+
 export default function Home() {
   return (
     <HomeContainer>
+      <SvgContainer>
+        <LogoSVG />
+      </SvgContainer>
+
       <ButtonContainer>
         <AppleSigninButton />
         <GoogleLoginButton />
@@ -20,6 +26,15 @@ export default function Home() {
 const HomeContainer = styled.SafeAreaView`
   flex: 1;
   background-color: ${palette.white};
+`;
+
+const SvgContainer = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  margin-bottom: 80px;
 `;
 
 const ButtonContainer = styled.View`

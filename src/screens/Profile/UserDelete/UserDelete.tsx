@@ -4,9 +4,10 @@ import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 import Button from 'components/Common/Button/Button';
 import {ButtonContainer} from 'layout/SignUpLayout/SignUpLayout';
-import CustomModal from 'components/CustomModal';
+import CustomModal, {modalStyle} from 'components/CustomModal';
 import {useModalStore} from 'store/modal/modalStore';
 import {usePostUserDelete} from 'lib/mutation/auth';
+import {View} from 'react-native';
 
 export default function UserDelete() {
   const handleVisible = useModalStore(state => state.handleVisible);
@@ -14,14 +15,22 @@ export default function UserDelete() {
 
   return (
     <ProfileSafeAreaView>
-      <CustomModal
-        title="정말 계정을 삭제하시겠어요?"
-        leftButtonTitle="계정삭제"
-        rightButtonTitle="취소"
-        onPress={() => {
-          useUserDeleteMutation.mutate();
-        }}
-      />
+      <CustomModal title="정말 계정을 삭제하시겠어요?">
+        <View style={modalStyle.buttonContainer}>
+          <Button
+            style={[modalStyle.buttonStyle, modalStyle.buttonLogout]}
+            color={palette.awesome}
+            title={'계정삭제' || ''}
+            onPress={() => useUserDeleteMutation.mutate()}
+          />
+          <Button
+            style={modalStyle.buttonStyle}
+            backgroundColor={palette.awesome}
+            title={'취소' || ''}
+            onPress={() => useModalStore.setState({visible: false})}
+          />
+        </View>
+      </CustomModal>
 
       <UserDeleteInfoText>
         계정을 삭제하면 잔여 보석을 포함한 모든 데이터가 삭제되고 복구가

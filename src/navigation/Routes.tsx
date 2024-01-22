@@ -1,4 +1,3 @@
-import {Button, View} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
 
 import {
@@ -6,7 +5,7 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import SignUp from '../screens/SignUp/SignUp';
-import {useNavigationStore} from 'store/signup/signUpStore';
+
 import Home from 'screens/Home/Home';
 import Main from 'screens/Main/Main';
 import Profile from 'screens/Profile/Profile';
@@ -26,6 +25,8 @@ import HobbyScreen from 'screens/SignUp/HobbyScreen/HobbyScreen';
 import {useNavigation} from '@react-navigation/native';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 import UserDetail from 'screens/UserDetail/UserDetail';
+import MessageRoom from 'screens/MessageRoom/MessageRoom';
+import {Button, Text, View} from 'react-native';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -40,7 +41,17 @@ export type RootStackParamList = {
   EditJob: undefined;
   EditIntroduction: undefined;
   EditPreference: undefined;
-  UserDetail: {nickname: string};
+  UserDetail: {
+    userImage: Array<string>;
+    nickname: string;
+    age: string;
+    sex: string;
+    job: string;
+    preference: Array<string>;
+    introduce: string;
+  };
+
+  MessageRoom: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -63,7 +74,7 @@ export default function Routes() {
   }, [navigation]);
 
   useEffect(() => {
-    // checkAutoLogin();
+    checkAutoLogin();
     const unsubscribe = NetInfo.addEventListener(state => {
       if (!state.isConnected) {
         Toast.show({
@@ -206,7 +217,26 @@ export default function Routes() {
           name="UserDetail"
           component={UserDetail}
           options={() => ({
-            title: '',
+            title: '상세페이지',
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false, // applied here
+          })}
+        />
+
+        <Stack.Screen
+          name="MessageRoom"
+          component={MessageRoom}
+          options={() => ({
+            title: '채팅방',
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false, // applied here
+            headerRight: () => (
+              <View>
+                <Text>요청함</Text>
+              </View>
+            ),
           })}
         />
       </Stack.Navigator>

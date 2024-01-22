@@ -22,8 +22,6 @@ export default function GoogleLoginButton() {
       const userInfo = await GoogleSignin.signIn();
       await storeUserSession('idToken', `${userInfo.idToken}`);
 
-      console.log('android-->', userInfo.idToken);
-
       useSignInMutation.mutate(userInfo?.user.email);
     } catch (error) {
       console.log(error);

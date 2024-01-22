@@ -94,7 +94,7 @@ export const usePostUserDelete = () => {
   };
 };
 
-/** Refresh Token **/
+/** Refresh Token 사용(X)**/
 export const useGoogleGetRefreshToken = () => {
   const useGetGoogleRefreshTokenMutation = useMutation(
     (serverAuthCode: string): Promise<AxiosResponse> =>

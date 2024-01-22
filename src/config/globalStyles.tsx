@@ -13,6 +13,9 @@ export const palette = {
   progressColor: '#f4f4f4',
 
   redText: '#ED4141',
+  primaryB1: '#373737',
+  primaryB2: '#9E9999',
+  primaryB3: '#f0eeee',
 };
 
 export type PaletteKeyTypes = keyof typeof palette;
