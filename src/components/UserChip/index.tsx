@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {TextStyle, View, ViewStyle} from 'react-native';
 import React, {ReactNode} from 'react';
 import styled from 'styled-components/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -10,16 +10,19 @@ type UserChipType = {
   text: string;
   disabled?: boolean;
   svg?: ReactNode;
-  onPress: () => void;
+  onPress: () => void | undefined;
+  style?: ViewStyle | TextStyle;
 };
 
 export default function UserChip(props: UserChipType) {
   const {width, height, disabled = false, text, svg, onPress, ...other} = props;
   return (
-    <TouchableOpacity disabled={disabled} onPress={onPress}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={disabled ? undefined : onPress}>
       <MainWrapper width={width} height={height} {...other}>
         {svg && <View>{svg}</View>}
-        <StyledText>{text}</StyledText>
+        <StyledText {...other}>{text}</StyledText>
       </MainWrapper>
     </TouchableOpacity>
   );

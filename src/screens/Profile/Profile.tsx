@@ -49,7 +49,7 @@ export default function Profile() {
         />
 
         <SettingList
-          label="좋아요 발신함"
+          label="보낸 좋아요"
           SvgComponent={DmSVG}
           mode="arrow"
           onClick={() => {

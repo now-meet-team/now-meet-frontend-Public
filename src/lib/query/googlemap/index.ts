@@ -3,11 +3,13 @@ import {handleAxios} from '../profile';
 import {useGoogleMapStore} from 'store/signup/signUpStore';
 import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 
-const LOCATION_PROFILE_QUERY_KEY = 'LOCATION_PROFILE_QUERY_KEY';
+export const LOCATION_PROFILE_QUERY_KEY = 'LOCATION_PROFILE_QUERY_KEY';
 
 export const useLocationProfile = () => {
   const lat = useGoogleMapStore(state => state.latitude);
   const long = useGoogleMapStore(state => state.longitude);
+
+  console.log(lat);
 
   const {data: locationProfileData, isLoading: locationProfileLoading} =
     useQuery<GoogleMapLocationNearProfileType>({

@@ -8,9 +8,14 @@ import ProfileLayout from 'components/ProfileLayout';
 import {useLikedMessageList} from 'lib/query/profile';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {RootStackNavigationProp} from 'navigation/Routes';
+import {useNavigation} from '@react-navigation/native';
 
 export default function LikedMessageList() {
   const {likedListProfileData} = useLikedMessageList();
+
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const loadMoreData = () => {
     console.log('데이터 불러와');
@@ -31,7 +36,12 @@ export default function LikedMessageList() {
           onEndReachedThreshold={0.1}
           data={likedListProfileData}
           renderItem={({item}) => (
-            <>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('UserDetail', {
+                  nickname: item?.receiverNickname,
+                });
+              }}>
               <ProfileLayout
                 uri={item?.profileImages.PreSignedUrl[0]}
                 nickname={item?.receiverNickname}
@@ -40,7 +50,7 @@ export default function LikedMessageList() {
                   .format('MM월 DD일  HH시mm분')}`}
               />
               <ProfileBottomLine />
-            </>
+            </TouchableOpacity>
           )}
         />
       )}

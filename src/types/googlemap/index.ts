@@ -17,4 +17,5 @@ export type NearbyUsersType = {
   latitude: string;
   profileImages: string[];
   PreSignedUrl: string[];
+  matchStatus: string | null;
 };

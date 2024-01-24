@@ -38,7 +38,6 @@ export default function GoogleMap(props: GoogleMapType) {
   const getCurrentPosition = useCallback(async () => {
     await Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
         const {latitude, longitude} = position.coords;
 
         setLocationMapValue({latitude: latitude, longitude: longitude});
@@ -114,13 +113,7 @@ export default function GoogleMap(props: GoogleMapType) {
                     key={item.nickname}
                     onPress={() => {
                       navigation.navigate('UserDetail', {
-                        userImage: item.PreSignedUrl,
                         nickname: item.nickname,
-                        introduce: item.introduce,
-                        sex: item.sex === 'men' ? '남성' : '여성',
-                        age: `${calculateAge(item.birthDate)}살`,
-                        job: item.job,
-                        preference: item.preference,
                       });
                     }}
                     coordinate={{

@@ -11,7 +11,6 @@ export default function NavigateBack(props: {label: string}) {
   const handlePrevPage = useNavigationStore(state => state.handlePrevPage);
 
   const signUpBackNavigate = () => {
-    console.log(pageNumber);
     if (label === 'SignUp' && pageNumber === 0) {
       navigation.navigate('Home' as never);
     }

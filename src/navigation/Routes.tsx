@@ -26,7 +26,9 @@ import {useNavigation} from '@react-navigation/native';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 import UserDetail from 'screens/UserDetail/UserDetail';
 import MessageRoom from 'screens/MessageRoom/MessageRoom';
-import {Button, Text, View} from 'react-native';
+import {Text} from 'react-native';
+import InBox from 'screens/InBox/InBox';
+import {TouchableOpacity} from '@gorhom/bottom-sheet';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -41,14 +43,9 @@ export type RootStackParamList = {
   EditJob: undefined;
   EditIntroduction: undefined;
   EditPreference: undefined;
+  Inbox: undefined;
   UserDetail: {
-    userImage: Array<string>;
     nickname: string;
-    age: string;
-    sex: string;
-    job: string;
-    preference: Array<string>;
-    introduce: string;
   };
 
   MessageRoom: undefined;
@@ -88,7 +85,7 @@ export default function Routes() {
         unsubscribe();
       };
     });
-  }, []);
+  }, [checkAutoLogin]);
 
   return (
     <>
@@ -128,8 +125,12 @@ export default function Routes() {
           name="Profile"
           component={Profile}
           options={{
-            headerTitle: '',
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerTitle: '내 정보',
+
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           }}
         />
 
@@ -228,15 +229,29 @@ export default function Routes() {
           name="MessageRoom"
           component={MessageRoom}
           options={() => ({
-            title: '채팅방',
+            title: '채팅방',
             headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
             headerTintColor: '#000',
             headerShadowVisible: false, // applied here
+
             headerRight: () => (
-              <View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Inbox' as never)}>
                 <Text>요청함</Text>
-              </View>
+              </TouchableOpacity>
             ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Inbox"
+          component={InBox}
+          options={() => ({
+            title: '요청함',
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
       </Stack.Navigator>

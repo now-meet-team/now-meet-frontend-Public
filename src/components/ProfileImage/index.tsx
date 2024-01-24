@@ -18,7 +18,4 @@ const ProfileImageContainer = styled.Image`
   width: 70px;
   height: 70px;
   border-radius: 50px;
-
-  border-width: 1px;
-  border-color: red;
 `;

@@ -48,13 +48,7 @@ export default function Main() {
                 <MainDetailFlexList
                   onPress={() =>
                     navigation.navigate('UserDetail', {
-                      userImage: item.PreSignedUrl,
                       nickname: item.nickname,
-                      introduce: item.introduce,
-                      sex: item.sex === 'men' ? '남성' : '여성',
-                      age: `${calculateAge(item.birthDate)}살`,
-                      job: item.job,
-                      preference: item.preference,
                     })
                   }>
                   <Image

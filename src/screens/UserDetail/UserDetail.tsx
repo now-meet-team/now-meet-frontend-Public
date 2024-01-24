@@ -12,6 +12,9 @@ import {palette} from 'config/globalStyles';
 import {useModalStore} from 'store/modal/modalStore';
 import {useProfileLike} from 'lib/mutation/profile/like';
 
+import {useUserDetail} from 'lib/query/user';
+import {calculateAge} from 'utils/calculateAge';
+
 type DetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;
 
 export default function UserDetail() {
@@ -24,13 +27,22 @@ export default function UserDetail() {
     state => state.handleSetTimeoutVisible,
   );
 
+  const {useUserDetailData} = useUserDetail(params?.nickname);
+
+  console.log(useUserDetailData?.matchStatus !== null);
+
   return (
     <ProfileSafeAreaView>
       <ProfileUserDetailContainer>
         {likeModalVisible ? (
           <CustomModal title={''}>
             <LikeModalContainer>
-              <LoveSVG width={40} height={35} style={{marginBottom: 20}} />
+              <LoveSVG
+                color={'#262626'}
+                width={40}
+                height={35}
+                style={{marginBottom: 20}}
+              />
               <LikeTitle>좋아요 전송 완료!</LikeTitle>
               <LikeInfoText numberOfLines={1}>
                 24시간 뒤에 좋아요를 다시 보낼 수 있어요.
@@ -65,7 +77,7 @@ export default function UserDetail() {
 
         <ProfileUserDetailWrapper>
           <ProfileUserDetailImage
-            source={{uri: params.userImage[0]}}
+            source={{uri: useUserDetailData?.PreSignedUrl[0]}}
             alt="userMainImage"
           />
 
@@ -77,19 +89,41 @@ export default function UserDetail() {
               justifyContent: 'space-between',
             }}>
             <View>
-              <ProfileUserDetailName>{params.nickname}</ProfileUserDetailName>
+              <ProfileUserDetailName>
+                {useUserDetailData?.user.nickname || ''}
+              </ProfileUserDetailName>
 
               <ProfileUserDetailInfo>
-                {params.sex} · {`${params.age}`} · {params.job}
+                {useUserDetailData?.user.sex === 'men' ? '남성' : '여성'} ·{' '}
+                {`${calculateAge(useUserDetailData?.user.birthDate || '')}살`} ·{' '}
+                {useUserDetailData?.user.job}
               </ProfileUserDetailInfo>
             </View>
 
             <UserChip
               width={'158'}
               height={'40'}
+              style={
+                useUserDetailData?.matchStatus === null
+                  ? {}
+                  : {
+                      borderWidth: 0,
+                      backgroundColor: palette.primaryB3,
+                      color: palette.primaryB2,
+                    }
+              }
+              disabled={useUserDetailData?.matchStatus !== null}
               onPress={() => useModalStore.setState({visible: true})}
               text="좋아요 보내기"
-              svg={<LoveSVG />}
+              svg={
+                <LoveSVG
+                  color={
+                    useUserDetailData?.matchStatus === null
+                      ? '#262626'
+                      : palette.primaryB2
+                  }
+                />
+              }
             />
           </View>
         </ProfileUserDetailWrapper>
@@ -98,7 +132,7 @@ export default function UserDetail() {
           <UserDetailIntroduceTitle>자기소개</UserDetailIntroduceTitle>
 
           <UserDetailIntroduceIntroduce>
-            {params.introduce}
+            {useUserDetailData?.user.introduce}
           </UserDetailIntroduceIntroduce>
         </UserDetailIntroduceContainer>
 
@@ -107,7 +141,7 @@ export default function UserDetail() {
         <UserDetailIntroduceContainer>
           <UserDetailIntroduceTitle>취향</UserDetailIntroduceTitle>
           <UserChipContainer>
-            {params.preference.map(item => {
+            {useUserDetailData?.user.preference?.map(item => {
               return (
                 <UserChip
                   key={item}
@@ -125,7 +159,7 @@ export default function UserDetail() {
         <ProfileBottomLine />
 
         <ProfileUserDetailMiniContainer>
-          {params?.userImage.map((item, index) => {
+          {useUserDetailData?.PreSignedUrl?.map((item, index) => {
             return (
               <ProfileUserDetailMiniImage
                 key={item}
