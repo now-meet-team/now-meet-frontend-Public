@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "249506090961",
+    "project_id": "now-meet-335a2",
+    "storage_bucket": "now-meet-335a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249506090961:android:1980898133e0fe6a4e9af0",
+        "android_client_info": {
+          "package_name": "com.nowmeetfrontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249506090961-6nb3fjv3aos3fuvj0cb11hb6dajjufip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nowmeetfrontend",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqeCpfY7xzdCf7H1zXVi3tD0d0JhhPl6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249506090961-u0ksp1o6gsh91ogpn4c45p16s22k6m4q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "249506090961-kgh7fccocimenioh5kvnvr142jdk4k25.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nowmeetfrontend"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.newmeetfrontend;
+package com.nowmeetfrontend;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

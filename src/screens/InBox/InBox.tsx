@@ -48,7 +48,6 @@ export default function InBox() {
             title={'수락' || ''}
             fontSize={15}
             onPress={() => {
-              console.log(item.matchId);
               useUserAcceptMutation.mutate(item.matchId);
             }}
           />
@@ -73,7 +72,7 @@ export default function InBox() {
     <ProfileSafeAreaView>
       {inboxListData === null ? (
         <InBoxContainer>
-          <Text>좋아요 요청이 없습니다.</Text>
+          <Text style={styles.empty}>좋아요 요청이 없습니다.</Text>
         </InBoxContainer>
       ) : (
         <FlatList
@@ -101,6 +100,10 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 5,
     borderWidth: 1,
+  },
+  empty: {
+    color: palette.primaryB2,
+    fontSize: 16,
   },
 });
 

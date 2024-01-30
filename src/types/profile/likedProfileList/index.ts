@@ -1,6 +1,6 @@
 export type LikedProfileListType = {
   matchId: number;
-  isMatch: string;
+  matchStatus: string;
   receiverId: number;
   receiverNickname: string;
   expireMatch: string;

@@ -3,7 +3,7 @@ import React from 'react';
 import {ProfileBottomLine, ProfileSafeAreaView} from '../Profile';
 import moment from 'moment';
 import 'moment/locale/ko';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import ProfileLayout from 'components/ProfileLayout';
 import {useLikedMessageList} from 'lib/query/profile';
 import styled from 'styled-components/native';
@@ -11,6 +11,8 @@ import {palette} from 'config/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {RootStackNavigationProp} from 'navigation/Routes';
 import {useNavigation} from '@react-navigation/native';
+import {calculateRemainingTime} from 'utils/like';
+import {matchStatus} from 'utils/status';
 
 export default function LikedMessageList() {
   const {likedListProfileData} = useLikedMessageList();
@@ -21,6 +23,7 @@ export default function LikedMessageList() {
     console.log('데이터 불러와');
   };
 
+  console.log(likedListProfileData);
   return (
     <ProfileSafeAreaView>
       {!likedListProfileData ? (
@@ -42,14 +45,17 @@ export default function LikedMessageList() {
                   nickname: item?.receiverNickname,
                 });
               }}>
-              <ProfileLayout
-                uri={item?.profileImages.PreSignedUrl[0]}
-                nickname={item?.receiverNickname}
-                subText={`유효시간 : ${moment(item.expireMatch)
-                  .locale('ko')
-                  .format('MM월 DD일  HH시mm분')}`}
-              />
-              <ProfileBottomLine />
+              <LikedContainer>
+                <ProfileLayout
+                  uri={item?.profileImages.PreSignedUrl[0]}
+                  nickname={item?.receiverNickname}
+                  subText={`수락까지 남은 시간 : ${
+                    calculateRemainingTime(item.expireMatch).hours
+                  }시 ${calculateRemainingTime(item.expireMatch).minute}분`}
+                />
+
+                <EmptyText>{matchStatus[item.matchStatus]}</EmptyText>
+              </LikedContainer>
             </TouchableOpacity>
           )}
         />
@@ -65,8 +71,21 @@ const EmptyView = styled.View`
   align-items: center;
 `;
 
+const LikedContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 20px;
+`;
+
 const EmptyTitle = styled.Text`
   font-size: 24px;
+`;
+
+const EmptyText = styled.Text`
+  font-size: 15px;
+  color: ${palette.gray};
 `;
 
 const EmptyInfo = styled.Text`

@@ -6,7 +6,6 @@ import {
 import {usePostIsSignIn} from 'lib/mutation/auth';
 
 import {saveWebClientId, storeUserSession} from 'utils/auth';
-import {useNavigationStore} from 'store/signup/signUpStore';
 
 export default function GoogleLoginButton() {
   const {useSignInMutation} = usePostIsSignIn();

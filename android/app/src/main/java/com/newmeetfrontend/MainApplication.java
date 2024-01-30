@@ -1,4 +1,4 @@
-package com.newmeetfrontend;
+package com.nowmeetfrontend;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

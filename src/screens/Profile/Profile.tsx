@@ -5,11 +5,15 @@ import {palette} from 'config/globalStyles';
 
 import Button from 'components/Common/Button/Button';
 
-import {DmSVG, StoreSVG, SettingSVG, GhostSVG} from '../../assets';
-import SettingList from 'components/SettingList';
+import {DmSVG, StoreSVG, SettingSVG, GhostSVG, RightSVG} from '../../assets';
+import SettingList, {
+  ProfileSVGText,
+  ProfileSVGTextContainer,
+} from 'components/SettingList';
 import {useNavigation} from '@react-navigation/native';
 import ProfileLayout from 'components/ProfileLayout';
 import {useProfileMe} from 'lib/query/profile';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -18,25 +22,25 @@ export default function Profile() {
 
   return (
     <ProfileSafeAreaView>
-      <ProfileLayout
-        uri={queryProfileData?.PreSignedUrl[0] || ''}
-        nickname={queryProfileData?.user.nickname || ''}
-        subText={
-          queryProfileData?.user.job ||
-          '' + queryProfileData?.user.birthDate ||
-          ''
-        }
-      />
+      <ProfileSettingContainer>
+        <ProfileLayout
+          uri={queryProfileData?.PreSignedUrl[0] || ''}
+          nickname={queryProfileData?.user.nickname || ''}
+          subText={
+            queryProfileData?.user.job ||
+            '' + queryProfileData?.user.birthDate ||
+            ''
+          }
+        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('EditUserProfile' as never)}>
+          <ProfileSVGTextContainer>
+            <ProfileEditText>{'프로필 수정'}</ProfileEditText>
 
-      <ProfileButton
-        title="프로필 수정"
-        padding={'12px 24px'}
-        onPress={() => {
-          navigation.navigate('EditUserProfile' as never);
-        }}
-      />
-
-      <ProfileBottomLine />
+            <RightSVG color={palette.primaryB2} />
+          </ProfileSVGTextContainer>
+        </TouchableOpacity>
+      </ProfileSettingContainer>
 
       <ProfileSVGContainer>
         <SettingList label="유령모드" SvgComponent={GhostSVG} mode="switch" />
@@ -75,6 +79,18 @@ export const ProfileSafeAreaView = styled.SafeAreaView`
   background-color: ${palette.white};
 `;
 
+const ProfileSettingContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 20px;
+`;
+
+const ProfileEditText = styled(ProfileSVGText)`
+  color: ${palette.primaryB2};
+`;
+
 const ProfileButton = styled(Button)`
   width: 345px;
   align-self: center;
@@ -88,6 +104,5 @@ export const ProfileBottomLine = styled.View`
 `;
 
 export const ProfileSVGContainer = styled.View`
-  margin-top: 30px;
   padding: 15px;
 `;

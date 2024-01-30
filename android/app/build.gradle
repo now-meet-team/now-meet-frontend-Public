@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.newmeetfrontend"
+    namespace "com.nowmeetfrontend"
     defaultConfig {
-        applicationId "com.newmeetfrontend"
+        applicationId "com.nowmeetfrontend"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

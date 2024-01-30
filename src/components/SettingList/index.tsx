@@ -36,7 +36,7 @@ export default function SettingList(props: SettingListType) {
         />
       )}
 
-      {mode === 'arrow' && <RightSVG />}
+      {mode === 'arrow' && <RightSVG color={'#000'} />}
     </ProfileSVGWrapper>
   );
 }
@@ -48,13 +48,13 @@ const ProfileSVGWrapper = styled.TouchableOpacity`
   margin-bottom: 24px;
 `;
 
-const ProfileSVGTextContainer = styled.View`
+export const ProfileSVGTextContainer = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
 
-const ProfileSVGText = styled.Text`
+export const ProfileSVGText = styled.Text`
   font-size: 15px;
   font-weight: 500;
   margin-left: 10px;

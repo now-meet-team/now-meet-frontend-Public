@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {
   AppleButton,
@@ -9,16 +9,20 @@ import {storeUserSession} from 'utils/auth';
 import {usePostIsSignIn} from 'lib/mutation/auth';
 
 export default function AppleSigninButton() {
-  const navigation = useNavigation();
   const {useSignInMutation} = usePostIsSignIn();
 
-  useEffect(() => {
-    return appleAuth.onCredentialRevoked(async () => {
-      console.warn(
-        'If this function executes, User Credentials have been Revoked',
-      );
-    });
-  }, []);
+  // useEffect(() => {
+  //   if (!appleAuth.isSupported) {
+  //     return;
+  //   }
+
+  //   // return appleAuth.onCredentialRevoked(async () => {
+
+  //   //   console.warn(
+  //   //     'If this function executes, User Credentials have been Revoked',
+  //   //   );
+  //   // });
+  // }, []);
 
   async function onAppleButtonPress() {
     const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -30,31 +34,29 @@ export default function AppleSigninButton() {
       appleAuthRequestResponse.user,
     );
 
-    // use credentialState response to ensure the user is authenticated
     if (credentialState === appleAuth.State.AUTHORIZED) {
       await storeUserSession(
         'idToken',
         `${appleAuthRequestResponse?.identityToken}`,
       );
-
-      console.log('ios-->', appleAuthRequestResponse?.identityToken);
-
       useSignInMutation.mutate(appleAuthRequestResponse.user);
     }
   }
 
   return (
     <View>
-      <AppleButton
-        buttonStyle={AppleButton.Style.BLACK}
-        buttonType={AppleButton.Type.SIGN_IN}
-        style={{
-          width: '100%',
-          height: 40,
-          backgroundColor: 'black',
-        }}
-        onPress={() => onAppleButtonPress()}
-      />
+      {Platform.OS === 'ios' && (
+        <AppleButton
+          buttonStyle={AppleButton.Style.BLACK}
+          buttonType={AppleButton.Type.SIGN_IN}
+          style={{
+            width: '100%',
+            height: 40,
+            backgroundColor: 'black',
+          }}
+          onPress={() => onAppleButtonPress()}
+        />
+      )}
     </View>
   );
 }

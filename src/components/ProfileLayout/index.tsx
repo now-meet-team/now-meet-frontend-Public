@@ -18,7 +18,7 @@ export default function ProfileLayout(props: ProfileLayoutType) {
       <ProfileImage uri={uri} />
 
       <ProfileImageInfo>
-        <Text>{nickname}</Text>
+        <ProfileText>{nickname}</ProfileText>
         <ProfileImageSubText>{subText}</ProfileImageSubText>
       </ProfileImageInfo>
     </ProfileImageWrapper>
@@ -34,6 +34,11 @@ const ProfileImageWrapper = styled.View`
   padding-top: 12px;
 
   margin-bottom: 12px;
+`;
+
+const ProfileText = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 const ProfileImageInfo = styled.View`

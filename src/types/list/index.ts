@@ -1,6 +1,6 @@
 export type InboxListType = {
   matchId: number;
-  isMatch: string;
+  matchStatus: string;
   senderId: number;
   senderNickname: string;
   expireMatch: string;

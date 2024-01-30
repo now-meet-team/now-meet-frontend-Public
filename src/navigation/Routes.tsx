@@ -138,9 +138,12 @@ export default function Routes() {
           name="EditUserProfile"
           component={EditUserProfile}
           options={() => ({
-            title: '프로필 수정',
+            headerTitle: '프로필 수정',
 
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -158,9 +161,11 @@ export default function Routes() {
           name="LikedMessageList"
           component={LikedMessageList}
           options={() => ({
-            title: '좋아요 발신함',
-
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            title: '보낸 좋아요',
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -188,9 +193,12 @@ export default function Routes() {
           name="EditJob"
           component={JobScreen}
           options={() => ({
-            title: '직업 수정',
+            headerTitle: '직업 수정',
 
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 

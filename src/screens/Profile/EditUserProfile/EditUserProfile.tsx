@@ -1,4 +1,4 @@
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
@@ -7,9 +7,12 @@ import ImageUploadContainer from 'components/ImageUploadContainer';
 import {Asset} from 'react-native-image-picker';
 
 import {useImageAndUpload} from 'hooks/useUpload';
-import EditSVG from '../../../assets/svg/Edit.svg';
+
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import moment from 'moment';
+import ProfileEditRowLayout from 'layout/ProfileEditRowLayout/ProfileEditRowLayout';
+import {EditSVG} from 'assets';
 
 type ParamListType = {
   EditJob: {mode: string; type: string; job: string};
@@ -33,24 +36,25 @@ export default function EditUserProfile() {
           initialImages={onGetImage() as Asset[]}
         />
 
-        <EditTextContainer style={{marginTop: 25}}>
-          <EditText>닉네임</EditText>
+        <ProfileEditRowLayout title="닉네임" style={{marginTop: 35}}>
           <Text>{queryProfileData?.user.nickname}</Text>
-        </EditTextContainer>
-        <EditTextContainer>
-          <EditText>생년월일</EditText>
-          <Text>{queryProfileData?.user.birthDate}</Text>
-        </EditTextContainer>
-        <EditTextContainer>
-          <EditText>성별</EditText>
+        </ProfileEditRowLayout>
+
+        <ProfileEditRowLayout title="생년월일">
+          <Text>
+            {moment(queryProfileData?.user.birthDate)
+              .locale('ko')
+              .format('YYYY년 MM월 DD일')}
+          </Text>
+        </ProfileEditRowLayout>
+
+        <ProfileEditRowLayout title="성별">
           <Text>{queryProfileData?.user.sex === 'men' ? '남' : '여'}</Text>
-        </EditTextContainer>
-        <EditTextContainer>
-          <EditText>직업</EditText>
+        </ProfileEditRowLayout>
 
-          <EditBox>
+        <ProfileEditRowLayout title="직업">
+          <EditTextWrapper>
             <Text>{queryProfileData?.user.job}</Text>
-
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('EditJob', {
@@ -61,16 +65,15 @@ export default function EditUserProfile() {
               }>
               <EditSVG />
             </TouchableOpacity>
-          </EditBox>
-        </EditTextContainer>
-        <EditTextContainer>
-          <EditText>키</EditText>
-          <Text>{queryProfileData?.user.tall}</Text>
-        </EditTextContainer>
-        <EditTextContainer style={{width: 340}}>
-          <EditText>자기소개</EditText>
-          <EditBox>
-            <Text>{queryProfileData?.user.introduce}</Text>
+          </EditTextWrapper>
+        </ProfileEditRowLayout>
+
+        <ProfileEditRowLayout title="키">
+          <Text>{queryProfileData?.user.tall}cm</Text>
+        </ProfileEditRowLayout>
+
+        <ProfileEditRowLayout title="자기소개">
+          <EditTextWrapper style={{justifyContent: 'flex-end'}}>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('EditIntroduction', {
@@ -81,22 +84,13 @@ export default function EditUserProfile() {
               }>
               <EditSVG />
             </TouchableOpacity>
-          </EditBox>
-        </EditTextContainer>
-        <EditColumContainer>
-          <EditText>취향</EditText>
+          </EditTextWrapper>
+        </ProfileEditRowLayout>
 
-          <ContentWrapper>
-            <PreferenceChipContainer>
-              {queryProfileData?.user.preference.map(item => {
-                return (
-                  <MyProfilePreferenceChip key={item}>
-                    {item}
-                  </MyProfilePreferenceChip>
-                );
-              })}
-            </PreferenceChipContainer>
+        <IntroduceText>{queryProfileData?.user.introduce}</IntroduceText>
 
+        <ProfileEditRowLayout title="취향">
+          <EditTextWrapper style={{justifyContent: 'flex-end'}}>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('EditPreference', {
@@ -107,8 +101,20 @@ export default function EditUserProfile() {
               }>
               <EditSVG />
             </TouchableOpacity>
-          </ContentWrapper>
-        </EditColumContainer>
+          </EditTextWrapper>
+        </ProfileEditRowLayout>
+
+        <ContentWrapper>
+          <PreferenceChipContainer>
+            {queryProfileData?.user.preference.map(item => {
+              return (
+                <MyProfilePreferenceChip key={item}>
+                  {item}
+                </MyProfilePreferenceChip>
+              );
+            })}
+          </PreferenceChipContainer>
+        </ContentWrapper>
       </EditContainer>
     </ScrollView>
   );
@@ -120,19 +126,12 @@ const EditContainer = styled.View`
   background-color: ${palette.white};
 `;
 
-const EditTextContainer = styled.View`
+const EditTextWrapper = styled.View`
+  width: 100%;
   display: flex;
   flex-direction: row;
-
-  gap: 20px;
-  margin-bottom: 25px;
-`;
-
-const EditColumContainer = styled.View`
-  display: flex;
-  flex-direction: column;
-
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const EditText = styled.Text`
@@ -140,12 +139,8 @@ export const EditText = styled.Text`
   font-size: 15px;
 `;
 
-const EditBox = styled.View`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+const IntroduceText = styled.Text`
+  margin-bottom: 30px;
 `;
 
 const ContentWrapper = styled.View`

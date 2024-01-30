@@ -9,8 +9,10 @@ export const calculateRemainingTime = (targetTimeString: string) => {
   const remainingTime = moment.duration(timeDifference);
 
   const remainingHours = remainingTime.hours();
+  const remainingMinutes = remainingTime.minutes();
 
   return {
     hours: remainingHours,
+    minute: remainingMinutes,
   };
 };
