@@ -1,5 +1,5 @@
 import {KeyboardAvoidingView, Platform} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
 import {FlatList} from 'react-native-gesture-handler';
@@ -14,12 +14,10 @@ import {EditSVG} from '../../assets';
 import useSocket from 'hooks/useSocket';
 import {useChatOpen} from 'lib/mutation/chat';
 
-import useCountdownTimer from 'hooks/useCountdown';
 import {RootStackNavigationProp} from 'navigation/Routes';
+import EndTimeBox from 'components/Chat/EndTimeBox';
 
 export default function ChatRoom() {
-  const ref = useRef(null);
-
   const {params} = useRoute();
 
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -28,9 +26,20 @@ export default function ChatRoom() {
   const {chatRoomData} = useChatRoom(roomId);
   const {useChatOpenMutation} = useChatOpen();
 
-  const remainingTime = useCountdownTimer(chatRoomData?.disconnectTime ?? '');
+  const {setMessage, message, sendMessage, messages, setMessages} =
+    useSocket(roomId);
 
-  const {setMessage, message, sendMessage} = useSocket(roomId);
+  console.log(messages);
+
+  useEffect(() => {
+    if (chatRoomData) {
+      setMessages(
+        chatRoomData.chatUserData.message.map(message =>
+          String(message.content),
+        ),
+      );
+    }
+  }, [chatRoomData, setMessages]);
 
   return (
     <ProfileSafeAreaView>
@@ -41,19 +50,13 @@ export default function ChatRoom() {
           style={{flex: 1}}
           keyboardVerticalOffset={95}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <EndTimeBox>
-            <EndTimeBoxText>
-              대화 종료까지 남은 시간{' '}
-              <MessageTimeEnd>{remainingTime}</MessageTimeEnd>
-            </EndTimeBoxText>
-          </EndTimeBox>
+          <EndTimeBox disconnectTime={chatRoomData?.disconnectTime ?? ''} />
 
           <FlatList
             scrollEnabled
-            inverted
             contentContainerStyle={{paddingBottom: 20}}
             style={{flex: 1, padding: 16}}
-            data={[]}
+            data={messages}
             renderItem={({item}) => {
               return (
                 <>
@@ -72,13 +75,13 @@ export default function ChatRoom() {
                       />
                     </TouchableOpacity>
                     <MessageBoxContainer>
-                      <MessageBox>{item.content}</MessageBox>
+                      <MessageBox>{item}</MessageBox>
                     </MessageBoxContainer>
                   </MessageGroup>
                 </>
               );
             }}
-            keyExtractor={item => String(`${item.id}`)}
+            keyExtractor={(item, index) => String(`${item + index}`)}
           />
 
           <MessageTextInputContainer>
@@ -97,30 +100,6 @@ export default function ChatRoom() {
     </ProfileSafeAreaView>
   );
 }
-
-export const EndTimeBox = styled.View`
-  width: 90%;
-
-  margin-top: 12px;
-  margin-bottom: 12px;
-
-  text-align: center;
-  display: flex;
-
-  align-self: center;
-
-  border-radius: 5px;
-  background-color: 'rgba(233, 182, 0, 0.1)';
-`;
-
-export const EndTimeBoxText = styled.Text`
-  padding: 12px;
-  text-align: center;
-`;
-
-export const MessageTimeEnd = styled.Text`
-  color: #e9b600;
-`;
 
 export const MessageWrapper = styled.ScrollView`
   flex: 1;

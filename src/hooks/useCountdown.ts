@@ -1,21 +1,23 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import moment from 'moment';
 
 const useCountdownTimer = (disconnectTime: string) => {
   const [remainingTime, setRemainingTime] = useState<string>('');
 
-  useEffect(() => {
+  const calculateRemainingTime = useCallback(() => {
     const endTime = moment(disconnectTime);
+    const currentTime = moment();
+    const duration = moment.duration(endTime.diff(currentTime));
+    const formattedTime = `${duration.hours()} 시간 ${duration.minutes()} 분 ${duration.seconds()} 초`;
+    setRemainingTime(formattedTime);
+  }, [disconnectTime]);
 
-    const intervalId = setInterval(() => {
-      const currentTime = moment();
-      const duration = moment.duration(endTime.diff(currentTime));
-      const formattedTime = `${duration.hours()} 시간 ${duration.minutes()} 분 ${duration.seconds()} 초`;
-      setRemainingTime(formattedTime);
-    }, 1000);
+  useEffect(() => {
+    calculateRemainingTime();
+    const intervalId = setInterval(calculateRemainingTime, 1000);
 
     return () => clearInterval(intervalId);
-  }, [disconnectTime]);
+  }, [calculateRemainingTime]);
 
   return remainingTime;
 };

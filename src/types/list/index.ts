@@ -10,7 +10,7 @@ export type InboxListType = {
   };
 };
 
-type MessageType = {
+export type MessageType = {
   content: string;
   createdAt: string;
   id: number;
