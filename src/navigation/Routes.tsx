@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-
+import {BackArrow} from 'assets';
 import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
@@ -25,10 +25,13 @@ import HobbyScreen from 'screens/SignUp/HobbyScreen/HobbyScreen';
 import {useNavigation} from '@react-navigation/native';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 import UserDetail from 'screens/UserDetail/UserDetail';
-import MessageRoom from 'screens/MessageRoom/MessageRoom';
-import {Text} from 'react-native';
+
+import {Text, View} from 'react-native';
 import InBox from 'screens/InBox/InBox';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
+import CustomerService from 'screens/Profile/CustomerService/CustomerService';
+import ChatList from 'screens/ChatList/ChatList';
+import ChatRoom from 'screens/ChatRoom/ChatRoom';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -48,7 +51,13 @@ export type RootStackParamList = {
     nickname: string;
   };
 
-  MessageRoom: undefined;
+  CustomerService: undefined;
+
+  ChatList: undefined;
+  ChatRoom: {
+    name: string;
+    chatId: number;
+  };
 };
 
 export type RootStackNavigationProp =
@@ -151,9 +160,11 @@ export default function Routes() {
           name="Setting"
           component={Setting}
           options={() => ({
-            title: '환경설정',
-
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            title: '환경 설정',
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -234,8 +245,8 @@ export default function Routes() {
         />
 
         <Stack.Screen
-          name="MessageRoom"
-          component={MessageRoom}
+          name="ChatList"
+          component={ChatList}
           options={() => ({
             title: '채팅방',
             headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
@@ -252,10 +263,42 @@ export default function Routes() {
         />
 
         <Stack.Screen
+          name="ChatRoom"
+          component={ChatRoom}
+          options={({route}) => ({
+            title: route.params?.name,
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <TouchableOpacity
+                style={{marginRight: 30}}
+                onPress={() => navigation.goBack()}>
+                <BackArrow />
+              </TouchableOpacity>
+            ),
+            headerBackTitleVisible: false,
+            headerBackVisible: false,
+          })}
+        />
+
+        <Stack.Screen
           name="Inbox"
           component={InBox}
           options={() => ({
             title: '요청함',
+            headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+          })}
+        />
+
+        <Stack.Screen
+          name="CustomerService"
+          component={CustomerService}
+          options={() => ({
+            title: '고객센터',
             headerStyle: {backgroundColor: '#fff', borderBottomWidth: 0},
             headerTintColor: '#000',
             headerShadowVisible: false,

@@ -9,8 +9,6 @@ export const useLocationProfile = () => {
   const lat = useGoogleMapStore(state => state.latitude);
   const long = useGoogleMapStore(state => state.longitude);
 
-  console.log(lat);
-
   const {data: locationProfileData, isLoading: locationProfileLoading} =
     useQuery<GoogleMapLocationNearProfileType>({
       queryKey: [LOCATION_PROFILE_QUERY_KEY, lat, long],

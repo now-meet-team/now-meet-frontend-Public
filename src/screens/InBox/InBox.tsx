@@ -1,4 +1,4 @@
-import {FlatList, View, Text, StyleSheet, VirtualizedList} from 'react-native';
+import {FlatList, View, Text, StyleSheet} from 'react-native';
 import React, {useCallback} from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
@@ -7,7 +7,7 @@ import {
   MessageUserInfo,
   LastMessage,
   MessageUserImage,
-} from 'screens/MessageRoom/MessageRoom';
+} from 'screens/ChatList/ChatList';
 import {ProfileUserDetailName} from 'screens/UserDetail/UserDetail';
 import {palette} from 'config/globalStyles';
 import Button from 'components/Common/Button/Button';
@@ -21,50 +21,53 @@ export default function InBox() {
   const {useUserRejectMutation} = useUserReject();
 
   const renderItem = useCallback(
-    ({item}: {item: InboxListType}) => (
-      <InBoxFlatListContainer>
-        <InBoxUserContainer>
-          <MessageUserImage
-            source={{uri: item?.profileImages.PreSignedUrl[0]}}
-            alt="userMainImage"
-          />
+    ({item}: {item: InboxListType}) => {
+      console.log(item.matchId);
+      return (
+        <InBoxFlatListContainer>
+          <InBoxUserContainer>
+            <MessageUserImage
+              source={{uri: item?.profileImages.PreSignedUrl[0]}}
+              alt="userMainImage"
+            />
 
-          <View>
-            <InBoxTimeText>{`요청 대기시간 ${
-              calculateRemainingTime(item?.expireMatch).hours
-            }H`}</InBoxTimeText>
+            <View>
+              <InBoxTimeText>{`요청 대기시간 ${
+                calculateRemainingTime(item?.expireMatch).hours
+              }H`}</InBoxTimeText>
 
-            <InBoxNickNameText numberOfLines={1}>
-              {item.senderNickname}
-            </InBoxNickNameText>
-          </View>
-        </InBoxUserContainer>
+              <InBoxNickNameText numberOfLines={1}>
+                {item.senderNickname}
+              </InBoxNickNameText>
+            </View>
+          </InBoxUserContainer>
 
-        <InBoxButtonContainer>
-          <Button
-            backgroundColor={palette.redText}
-            style={styles.successButton}
-            color={palette.white}
-            title={'수락' || ''}
-            fontSize={15}
-            onPress={() => {
-              useUserAcceptMutation.mutate(item.matchId);
-            }}
-          />
+          <InBoxButtonContainer>
+            <Button
+              backgroundColor={palette.redText}
+              style={styles.successButton}
+              color={palette.white}
+              title={'수락' || ''}
+              fontSize={15}
+              onPress={() => {
+                useUserAcceptMutation.mutate(item.matchId);
+              }}
+            />
 
-          <Button
-            backgroundColor={palette.white}
-            style={styles.failButton}
-            color={palette.primaryB1}
-            title={'거절' || ''}
-            fontSize={15}
-            onPress={() => {
-              useUserRejectMutation.mutate(item.matchId);
-            }}
-          />
-        </InBoxButtonContainer>
-      </InBoxFlatListContainer>
-    ),
+            <Button
+              backgroundColor={palette.white}
+              style={styles.failButton}
+              color={palette.primaryB1}
+              title={'거절' || ''}
+              fontSize={15}
+              onPress={() => {
+                useUserRejectMutation.mutate(item.matchId);
+              }}
+            />
+          </InBoxButtonContainer>
+        </InBoxFlatListContainer>
+      );
+    },
     [useUserAcceptMutation, useUserRejectMutation],
   );
 

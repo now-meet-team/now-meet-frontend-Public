@@ -1,6 +1,8 @@
 export {default as Terms} from './svg/Terms.svg';
 export {default as DisabledTerms} from './svg/DisabledTerms.svg';
 
+export {default as BackArrow} from './svg/BackArrow.svg';
+
 //profile
 
 export {default as GhostSVG} from './svg/profile/ghost.svg';

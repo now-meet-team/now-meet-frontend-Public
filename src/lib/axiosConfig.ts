@@ -12,7 +12,6 @@ axiosInstance.interceptors.request.use(
     try {
       const token = await retrieveUserSession('idToken');
 
-      console.log(token);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

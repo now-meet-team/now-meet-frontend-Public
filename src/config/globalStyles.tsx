@@ -16,6 +16,8 @@ export const palette = {
   primaryB1: '#373737',
   primaryB2: '#9E9999',
   primaryB3: '#f0eeee',
+
+  buttonColor: '#262626',
 };
 
 export type PaletteKeyTypes = keyof typeof palette;

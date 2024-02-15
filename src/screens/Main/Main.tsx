@@ -31,7 +31,7 @@ export default function Main() {
       </MainWrapper>
       <MainWrapper
         right={'16%'}
-        onPress={() => navigation.navigate('MessageRoom' as never)}>
+        onPress={() => navigation.navigate('ChatList' as never)}>
         <MessageSVG />
       </MainWrapper>
 

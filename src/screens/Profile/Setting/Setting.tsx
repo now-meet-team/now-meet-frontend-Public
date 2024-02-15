@@ -26,7 +26,11 @@ export default function Setting() {
             navigation.navigate('Account' as never);
           }}
         />
-        <SettingList label="고객센터" mode="arrow" />
+        <SettingList
+          label="고객센터"
+          mode="arrow"
+          onClick={() => navigation.navigate('CustomerService' as never)}
+        />
       </ProfileSettingSettingListContainer>
     </ProfileSettingContainer>
   );

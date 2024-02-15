@@ -23,7 +23,6 @@ export default function LikedMessageList() {
     console.log('데이터 불러와');
   };
 
-  console.log(likedListProfileData);
   return (
     <ProfileSafeAreaView>
       {!likedListProfileData ? (
