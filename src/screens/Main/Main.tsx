@@ -13,12 +13,16 @@ import {calculateAge} from 'utils/calculateAge';
 import {LeftArrowSVG, ProfileSVG, MessageSVG} from '../../assets';
 
 import {RootStackNavigationProp} from 'navigation/Routes';
+import {useGoogleMapStore} from 'store/signup/signUpStore';
 
 export default function Main() {
   const navigation = useNavigation<RootStackNavigationProp>();
   const sheetRef = useRef<BottomSheet>(null);
 
-  const {locationProfileData} = useLocationProfile();
+  const lat = useGoogleMapStore(state => state.latitude);
+  const long = useGoogleMapStore(state => state.longitude);
+
+  const {locationProfileData} = useLocationProfile(lat, long);
 
   const snapPoints = useMemo(() => ['15%', '50%'], []);
 

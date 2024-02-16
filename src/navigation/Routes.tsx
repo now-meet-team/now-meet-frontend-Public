@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect} from 'react';
 import {BackArrow} from 'assets';
 import {
   NativeStackNavigationProp,
@@ -26,12 +26,15 @@ import {useNavigation} from '@react-navigation/native';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 import UserDetail from 'screens/UserDetail/UserDetail';
 
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import InBox from 'screens/InBox/InBox';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import CustomerService from 'screens/Profile/CustomerService/CustomerService';
 import ChatList from 'screens/ChatList/ChatList';
 import ChatRoom from 'screens/ChatRoom/ChatRoom';
+import useAuth from 'hooks/useAuth';
+import useNetworkStatus from 'hooks/useNetworkStatus';
+import NetworkError from 'screens/NetworkError/NetworkError';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -58,47 +61,27 @@ export type RootStackParamList = {
     name: string;
     chatId: number;
   };
+
+  NetworkError: undefined;
 };
 
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
 export default function Routes() {
   const navigation = useNavigation();
+  const {userToken, loading} = useAuth();
 
-  const checkAutoLogin = useCallback(async () => {
-    try {
-      const getToken = await retrieveUserSession('idToken');
+  useNetworkStatus();
 
-      if (getToken) {
-        navigation.navigate('Main' as never);
-      }
-    } catch (error) {
-      console.error('자동 로그인 오류:', error);
-    }
-  }, [navigation]);
-
-  useEffect(() => {
-    checkAutoLogin();
-    const unsubscribe = NetInfo.addEventListener(state => {
-      if (!state.isConnected) {
-        Toast.show({
-          type: 'error',
-          text1: 'Network',
-          text2:
-            '데이터 또는 Wifi 연결 상태 확인 후 잠시 후 다시 시도해주세요.',
-        });
-      }
-      return () => {
-        unsubscribe();
-      };
-    });
-  }, [checkAutoLogin]);
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName={userToken !== null ? 'Main' : 'Home'}>
         <Stack.Screen
           name="Home"
           component={Home}
@@ -303,6 +286,18 @@ export default function Routes() {
             headerTintColor: '#000',
             headerShadowVisible: false,
             headerBackTitleVisible: false,
+          })}
+        />
+
+        <Stack.Screen
+          name="NetworkError"
+          component={NetworkError}
+          options={() => ({
+            title: 'Network Error',
+
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerBackVisible: false,
           })}
         />
       </Stack.Navigator>

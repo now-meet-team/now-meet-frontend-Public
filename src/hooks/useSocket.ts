@@ -25,19 +25,26 @@ function useSocket(roomId: number) {
     const initializeSocket = async () => {
       const getToken = await retrieveUserSession('idToken');
 
+      // newSocket = io('https://nowmeet.org/chats', {
+      //   auth: {token: getToken},
+      //   query: {
+      //     roomId: roomId,
+      //   },
+      // });
+
       newSocket = io('http://localhost:8080', {
         auth: {token: getToken},
         query: {
           roomId: roomId,
         },
-        transports: ['websocket'],
       });
 
       newSocket.on('connect', () => {
         console.log(newSocket.id);
       });
 
-      newSocket.on('message', data => {
+      newSocket.on('message', (data: string) => {
+        console.log('data-->>', data);
         setMessages(prev => [...prev, data]);
       });
 

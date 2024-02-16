@@ -1,4 +1,4 @@
-import {KeyboardAvoidingView, Platform} from 'react-native';
+import {KeyboardAvoidingView, Platform, VirtualizedList} from 'react-native';
 import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
@@ -29,8 +29,6 @@ export default function ChatRoom() {
   const {setMessage, message, sendMessage, messages, setMessages} =
     useSocket(roomId);
 
-  console.log(messages);
-
   useEffect(() => {
     if (chatRoomData) {
       setMessages(
@@ -40,6 +38,12 @@ export default function ChatRoom() {
       );
     }
   }, [chatRoomData, setMessages]);
+
+  // const getItemCount = (_data: unknown) => 25;
+  // const getItem = (_data: string[], index: number) => ({
+  //   id: Math.random().toString(12).substring(0),
+  //   title: `${_data[index]}`,
+  // });
 
   return (
     <ProfileSafeAreaView>
@@ -53,10 +57,17 @@ export default function ChatRoom() {
           <EndTimeBox disconnectTime={chatRoomData?.disconnectTime ?? ''} />
 
           <FlatList
+            // getItem={getItem}
+            // getItemCount={getItemCount}
+            inverted
+            showsVerticalScrollIndicator={false}
+            automaticallyAdjustContentInsets={false}
+            initialNumToRender={10}
+            maxToRenderPerBatch={6}
             scrollEnabled
             contentContainerStyle={{paddingBottom: 20}}
             style={{flex: 1, padding: 16}}
-            data={messages}
+            data={[...messages].reverse()}
             renderItem={({item}) => {
               return (
                 <>
@@ -121,6 +132,7 @@ export const MessageTextInput = styled.TextInput`
   border-radius: 10px;
 
   padding-left: 15px;
+  padding-right: 35px;
 `;
 
 export const MessageGroup = styled.View`

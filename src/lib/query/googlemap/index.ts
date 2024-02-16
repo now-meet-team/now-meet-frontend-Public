@@ -5,10 +5,7 @@ import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 
 export const LOCATION_PROFILE_QUERY_KEY = 'LOCATION_PROFILE_QUERY_KEY';
 
-export const useLocationProfile = () => {
-  const lat = useGoogleMapStore(state => state.latitude);
-  const long = useGoogleMapStore(state => state.longitude);
-
+export const useLocationProfile = (lat: number, long: number) => {
   const {data: locationProfileData, isLoading: locationProfileLoading} =
     useQuery<GoogleMapLocationNearProfileType>({
       queryKey: [LOCATION_PROFILE_QUERY_KEY, lat, long],
