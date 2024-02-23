@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect} from 'react';
+import React from 'react';
 import {BackArrow} from 'assets';
 import {
   NativeStackNavigationProp,
@@ -12,10 +12,9 @@ import Profile from 'screens/Profile/Profile';
 import Setting from 'screens/Profile/Setting/Setting';
 import Account from 'screens/Profile/Account/Account';
 import UserDelete from 'screens/Profile/UserDelete/UserDelete';
-import NetInfo from '@react-native-community/netinfo';
+
 import Toast from 'react-native-toast-message';
 import 'react-native-gesture-handler';
-import {retrieveUserSession} from 'utils/auth';
 
 import LikedMessageList from 'screens/Profile/LikedMessageList/LikedMessageList';
 import EditUserProfile from 'screens/Profile/EditUserProfile/EditUserProfile';
@@ -26,7 +25,7 @@ import {useNavigation} from '@react-navigation/native';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 import UserDetail from 'screens/UserDetail/UserDetail';
 
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, Text} from 'react-native';
 import InBox from 'screens/InBox/InBox';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import CustomerService from 'screens/Profile/CustomerService/CustomerService';
@@ -35,6 +34,8 @@ import ChatRoom from 'screens/ChatRoom/ChatRoom';
 import useAuth from 'hooks/useAuth';
 import useNetworkStatus from 'hooks/useNetworkStatus';
 import NetworkError from 'screens/NetworkError/NetworkError';
+
+import ChatRightExit from 'components/Chat/ChatRightExit';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -60,9 +61,11 @@ export type RootStackParamList = {
   ChatRoom: {
     name: string;
     chatId: number;
+    chatStatus: string;
   };
 
   NetworkError: undefined;
+  ChatExitModal: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -260,6 +263,15 @@ export default function Routes() {
                 <BackArrow />
               </TouchableOpacity>
             ),
+
+            headerRight: () => {
+              return (
+                <ChatRightExit
+                  chatId={route.params.chatId}
+                  chatStatus={route.params.chatStatus}
+                />
+              );
+            },
             headerBackTitleVisible: false,
             headerBackVisible: false,
           })}

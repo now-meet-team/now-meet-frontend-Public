@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList} from 'react-native';
 import React from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import {
@@ -36,6 +36,7 @@ export default function ChatList() {
                     navigation.navigate('ChatRoom', {
                       name: item.matchUserNickname,
                       chatId: item.chatId,
+                      chatStatus: item.chatStatus,
                     })
                   }>
                   <ProfileUserDetailName>

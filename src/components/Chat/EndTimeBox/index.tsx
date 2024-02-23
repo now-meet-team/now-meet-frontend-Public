@@ -3,12 +3,12 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 type EndTimeBoxType = {
-  disconnectTime: string;
+  chatTime: string;
 };
 
 const EndTimeBox = (props: EndTimeBoxType) => {
-  const {disconnectTime} = props;
-  const remainingTime = useCountdownTimer(disconnectTime);
+  const {chatTime} = props;
+  const remainingTime = useCountdownTimer(chatTime);
 
   return (
     <StyledEndTimeBox>

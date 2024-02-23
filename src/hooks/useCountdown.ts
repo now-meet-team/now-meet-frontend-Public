@@ -7,7 +7,7 @@ const useCountdownTimer = (disconnectTime: string) => {
   const calculateRemainingTime = useCallback(() => {
     const endTime = moment(disconnectTime);
     const currentTime = moment();
-    const duration = moment.duration(endTime.diff(currentTime));
+    const duration = moment.duration(Math.abs(endTime.diff(currentTime)));
     const formattedTime = `${duration.hours()} 시간 ${duration.minutes()} 분 ${duration.seconds()} 초`;
     setRemainingTime(formattedTime);
   }, [disconnectTime]);

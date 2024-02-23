@@ -5,6 +5,7 @@ import {
   Linking,
   Platform,
   StyleSheet,
+  View,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -17,7 +18,6 @@ import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 import MarkerUser from 'components/MarkerUser';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProp} from 'navigation/Routes';
-import {calculateAge} from 'utils/calculateAge';
 
 type GoogleMapType = {
   locationProfileData?: GoogleMapLocationNearProfileType | undefined;
@@ -127,13 +127,20 @@ export default function GoogleMap(props: GoogleMapType) {
           </MapView>
         </>
       ) : (
-        <ActivityIndicator size="large" color={palette.awesome} />
+        <View style={styles.Loading}>
+          <ActivityIndicator size="large" color={palette.awesome} />
+        </View>
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  Loading: {
+    height: '100%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
   map: {
     width: '100%',
     height: '100%',

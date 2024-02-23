@@ -1,5 +1,5 @@
-import {KeyboardAvoidingView, Platform, VirtualizedList} from 'react-native';
-import React, {useEffect, useLayoutEffect, useRef} from 'react';
+import {ActivityIndicator, KeyboardAvoidingView, Platform} from 'react-native';
+import React, {useEffect} from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
 import {FlatList} from 'react-native-gesture-handler';
@@ -16,6 +16,7 @@ import {useChatOpen} from 'lib/mutation/chat';
 
 import {RootStackNavigationProp} from 'navigation/Routes';
 import EndTimeBox from 'components/Chat/EndTimeBox';
+import {ChatStatus} from 'types/chat';
 
 export default function ChatRoom() {
   const {params} = useRoute();
@@ -23,7 +24,7 @@ export default function ChatRoom() {
   const navigation = useNavigation<RootStackNavigationProp>();
   const roomId = (params as {chatId: number})?.chatId;
 
-  const {chatRoomData} = useChatRoom(roomId);
+  const {chatRoomData, chatRoomLoading} = useChatRoom(roomId);
   const {useChatOpenMutation} = useChatOpen();
 
   const {setMessage, message, sendMessage, messages, setMessages} =
@@ -31,34 +32,28 @@ export default function ChatRoom() {
 
   useEffect(() => {
     if (chatRoomData) {
-      setMessages(
-        chatRoomData.chatUserData.message.map(message =>
-          String(message.content),
-        ),
-      );
+      setMessages(chatRoomData?.chatUserData?.message);
     }
   }, [chatRoomData, setMessages]);
 
-  // const getItemCount = (_data: unknown) => 25;
-  // const getItem = (_data: string[], index: number) => ({
-  //   id: Math.random().toString(12).substring(0),
-  //   title: `${_data[index]}`,
-  // });
+  if (chatRoomLoading) {
+    return <ActivityIndicator size="large" color={palette.awesome} />;
+  }
+
+  console.log(chatRoomData);
 
   return (
     <ProfileSafeAreaView>
-      {chatRoomData?.chatUserData.chatStatus !== 'OPEN' ? (
+      {chatRoomData?.chatUserData?.chatStatus === ChatStatus.PENDING ? (
         <ChatOpenButton onPress={() => useChatOpenMutation.mutate(roomId)} />
       ) : (
         <KeyboardAvoidingView
           style={{flex: 1}}
           keyboardVerticalOffset={95}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <EndTimeBox disconnectTime={chatRoomData?.disconnectTime ?? ''} />
+          <EndTimeBox chatTime={chatRoomData?.chatTime ?? ''} />
 
           <FlatList
-            // getItem={getItem}
-            // getItemCount={getItemCount}
             inverted
             showsVerticalScrollIndicator={false}
             automaticallyAdjustContentInsets={false}
@@ -68,31 +63,46 @@ export default function ChatRoom() {
             contentContainerStyle={{paddingBottom: 20}}
             style={{flex: 1, padding: 16}}
             data={[...messages].reverse()}
-            renderItem={({item}) => {
+            renderItem={({item, index}) => {
               return (
                 <>
                   <MessageGroup>
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      onPress={() =>
-                        navigation.navigate('UserDetail', {
-                          nickname: chatRoomData?.chatUserData.chatUserNickname,
-                        })
-                      }>
-                      <ProfileImage
-                        width={30}
-                        height={30}
-                        uri={chatRoomData?.chatUserData.preSignedUrl[0]}
-                      />
-                    </TouchableOpacity>
-                    <MessageBoxContainer>
-                      <MessageBox>{item}</MessageBox>
-                    </MessageBoxContainer>
+                    {chatRoomData?.chatUserData.chatUserNickname ===
+                    item.senderNickname ? (
+                      <>
+                        {
+                          <>
+                            <TouchableOpacity
+                              activeOpacity={1}
+                              onPress={() =>
+                                navigation.navigate('UserDetail', {
+                                  nickname:
+                                    chatRoomData?.chatUserData.chatUserNickname,
+                                })
+                              }>
+                              <ProfileImage
+                                width={30}
+                                height={30}
+                                uri={chatRoomData?.chatUserData.preSignedUrl[0]}
+                              />
+                            </TouchableOpacity>
+                          </>
+                        }
+
+                        <MessageBoxContainer>
+                          <MessageBox>{item.content}</MessageBox>
+                        </MessageBoxContainer>
+                      </>
+                    ) : (
+                      <MyMessageContainer>
+                        <MyMessageText>{item.content}</MyMessageText>
+                      </MyMessageContainer>
+                    )}
                   </MessageGroup>
                 </>
               );
             }}
-            keyExtractor={(item, index) => String(`${item + index}`)}
+            keyExtractor={item => String(`${item.id}`)}
           />
 
           <MessageTextInputContainer>
@@ -165,4 +175,17 @@ export const InputSvgContainer = styled.TouchableOpacity`
   position: absolute;
   top: 10px;
   right: 30px;
+`;
+
+export const MyMessageContainer = styled.View`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+`;
+
+export const MyMessageText = styled.Text`
+  border-width: 1px;
+  padding: 6px 14px;
+  border-radius: 5px;
 `;

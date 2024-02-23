@@ -96,7 +96,7 @@ export const modalStyle = StyleSheet.create({
   buttonStyle: {
     width: 107,
     height: 38,
-    borderRadius: 12,
+    borderRadius: 5,
   },
 
   buttonLogout: {

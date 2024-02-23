@@ -1,3 +1,5 @@
+import {ResponseMessageType} from 'types/chat';
+
 export type InboxListType = {
   matchId: number;
   matchStatus: string;
@@ -24,15 +26,12 @@ export type ChatListType = {
   matchUserNickname: string;
   chatStatus: string;
   preSignedUrl: Array<string>;
-  message: Array<MessageType>;
-
+  message: Array<ResponseMessageType>;
   chatUserNickname: string;
-
-  disconnectTime: string;
   lastMessage: string;
 };
 
 export type ChatListTypeWithUserData = {
   chatUserData: ChatListType;
-  disconnectTime: string;
+  chatTime: string;
 };

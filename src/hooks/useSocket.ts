@@ -1,12 +1,14 @@
 import {useEffect, useState} from 'react';
 import {GestureResponderEvent} from 'react-native';
+import {Notifications} from 'react-native-notifications';
 import {Socket} from 'socket.io-client';
 import {io} from 'socket.io-client';
+import {ResponseMessageType} from 'types/chat';
 
 import {retrieveUserSession} from 'utils/auth';
 
 function useSocket(roomId: number) {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<ResponseMessageType[]>([]);
   const [message, setMessage] = useState<string>('');
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -17,6 +19,20 @@ function useSocket(roomId: number) {
       socket.emit('message', message);
       setMessage('');
     }
+
+    // Notifications.postLocalNotification({
+    //   body: 'Local notification!',
+    //   title: 'Local Notification Title',
+
+    //   sound: 'chime.aiff',
+    //   type: '??',
+    //   payload: '??',
+    //   thread: '??',
+    //   badge: 123,
+
+    //   // userInfo: { },
+    //   identifier: '??',
+    // });
   };
 
   useEffect(() => {
@@ -25,14 +41,7 @@ function useSocket(roomId: number) {
     const initializeSocket = async () => {
       const getToken = await retrieveUserSession('idToken');
 
-      // newSocket = io('https://nowmeet.org/chats', {
-      //   auth: {token: getToken},
-      //   query: {
-      //     roomId: roomId,
-      //   },
-      // });
-
-      newSocket = io('http://localhost:8080', {
+      newSocket = io('https://nowmeet.org/chats', {
         auth: {token: getToken},
         query: {
           roomId: roomId,
@@ -43,10 +52,18 @@ function useSocket(roomId: number) {
         console.log(newSocket.id);
       });
 
-      newSocket.on('message', (data: string) => {
-        console.log('data-->>', data);
-        setMessages(prev => [...prev, data]);
-      });
+      newSocket.on(
+        'message',
+        (data: {
+          chatRoomId: number;
+          content: string;
+          id: number;
+          senderId: number;
+          senderNickname: string;
+        }) => {
+          setMessages(prev => [...prev, data]);
+        },
+      );
 
       setSocket(newSocket);
     };

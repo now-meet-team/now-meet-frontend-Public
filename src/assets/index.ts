@@ -27,3 +27,5 @@ export {default as MessageSVG} from './svg/main/message.svg';
 export {default as LoveSVG} from './svg/love.svg';
 
 export {default as LogoSVG} from './svg/Logo.svg';
+
+export {default as ExitSVG} from './svg/exit.svg';
