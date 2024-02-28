@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components/native';
 
 type ProfileImageType = {
@@ -11,12 +12,16 @@ export default function ProfileImage(props: ProfileImageType) {
   const {uri, width = 70, height = 70} = props;
 
   return (
-    <ProfileImageContainer
-      width={width}
-      height={height}
-      source={{uri: uri}}
-      alt="nowmeet-profile-image"
-    />
+    <>
+      <ProfileImageContainer
+        width={width}
+        height={height}
+        source={{
+          uri: uri,
+        }}
+        alt="nowmeet-profile-image"
+      />
+    </>
   );
 }
 

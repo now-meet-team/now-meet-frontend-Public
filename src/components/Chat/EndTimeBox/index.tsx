@@ -25,7 +25,6 @@ export const StyledEndTimeBox = styled.View`
   width: 90%;
 
   margin-top: 12px;
-  margin-bottom: 12px;
 
   text-align: center;
   display: flex;

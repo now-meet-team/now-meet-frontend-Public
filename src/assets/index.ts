@@ -4,7 +4,7 @@ export {default as DisabledTerms} from './svg/DisabledTerms.svg';
 export {default as BackArrow} from './svg/BackArrow.svg';
 
 //profile
-
+export {default as DefaultProfile} from './svg/profile/defaultProfile.svg';
 export {default as GhostSVG} from './svg/profile/ghost.svg';
 export {default as StoreSVG} from './svg/profile/store.svg';
 export {default as DmSVG} from './svg/profile/dm.svg';

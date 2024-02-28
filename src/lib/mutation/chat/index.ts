@@ -8,6 +8,7 @@ import {useModalStore} from 'store/modal/modalStore';
 
 export const useChatOpen = () => {
   const queryClient = useQueryClient();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const useChatOpenMutation = useMutation(
     (chatId: number): Promise<AxiosResponse> =>
@@ -18,6 +19,9 @@ export const useChatOpen = () => {
       },
 
       onError: error => {
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        }
         console.log(error);
       },
     },
@@ -29,7 +33,6 @@ export const useChatOpen = () => {
 };
 
 //채팅방 나가기
-
 export const useChatExit = () => {
   const queryClient = useQueryClient();
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -55,8 +58,8 @@ export const useChatExit = () => {
   };
 };
 
+//채팅방 삭제
 export const useChatDelete = () => {
-  const queryClient = useQueryClient();
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const useChatDeleteMutation = useMutation(
@@ -64,7 +67,6 @@ export const useChatDelete = () => {
       axiosInstance.delete(`/match/me/chatBox/${chatId}/delete`),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: [CHAT_ROOM_QUERY_KEY]});
         navigation.navigate('ChatList');
         useModalStore.setState({visible: false});
       },

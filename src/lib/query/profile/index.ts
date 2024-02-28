@@ -28,7 +28,8 @@ export const handleAxios = async (api: string) => {
 export const useProfileMe = () => {
   const {
     data: queryProfileData,
-    isLoading: queryProfileLoading,
+    isLoading: queryProfileMeLoading,
+    isFetching,
     refetch: queryProfileRefetch,
   } = useQuery<ProfileUserType>({
     queryKey: [PROFILE_ME_QUERY_KEY],
@@ -40,7 +41,12 @@ export const useProfileMe = () => {
     },
   });
 
-  return {queryProfileData, queryProfileLoading, queryProfileRefetch};
+  return {
+    queryProfileData,
+    queryProfileMeLoading,
+    isFetching,
+    queryProfileRefetch,
+  };
 };
 
 export const useLikedMessageList = () => {

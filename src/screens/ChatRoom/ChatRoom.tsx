@@ -1,46 +1,32 @@
 import {ActivityIndicator, KeyboardAvoidingView, Platform} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
 import {FlatList} from 'react-native-gesture-handler';
 
-import {TouchableOpacity} from '@gorhom/bottom-sheet';
-import {palette} from 'config/globalStyles';
 import ChatOpenButton from 'components/ChatOpenButton';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import {useChatRoom} from 'lib/query/chat';
-import ProfileImage from 'components/ProfileImage';
-import {EditSVG} from '../../assets';
+
 import useSocket from 'hooks/useSocket';
 import {useChatOpen} from 'lib/mutation/chat';
 
-import {RootStackNavigationProp} from 'navigation/Routes';
 import EndTimeBox from 'components/Chat/EndTimeBox';
-import {ChatStatus} from 'types/chat';
+import {ChatStatus, ResponseMessageType} from 'types/chat';
+
+import ChatInput from 'components/Chat/ChatInput';
+import MessageList from 'components/Chat/MessageList';
 
 export default function ChatRoom() {
   const {params} = useRoute();
 
-  const navigation = useNavigation<RootStackNavigationProp>();
   const roomId = (params as {chatId: number})?.chatId;
 
-  const {chatRoomData, chatRoomLoading} = useChatRoom(roomId);
+  const {chatRoomData} = useChatRoom(roomId);
   const {useChatOpenMutation} = useChatOpen();
 
-  const {setMessage, message, sendMessage, messages, setMessages} =
+  const {chatRoomStatus, setMessage, message, sendMessage, messages} =
     useSocket(roomId);
-
-  useEffect(() => {
-    if (chatRoomData) {
-      setMessages(chatRoomData?.chatUserData?.message);
-    }
-  }, [chatRoomData, setMessages]);
-
-  if (chatRoomLoading) {
-    return <ActivityIndicator size="large" color={palette.awesome} />;
-  }
-
-  console.log(chatRoomData);
 
   return (
     <ProfileSafeAreaView>
@@ -62,60 +48,34 @@ export default function ChatRoom() {
             scrollEnabled
             contentContainerStyle={{paddingBottom: 20}}
             style={{flex: 1, padding: 16}}
-            data={[...messages].reverse()}
-            renderItem={({item, index}) => {
+            data={[...messages].flat().reverse()}
+            renderItem={({item}) => {
               return (
-                <>
-                  <MessageGroup>
-                    {chatRoomData?.chatUserData.chatUserNickname ===
-                    item.senderNickname ? (
-                      <>
-                        {
-                          <>
-                            <TouchableOpacity
-                              activeOpacity={1}
-                              onPress={() =>
-                                navigation.navigate('UserDetail', {
-                                  nickname:
-                                    chatRoomData?.chatUserData.chatUserNickname,
-                                })
-                              }>
-                              <ProfileImage
-                                width={30}
-                                height={30}
-                                uri={chatRoomData?.chatUserData.preSignedUrl[0]}
-                              />
-                            </TouchableOpacity>
-                          </>
-                        }
-
-                        <MessageBoxContainer>
-                          <MessageBox>{item.content}</MessageBox>
-                        </MessageBoxContainer>
-                      </>
-                    ) : (
-                      <MyMessageContainer>
-                        <MyMessageText>{item.content}</MyMessageText>
-                      </MyMessageContainer>
-                    )}
-                  </MessageGroup>
-                </>
+                <MessageList
+                  status={chatRoomData?.chatUserData.chatStatus ?? ''}
+                  item={item}
+                  chatProfileUrl={
+                    chatRoomData?.chatUserData.preSignedUrl[0] ?? ''
+                  }
+                  chatUserNickname={
+                    chatRoomData?.chatUserData.chatUserNickname ?? ''
+                  }
+                />
               );
             }}
             keyExtractor={item => String(`${item.id}`)}
           />
 
-          <MessageTextInputContainer>
-            <MessageTextInput
-              value={message}
-              placeholder="메세지를 입력해주세요"
-              onChangeText={text => setMessage(text)}
-            />
-
-            <InputSvgContainer onPress={event => sendMessage(event)}>
-              <EditSVG width={20} height={20} />
-            </InputSvgContainer>
-          </MessageTextInputContainer>
+          <ChatInput
+            disabled={
+              chatRoomData?.chatUserData.chatStatus ===
+                ChatStatus.RECEIVER_EXIT ||
+              chatRoomData?.chatUserData.chatStatus === ChatStatus.SENDER_EXIT
+            }
+            value={message}
+            onChangeText={setMessage}
+            onSubmit={event => sendMessage(event)}
+          />
         </KeyboardAvoidingView>
       )}
     </ProfileSafeAreaView>
@@ -145,47 +105,64 @@ export const MessageTextInput = styled.TextInput`
   padding-right: 35px;
 `;
 
-export const MessageGroup = styled.View`
-  display: flex;
-  flex-direction: row;
+// export const MessageGroup = styled.View`
+//   display: flex;
+//   flex-direction: row;
 
-  align-items: center;
+//   align-items: center;
 
-  margin-bottom: 4px;
-  gap: 6px;
-`;
+//   margin-bottom: 4px;
+//   gap: 6px;
+// `;
 
-export const MessageBoxContainer = styled.View`
-  border-radius: 5px;
-  background-color: ${palette.buttonColor};
+// export const MessageSystemContainer = styled.View`
+//   width: 100%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  margin-right: 16px;
-  max-width: 90%;
+//   margin-bottom: 18px;
+// `;
 
-  position: relative;
-`;
+// export const MessageSystemContainerText = styled.Text`
+//   color: ${palette.primaryB2};
+// `;
 
-export const MessageBox = styled.Text`
-  color: ${palette.white};
-  padding: 6px 14px;
-  border-radius: 10px;
-`;
+// export const MessageBoxContainer = styled.View`
+//   border-radius: 5px;
+//   background-color: ${palette.buttonColor};
 
-export const InputSvgContainer = styled.TouchableOpacity`
-  position: absolute;
-  top: 10px;
-  right: 30px;
-`;
+//   margin-right: 16px;
+//   max-width: 90%;
 
-export const MyMessageContainer = styled.View`
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-`;
+//   position: relative;
+// `;
 
-export const MyMessageText = styled.Text`
-  border-width: 1px;
-  padding: 6px 14px;
-  border-radius: 5px;
-`;
+// export const MessageBox = styled.Text`
+//   color: ${palette.white};
+//   padding: 6px 14px;
+//   border-radius: 10px;
+// `;
+
+// export const InputSvgContainer = styled.TouchableOpacity`
+//   position: absolute;
+//   top: 10px;
+//   right: 30px;
+// `;
+
+// export const MyMessageContainer = styled.View`
+//   flex: 1;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: flex-end;
+// `;
+
+// export const MyMessageText = styled.Text`
+//   border-width: 1px;
+//   padding: 6px 14px;
+//   border-radius: 5px;
+// `;
+
+// export const MessageDate = styled.Text`
+//   margin-top: 2px;
+// `;

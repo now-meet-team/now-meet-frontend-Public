@@ -3,7 +3,7 @@ import {GestureResponderEvent} from 'react-native';
 import {Notifications} from 'react-native-notifications';
 import {Socket} from 'socket.io-client';
 import {io} from 'socket.io-client';
-import {ResponseMessageType} from 'types/chat';
+import {DataMessageType, ResponseMessageType} from 'types/chat';
 
 import {retrieveUserSession} from 'utils/auth';
 
@@ -12,11 +12,13 @@ function useSocket(roomId: number) {
   const [message, setMessage] = useState<string>('');
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  const sendMessage = async (event: GestureResponderEvent) => {
+  const [chatRoomStatus, setChatRoomStatus] = useState('');
+
+  const sendMessage = (event: GestureResponderEvent) => {
     event.preventDefault();
 
     if (socket?.active) {
-      socket.emit('message', message);
+      socket.emit('message', {message: message, date: new Date()});
       setMessage('');
     }
 
@@ -48,22 +50,25 @@ function useSocket(roomId: number) {
         },
       });
 
+      /** 채팅방 연결 **/
       newSocket.on('connect', () => {
         console.log(newSocket.id);
       });
 
-      newSocket.on(
-        'message',
-        (data: {
-          chatRoomId: number;
-          content: string;
-          id: number;
-          senderId: number;
-          senderNickname: string;
-        }) => {
-          setMessages(prev => [...prev, data]);
-        },
-      );
+      /** 메세지 리스트에 관련된 소켓 **/
+      newSocket?.on('message_list', (data: ResponseMessageType[]) => {
+        setMessages(data);
+      });
+
+      /** 메세지에 관련된 소켓 **/
+      newSocket.on('message', (data: ResponseMessageType) => {
+        setMessages(prev => prev.concat(data));
+      });
+
+      /** 채팅방 status에 관련된 소켓 **/
+      newSocket.on('status', (data: string) => {
+        setChatRoomStatus(data);
+      });
 
       setSocket(newSocket);
     };
@@ -80,6 +85,7 @@ function useSocket(roomId: number) {
   }, [roomId]);
 
   return {
+    chatRoomStatus,
     sendMessage,
     setMessage,
     message,

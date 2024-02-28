@@ -25,15 +25,18 @@ export const useChatList = () => {
 };
 
 export const useChatRoom = (chatId: number) => {
-  const {data: chatRoomData, isLoading: chatRoomLoading} =
-    useQuery<ChatListTypeWithUserData>({
-      queryKey: [CHAT_ROOM_QUERY_KEY, chatId],
+  const {
+    data: chatRoomData,
+    isLoading: chatRoomLoading,
+    refetch,
+  } = useQuery<ChatListTypeWithUserData>({
+    queryKey: [CHAT_ROOM_QUERY_KEY, chatId],
 
-      queryFn: async () => {
-        const {data} = await handleAxios(`/match/me/chatBox/${chatId}`);
-        return data;
-      },
-    });
+    queryFn: async () => {
+      const {data} = await handleAxios(`/match/me/chatBox/${chatId}`);
+      return data;
+    },
+  });
 
-  return {chatRoomData, chatRoomLoading};
+  return {chatRoomData, chatRoomLoading, refetch};
 };
