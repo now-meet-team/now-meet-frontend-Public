@@ -31,12 +31,6 @@ export const useImageAndUpload = () => {
     handleOnUpload(newArray);
   };
 
-  // const deleteImage = (index: number) => {
-  //   const updatedImages = [...images];
-  //   updatedImages[index] = '' as Asset; // 해당 인덱스의 이미지 값을 빈 Asset 객체로 설정
-  //   handleOnUpload(updatedImages);
-  // };
-
   const getFormDataImage = (index: number) => {
     const formImageData = getImageFormData(index);
     return formImageData;
@@ -48,7 +42,7 @@ export const useImageAndUpload = () => {
     index: number,
   ) => {
     if (type === 'edit') {
-      await editProfileImageMutation.mutateAsync({
+      await editProfileImageMutation.mutate({
         formData: formImage,
         index,
       });
@@ -80,7 +74,7 @@ export const useImageAndUpload = () => {
       updateImages(index, response.assets[0]);
       let formImage = getFormDataImage(index);
 
-      // mutateImageUpload(type, formImage, index);
+      mutateImageUpload(type, formImage, index);
     }
   };
 

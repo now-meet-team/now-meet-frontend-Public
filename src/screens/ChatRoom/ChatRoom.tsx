@@ -1,5 +1,5 @@
-import {ActivityIndicator, KeyboardAvoidingView, Platform} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import {KeyboardAvoidingView, Platform} from 'react-native';
+import React from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
 import {FlatList} from 'react-native-gesture-handler';
@@ -12,7 +12,7 @@ import useSocket from 'hooks/useSocket';
 import {useChatOpen} from 'lib/mutation/chat';
 
 import EndTimeBox from 'components/Chat/EndTimeBox';
-import {ChatStatus, ResponseMessageType} from 'types/chat';
+import {ChatStatus} from 'types/chat';
 
 import ChatInput from 'components/Chat/ChatInput';
 import MessageList from 'components/Chat/MessageList';
@@ -52,7 +52,7 @@ export default function ChatRoom() {
             renderItem={({item}) => {
               return (
                 <MessageList
-                  status={chatRoomData?.chatUserData.chatStatus ?? ''}
+                  status={chatRoomStatus ?? ''}
                   item={item}
                   chatProfileUrl={
                     chatRoomData?.chatUserData.preSignedUrl[0] ?? ''
@@ -68,9 +68,8 @@ export default function ChatRoom() {
 
           <ChatInput
             disabled={
-              chatRoomData?.chatUserData.chatStatus ===
-                ChatStatus.RECEIVER_EXIT ||
-              chatRoomData?.chatUserData.chatStatus === ChatStatus.SENDER_EXIT
+              chatRoomStatus === ChatStatus.RECEIVER_EXIT ||
+              chatRoomStatus === ChatStatus.SENDER_EXIT
             }
             value={message}
             onChangeText={setMessage}

@@ -16,6 +16,7 @@ export const useLocationProfile = (lat: number, long: number) => {
 
         return data;
       },
+      enabled: lat !== 0 && long !== 0,
     });
 
   return {locationProfileData, locationProfileLoading};

@@ -40,6 +40,8 @@ export default function GoogleMap(props: GoogleMapType) {
       position => {
         const {latitude, longitude} = position.coords;
 
+        console.log(latitude, longitude);
+
         setLocationMapValue({latitude: latitude, longitude: longitude});
       },
       error => {
@@ -85,6 +87,9 @@ export default function GoogleMap(props: GoogleMapType) {
   useEffect(() => {
     requestLocationPermission();
   }, [requestLocationPermission]);
+
+  console.log('lat', lat);
+  console.log('long', long);
 
   return (
     <>
