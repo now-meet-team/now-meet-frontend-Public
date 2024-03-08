@@ -21,19 +21,18 @@ import {RootStackNavigationProp} from 'navigation/Routes';
 
 type GoogleMapType = {
   locationProfileData?: GoogleMapLocationNearProfileType | undefined;
+  lat: number;
+  long: number;
 };
 
 export default function GoogleMap(props: GoogleMapType) {
-  const {locationProfileData} = props;
+  const {locationProfileData, lat, long} = props;
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const setLocationMapValue = useGoogleMapStore(
     state => state.setLocationMapValue,
   );
-
-  const lat = useGoogleMapStore(state => state.latitude);
-  const long = useGoogleMapStore(state => state.longitude);
 
   const getCurrentPosition = useCallback(async () => {
     await Geolocation.getCurrentPosition(
@@ -88,12 +87,9 @@ export default function GoogleMap(props: GoogleMapType) {
     requestLocationPermission();
   }, [requestLocationPermission]);
 
-  console.log('lat', lat);
-  console.log('long', long);
-
   return (
     <>
-      {lat !== 0 && long !== 0 ? (
+      {true ? (
         <>
           <MapView
             zoomEnabled={false}

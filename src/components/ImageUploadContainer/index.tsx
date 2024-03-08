@@ -19,15 +19,12 @@ type ImageUploadContainerType = {
 export default function ImageUploadContainer(props: ImageUploadContainerType) {
   const {type = 'create', onUpload, onDelete, initialImages} = props;
 
-  console.log(type);
-
   return (
     <View style={styles.imageRow}>
       <FlatList
         horizontal
         data={initialImages}
         renderItem={({item, index}) => {
-          console.log(item);
           return (
             <>
               <TouchableOpacity

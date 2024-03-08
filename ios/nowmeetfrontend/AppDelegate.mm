@@ -1,3 +1,5 @@
+
+#import <Firebase.h>
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
@@ -8,6 +10,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  if ([FIRApp defaultApp] == nil) {
+     [FIRApp configure];
+   }
   [GMSServices provideAPIKey:@"AIzaSyAZhtDZMo1dNrbzfzKH1C-faKSVgH6d-ys"]; // add this line using the api key obtained from Google Console
   [RNNotifications startMonitorNotifications];
   self.moduleName = @"now-meet-frontend";

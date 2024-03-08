@@ -1,4 +1,4 @@
-import {StyleSheet, Switch, Text, View} from 'react-native';
+import {Switch, Text} from 'react-native';
 import React from 'react';
 import {palette} from 'config/globalStyles';
 import styled from 'styled-components/native';
@@ -15,10 +15,11 @@ type SettingListType = {
   label: string;
   mode: SettingLight | string;
   onClick?: () => void;
+  text?: string;
 };
 
 export default function SettingList(props: SettingListType) {
-  const {SvgComponent, label, mode, onClick} = props;
+  const {SvgComponent, label, mode, text, onClick} = props;
   return (
     <ProfileSVGWrapper onPress={onClick}>
       <ProfileSVGTextContainer>
@@ -37,6 +38,8 @@ export default function SettingList(props: SettingListType) {
       )}
 
       {mode === 'arrow' && <RightSVG color={'#000'} />}
+
+      {mode === 'text' && <Text>{text}</Text>}
     </ProfileSVGWrapper>
   );
 }

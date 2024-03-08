@@ -19,12 +19,12 @@ export default function Main() {
   const navigation = useNavigation<RootStackNavigationProp>();
   const sheetRef = useRef<BottomSheet>(null);
 
+  const snapPoints = useMemo(() => ['15%', '50%'], []);
+
   const lat = useGoogleMapStore(state => state.latitude);
   const long = useGoogleMapStore(state => state.longitude);
 
   const {locationProfileData} = useLocationProfile(lat, long);
-
-  const snapPoints = useMemo(() => ['15%', '50%'], []);
 
   return (
     <MainContainer>
@@ -39,7 +39,11 @@ export default function Main() {
         <MessageSVG />
       </MainWrapper>
 
-      <GoogleMap locationProfileData={locationProfileData || undefined} />
+      <GoogleMap
+        lat={lat}
+        long={long}
+        locationProfileData={locationProfileData || undefined}
+      />
       <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
         <BottomSheetVirtualizedList
           data={locationProfileData?.nearbyUsers || []}

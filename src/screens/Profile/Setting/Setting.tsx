@@ -19,6 +19,8 @@ export default function Setting() {
       <ProfileSettingLine />
 
       <ProfileSettingSettingListContainer>
+        {/* <SettingList label="계정" mode="text" text="0.0.1" /> */}
+
         <SettingList
           label="계정"
           mode="arrow"
