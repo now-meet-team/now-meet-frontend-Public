@@ -4,11 +4,12 @@ import styled from 'styled-components/native';
 
 type EndTimeBoxType = {
   chatTime: string;
+  status: string;
 };
 
 const EndTimeBox = (props: EndTimeBoxType) => {
-  const {chatTime} = props;
-  const remainingTime = useCountdownTimer(chatTime);
+  const {chatTime, status} = props;
+  const remainingTime = useCountdownTimer(chatTime, status);
 
   return (
     <StyledEndTimeBox>

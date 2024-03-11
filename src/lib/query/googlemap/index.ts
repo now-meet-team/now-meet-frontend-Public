@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import {handleAxios} from '../profile';
-import {useGoogleMapStore} from 'store/signup/signUpStore';
+
 import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 
 export const LOCATION_PROFILE_QUERY_KEY = 'LOCATION_PROFILE_QUERY_KEY';

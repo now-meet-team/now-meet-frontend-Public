@@ -1,7 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosError, AxiosResponse} from 'axios';
 import {axiosInstance} from 'lib/axiosConfig';
+import {LOCATION_PROFILE_QUERY_KEY} from 'lib/query/googlemap';
 import {Alert} from 'react-native';
 import {useModalStore} from 'store/modal/modalStore';
 import {useNavigationStore, useNickNameStore} from 'store/signup/signUpStore';
@@ -9,6 +10,7 @@ import {useNavigationStore, useNickNameStore} from 'store/signup/signUpStore';
 /** 로그인 **/
 export const usePostIsSignIn = () => {
   const navigation = useNavigation();
+  const queryClient = useQueryClient();
 
   const useSignInMutation = useMutation(
     (uuid: string | null): Promise<AxiosResponse> =>
@@ -21,6 +23,7 @@ export const usePostIsSignIn = () => {
           return navigation.navigate('SignUp' as never);
         }
 
+        queryClient.invalidateQueries({queryKey: [LOCATION_PROFILE_QUERY_KEY]});
         return navigation.navigate('Main' as never);
       },
 

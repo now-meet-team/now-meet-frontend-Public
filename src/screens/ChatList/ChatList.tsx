@@ -12,6 +12,8 @@ import {useChatList} from 'lib/query/chat';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProp} from 'navigation/Routes';
+import {ChatStatus} from 'types/chat';
+import {DefaultProfile} from 'assets';
 
 export default function ChatList() {
   const {chatListData} = useChatList();
@@ -27,10 +29,15 @@ export default function ChatList() {
           return (
             <>
               <MessageUserInfo>
-                <MessageUserImage
-                  source={{uri: item.preSignedUrl[0]}}
-                  alt="chatImage"
-                />
+                {item.chatStatus === ChatStatus.DISCONNECT_END ? (
+                  <DefaultProfile width={70} height={70} />
+                ) : (
+                  <MessageUserImage
+                    source={{uri: item.preSignedUrl[0]}}
+                    alt="chatImage"
+                  />
+                )}
+
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('ChatRoom', {
@@ -64,8 +71,6 @@ export const MessageUserImage = styled(ProfileUserDetailImage)`
   height: 70px;
 
   border-radius: 50px;
-
-  border-width: 1px;
 `;
 
 export const MessageUserInfo = styled(MessageWrapper)`

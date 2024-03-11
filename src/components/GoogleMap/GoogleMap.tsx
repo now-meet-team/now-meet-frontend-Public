@@ -89,9 +89,10 @@ export default function GoogleMap(props: GoogleMapType) {
 
   return (
     <>
-      {true ? (
+      {lat !== 0 && long !== 0 ? (
         <>
           <MapView
+            cacheEnabled
             zoomEnabled={false}
             style={styles.map}
             provider={PROVIDER_GOOGLE}

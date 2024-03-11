@@ -37,7 +37,10 @@ export default function ChatRoom() {
           style={{flex: 1}}
           keyboardVerticalOffset={95}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <EndTimeBox chatTime={chatRoomData?.chatTime ?? ''} />
+          <EndTimeBox
+            status={chatRoomData?.chatUserData.chatStatus ?? ''}
+            chatTime={chatRoomData?.chatTime ?? ''}
+          />
 
           <FlatList
             inverted
@@ -52,7 +55,10 @@ export default function ChatRoom() {
             renderItem={({item}) => {
               return (
                 <MessageList
-                  status={chatRoomStatus ?? ''}
+                  status={
+                    (chatRoomStatus || chatRoomData?.chatUserData.chatStatus) ??
+                    ''
+                  }
                   item={item}
                   chatProfileUrl={
                     chatRoomData?.chatUserData.preSignedUrl[0] ?? ''

@@ -1,7 +1,7 @@
 import {TouchableOpacity} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
-import {ResponseMessageType} from 'types/chat';
+import {ChatStatus, ResponseMessageType} from 'types/chat';
 import ProfileImage from 'components/ProfileImage';
 import {formatTimeToAMPM} from 'utils/time';
 import {palette} from 'config/globalStyles';
@@ -35,13 +35,19 @@ function MessageList(props: MessageListType) {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                if (status !== 'RECEIVER_EXIT' && status !== 'SENDER_EXIT') {
+                if (
+                  status !== ChatStatus.RECEIVER_EXIT &&
+                  status !== ChatStatus.SENDER_EXIT &&
+                  status !== ChatStatus.DISCONNECT_END
+                ) {
                   navigation.navigate('UserDetail', {
                     nickname: chatUserNickname,
                   });
                 }
               }}>
-              {status !== 'RECEIVER_EXIT' && status !== 'SENDER_EXIT' ? (
+              {status !== ChatStatus.RECEIVER_EXIT &&
+              status !== ChatStatus.SENDER_EXIT &&
+              status !== ChatStatus.DISCONNECT_END ? (
                 <ProfileImage width={30} height={30} uri={chatProfileUrl} />
               ) : (
                 <DefaultProfile />
