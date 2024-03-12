@@ -13,9 +13,12 @@ const EndTimeBox = (props: EndTimeBoxType) => {
 
   return (
     <StyledEndTimeBox>
-      <EndTimeBoxText>
-        대화 종료까지 남은 시간 <MessageTimeEnd>{remainingTime}</MessageTimeEnd>
-      </EndTimeBoxText>
+      {remainingTime && (
+        <EndTimeBoxText>
+          대화 종료까지 남은 시간{' '}
+          <MessageTimeEnd>{remainingTime}</MessageTimeEnd>
+        </EndTimeBoxText>
+      )}
     </StyledEndTimeBox>
   );
 };

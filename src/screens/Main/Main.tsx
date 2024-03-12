@@ -26,8 +26,6 @@ export default function Main() {
 
   const {locationProfileData} = useLocationProfile(lat, long);
 
-  console.log(lat, long);
-
   return (
     <MainContainer>
       <MainWrapper

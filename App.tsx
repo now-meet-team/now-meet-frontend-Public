@@ -5,7 +5,6 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 
-import {Platform} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
 // Create a client

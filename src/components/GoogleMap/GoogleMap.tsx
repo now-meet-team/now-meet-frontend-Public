@@ -6,9 +6,10 @@ import {
   Platform,
   StyleSheet,
   View,
+  PermissionsAndroid,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {mapStyle} from './mapStyle';
 
 import {useGoogleMapStore} from 'store/signup/signUpStore';
@@ -18,6 +19,8 @@ import {GoogleMapLocationNearProfileType} from 'types/googlemap';
 import MarkerUser from 'components/MarkerUser';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProp} from 'navigation/Routes';
+// import MapView from 'react-native-map-clustering';
+import MapView from 'react-native-maps';
 
 type GoogleMapType = {
   locationProfileData?: GoogleMapLocationNearProfileType | undefined;
@@ -34,58 +37,143 @@ export default function GoogleMap(props: GoogleMapType) {
     state => state.setLocationMapValue,
   );
 
+  const hasLocationPermission = useCallback(async () => {
+    if (Platform.OS === 'ios') {
+      const hasPermission = await hasPermissionIOS();
+      return hasPermission;
+    }
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      console.log('denined');
+    }
+
+    return false;
+  }, []);
+
+  /** IOS 권한 **/
+  const hasPermissionIOS = async () => {
+    const openSetting = () => {
+      Linking.openSettings().catch(() => {
+        Alert.alert('Unable to open settings');
+      });
+    };
+    const permission = await Geolocation.requestAuthorization('whenInUse');
+
+    if (permission === 'granted') {
+      return true;
+    }
+
+    if (permission === 'denied') {
+      Alert.alert('Location permission denied');
+    }
+
+    if (permission === 'disabled') {
+      Alert.alert(
+        'Turn on Location Services to allow to determine your location.',
+        '',
+        [
+          {text: 'Go to Settings', onPress: openSetting},
+          {text: "Don't Use Location", onPress: () => {}},
+        ],
+      );
+    }
+
+    return false;
+  };
+
   const getCurrentPosition = useCallback(async () => {
-    await Geolocation.getCurrentPosition(
+    const hasPermission = await hasLocationPermission();
+
+    if (!hasPermission) {
+      return;
+    }
+
+    const watchId = await Geolocation.watchPosition(
       position => {
         const {latitude, longitude} = position.coords;
 
-        console.log(latitude, longitude);
-
-        setLocationMapValue({latitude: latitude, longitude: longitude});
+        setLocationMapValue({
+          latitude: latitude,
+          longitude: longitude,
+        });
       },
       error => {
         console.log(error.code, error.message);
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
-  }, [setLocationMapValue]);
 
-  const showAlert = useCallback(() => {
-    Linking.openSettings();
-    Alert.alert(
-      '위치 권한이 필요합니다!',
-      '앱의 기능을 사용하려면 위치 권한이 필요합니다. 설정으로 이동하여 권한을 허용해주세요.',
-      [
-        {
-          text: '설정으로 이동',
-          onPress: () => {
-            Linking.openSettings().then(() => {
-              requestLocationPermission();
-            });
-          },
-        },
-      ],
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      Geolocation.clearWatch(watchId);
+    };
+  }, [hasLocationPermission, setLocationMapValue]);
 
-  const requestLocationPermission = useCallback(async () => {
-    if (Platform.OS === 'ios') {
-      const permission = await Geolocation.requestAuthorization('whenInUse');
+  // const showAlert = useCallback(() => {
+  //   Linking.openSettings();
+  //   Alert.alert(
+  //     '위치 권한이 필요합니다!',
+  //     '앱의 기능을 사용하려면 위치 권한이 필요합니다. 설정으로 이동하여 권한을 허용해주세요.',
+  //     [
+  //       {
+  //         text: '설정으로 이동',
+  //         onPress: () => {
+  //           Linking.openSettings().then(() => {
+  //             requestLocationPermission();
+  //           });
+  //         },
+  //       },
+  //     ],
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-      if (permission === 'denied') {
-        showAlert();
-      }
+  // const requestLocationPermission = useCallback(async () => {
+  //   if (Platform.OS === 'android') {
+  //     PermissionsAndroid.requestMultiple([
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //     ]);
+  //   }
 
-      if (permission === 'granted') {
-        getCurrentPosition();
-      }
-    }
-  }, [showAlert, getCurrentPosition]);
+  //   if (Platform.OS === 'ios') {
+  //     const permission = await Geolocation.requestAuthorization('whenInUse');
+
+  //     if (permission === 'denied') {
+  //       showAlert();
+  //     }
+
+  //     if (permission === 'granted') {
+  //       getCurrentPosition();
+  //     }
+  //   }
+  // }, [showAlert, getCurrentPosition]);
+
+  // useEffect(() => {
+  //   requestLocationPermission();
+  // }, [requestLocationPermission]);
 
   useEffect(() => {
-    requestLocationPermission();
-  }, [requestLocationPermission]);
+    getCurrentPosition();
+  }, [getCurrentPosition]);
 
   return (
     <>
@@ -100,13 +188,13 @@ export default function GoogleMap(props: GoogleMapType) {
             showsUserLocation
             scrollEnabled={false}
             toolbarEnabled={false}
-            mapType={Platform.OS === 'android' ? 'none' : 'standard'}
+            // mapType={Platform.OS === 'android' ? 'none' : 'standard'}
             minZoomLevel={14}
             initialRegion={{
               latitude: lat,
               longitude: long,
-              latitudeDelta: 1.795218101812615,
-              longitudeDelta: 0.9008869173333,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
             }}>
             {locationProfileData &&
               locationProfileData?.nearbyUsers.map(item => {
