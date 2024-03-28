@@ -19,6 +19,7 @@ export default function GoogleLoginButton() {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
 
       const userInfo = await GoogleSignin.signIn();
+
       await storeUserSession('idToken', `${userInfo.idToken}`);
 
       useSignInMutation.mutate(userInfo?.user.email);

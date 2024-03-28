@@ -17,9 +17,19 @@ export default function Account() {
   const navigation = useNavigation();
   const handleVisible = useModalStore(state => state.handleVisible);
 
+  const configureGoogleSignIn = async () => {
+    try {
+    } catch (error) {
+      console.error('Failed to configure Google Sign-In:', error);
+    }
+  };
+
   const signOut = async () => {
     try {
+      await GoogleSignin.configure({});
+      await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
+
       handleVisible(false);
       await removeUserSession('idToken');
       navigation.navigate('Home' as never);

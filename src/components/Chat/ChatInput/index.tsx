@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styled from 'styled-components/native';
 
 import {EditSVG} from 'assets';
@@ -24,6 +24,7 @@ function ChatInput(props: InputType) {
         value={value}
         placeholder="메세지를 입력해주세요"
         onChangeText={text => onChangeText(text)}
+        {...other}
       />
 
       <InputSvgContainer disabled={disabled} onPress={onSubmit}>
@@ -33,7 +34,7 @@ function ChatInput(props: InputType) {
   );
 }
 
-export default ChatInput;
+export default memo(ChatInput);
 
 export const MessageTextInputContainer = styled.View`
   margin-top: auto;

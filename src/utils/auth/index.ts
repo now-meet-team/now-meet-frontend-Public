@@ -29,6 +29,7 @@ export const retrieveWebClientId = async () => {
       GoogleSignin.configure({
         webClientId: decryptedWebClientId,
         forceCodeForRefreshToken: true,
+        offlineAccess: false,
       });
     } else {
       console.log('No webClientId found.');

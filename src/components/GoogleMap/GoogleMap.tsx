@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -7,9 +7,10 @@ import {
   StyleSheet,
   View,
   PermissionsAndroid,
+  AppState,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {mapStyle} from './mapStyle';
 
 import {useGoogleMapStore} from 'store/signup/signUpStore';
@@ -36,6 +37,47 @@ export default function GoogleMap(props: GoogleMapType) {
   const setLocationMapValue = useGoogleMapStore(
     state => state.setLocationMapValue,
   );
+
+  const showAlert = useCallback(() => {
+    Alert.alert(
+      '위치 권한이 필요합니다!',
+      '앱의 기능을 사용하려면 위치 권한이 필요합니다. 설정으로 이동하여 권한을 허용해주세요.',
+      [
+        {
+          text: '설정으로 이동',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ],
+    );
+  }, []);
+
+  /** IOS 권한 **/
+  const hasPermissionIOS = useCallback(async () => {
+    const permission = await Geolocation.requestAuthorization('whenInUse');
+
+    if (permission === 'granted') {
+      return true;
+    }
+
+    if (permission === 'denied') {
+      return showAlert();
+    }
+
+    if (permission === 'disabled') {
+      Alert.alert(
+        'Turn on Location Services to allow to determine your location.',
+        '',
+        [
+          {text: 'Go to Settings', onPress: showAlert},
+          {text: "Don't Use Location", onPress: () => {}},
+        ],
+      );
+    }
+
+    return false;
+  }, [showAlert]);
 
   const hasLocationPermission = useCallback(async () => {
     if (Platform.OS === 'ios') {
@@ -64,42 +106,11 @@ export default function GoogleMap(props: GoogleMapType) {
     }
 
     if (status === PermissionsAndroid.RESULTS.DENIED) {
-      console.log('denined');
+      return Linking.openSettings();
     }
 
     return false;
-  }, []);
-
-  /** IOS 권한 **/
-  const hasPermissionIOS = async () => {
-    const openSetting = () => {
-      Linking.openSettings().catch(() => {
-        Alert.alert('Unable to open settings');
-      });
-    };
-    const permission = await Geolocation.requestAuthorization('whenInUse');
-
-    if (permission === 'granted') {
-      return true;
-    }
-
-    if (permission === 'denied') {
-      Alert.alert('Location permission denied');
-    }
-
-    if (permission === 'disabled') {
-      Alert.alert(
-        'Turn on Location Services to allow to determine your location.',
-        '',
-        [
-          {text: 'Go to Settings', onPress: openSetting},
-          {text: "Don't Use Location", onPress: () => {}},
-        ],
-      );
-    }
-
-    return false;
-  };
+  }, [hasPermissionIOS]);
 
   const getCurrentPosition = useCallback(async () => {
     const hasPermission = await hasLocationPermission();
@@ -127,52 +138,21 @@ export default function GoogleMap(props: GoogleMapType) {
     };
   }, [hasLocationPermission, setLocationMapValue]);
 
-  // const showAlert = useCallback(() => {
-  //   Linking.openSettings();
-  //   Alert.alert(
-  //     '위치 권한이 필요합니다!',
-  //     '앱의 기능을 사용하려면 위치 권한이 필요합니다. 설정으로 이동하여 권한을 허용해주세요.',
-  //     [
-  //       {
-  //         text: '설정으로 이동',
-  //         onPress: () => {
-  //           Linking.openSettings().then(() => {
-  //             requestLocationPermission();
-  //           });
-  //         },
-  //       },
-  //     ],
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // const requestLocationPermission = useCallback(async () => {
-  //   if (Platform.OS === 'android') {
-  //     PermissionsAndroid.requestMultiple([
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //     ]);
-  //   }
-
-  //   if (Platform.OS === 'ios') {
-  //     const permission = await Geolocation.requestAuthorization('whenInUse');
-
-  //     if (permission === 'denied') {
-  //       showAlert();
-  //     }
-
-  //     if (permission === 'granted') {
-  //       getCurrentPosition();
-  //     }
-  //   }
-  // }, [showAlert, getCurrentPosition]);
-
-  // useEffect(() => {
-  //   requestLocationPermission();
-  // }, [requestLocationPermission]);
-
   useEffect(() => {
     getCurrentPosition();
+
+    const subscription = AppState.addEventListener(
+      'change',
+      (nextAppState: string) => {
+        if (nextAppState === 'active') {
+          getCurrentPosition();
+        }
+      },
+    );
+
+    return () => {
+      subscription.remove();
+    };
   }, [getCurrentPosition]);
 
   return (
@@ -180,7 +160,7 @@ export default function GoogleMap(props: GoogleMapType) {
       {lat !== 0 && long !== 0 ? (
         <>
           <MapView
-            cacheEnabled
+            cacheEnabled={Platform.OS === 'ios'}
             zoomEnabled={false}
             style={styles.map}
             provider={PROVIDER_GOOGLE}
@@ -188,7 +168,9 @@ export default function GoogleMap(props: GoogleMapType) {
             showsUserLocation
             scrollEnabled={false}
             toolbarEnabled={false}
+            followsUserLocation
             // mapType={Platform.OS === 'android' ? 'none' : 'standard'}
+
             minZoomLevel={14}
             initialRegion={{
               latitude: lat,

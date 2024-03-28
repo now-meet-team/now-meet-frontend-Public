@@ -32,10 +32,7 @@ export default function ChatList() {
                 {item.chatStatus === ChatStatus.DISCONNECT_END ? (
                   <DefaultProfile width={70} height={70} />
                 ) : (
-                  <MessageUserImage
-                    source={{uri: item.preSignedUrl[0]}}
-                    alt="chatImage"
-                  />
+                  <MessageUserImage source={{uri: item.preSignedUrl[0]}} />
                 )}
 
                 <TouchableOpacity

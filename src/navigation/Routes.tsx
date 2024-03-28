@@ -109,10 +109,12 @@ export default function Routes() {
           name="SignUp"
           component={SignUp}
           options={() => ({
-            headerShadowVisible: false,
             headerTitle: '',
 
-            headerLeft: () => <NavigateBack label={'SignUp'} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -172,7 +174,10 @@ export default function Routes() {
           options={() => ({
             title: '계정',
 
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -182,7 +187,10 @@ export default function Routes() {
           options={() => ({
             title: '계정 삭제',
 
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -204,8 +212,10 @@ export default function Routes() {
           component={SelfScreen}
           options={() => ({
             title: '자기소개 수정',
-
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 
@@ -215,7 +225,10 @@ export default function Routes() {
           options={() => ({
             title: '취향 수정',
 
-            headerLeft: props => <NavigateBack label={props.label || ''} />,
+            headerStyle: {backgroundColor: '#fff'},
+            headerTintColor: '#000',
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
           })}
         />
 

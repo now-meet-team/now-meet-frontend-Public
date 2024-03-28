@@ -15,6 +15,7 @@ import {useProfileLike} from 'lib/mutation/profile/like';
 import {useUserDetail} from 'lib/query/user';
 import {calculateAge} from 'utils/calculateAge';
 import {ScrollView} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 
 type DetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;
 
@@ -77,8 +78,10 @@ export default function UserDetail() {
 
           <ProfileUserDetailWrapper>
             <ProfileUserDetailImage
-              source={{uri: useUserDetailData?.PreSignedUrl[0]}}
-              alt="userMainImage"
+              source={{
+                uri: useUserDetailData?.PreSignedUrl[0],
+              }}
+              resizeMode={FastImage.resizeMode.cover}
             />
 
             <View
@@ -199,7 +202,7 @@ export const UserDetailIntroduceIntroduce = styled.Text`
   margin-top: 12px;
 `;
 
-export const ProfileUserDetailImage = styled.Image`
+export const ProfileUserDetailImage = styled(FastImage)`
   width: 140px;
   height: 140px;
   border-radius: 8px;

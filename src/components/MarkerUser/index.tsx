@@ -1,6 +1,7 @@
 import React from 'react';
 import {MarkerSVG} from '../../assets';
 import {Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 type MarkerUserType = {
   preSignedUrl: string;
@@ -11,7 +12,7 @@ export default function MarkerUser(props: MarkerUserType) {
   return (
     <View style={styles.container}>
       <MarkerSVG />
-      <Image
+      <FastImage
         source={{
           uri: preSignedUrl,
         }}

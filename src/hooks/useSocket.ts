@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {GestureResponderEvent} from 'react-native';
-import {Notifications} from 'react-native-notifications';
+
 import {Socket} from 'socket.io-client';
 import {io} from 'socket.io-client';
-import {DataMessageType, ResponseMessageType} from 'types/chat';
+import {ResponseMessageType} from 'types/chat';
 
 import {retrieveUserSession} from 'utils/auth';
 
@@ -14,28 +14,17 @@ function useSocket(roomId: number) {
 
   const [chatRoomStatus, setChatRoomStatus] = useState('');
 
-  const sendMessage = (event: GestureResponderEvent) => {
-    event.preventDefault();
+  const sendMessage = useCallback(
+    (event: GestureResponderEvent) => {
+      event.preventDefault();
 
-    if (socket?.active) {
-      socket.emit('message', {message: message, date: new Date()});
-      setMessage('');
-    }
-
-    // Notifications.postLocalNotification({
-    //   body: 'Local notification!',
-    //   title: 'Local Notification Title',
-
-    //   sound: 'chime.aiff',
-    //   type: '??',
-    //   payload: '??',
-    //   thread: '??',
-    //   badge: 123,
-
-    //   // userInfo: { },
-    //   identifier: '??',
-    // });
-  };
+      if (socket?.active) {
+        socket.emit('message', {message: message, date: new Date()});
+        setMessage('');
+      }
+    },
+    [message, socket],
+  );
 
   useEffect(() => {
     let newSocket: Socket;
