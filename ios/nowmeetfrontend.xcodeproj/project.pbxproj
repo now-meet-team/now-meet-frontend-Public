@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* nowmeetfrontendTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* nowmeetfrontendTests.m */; };
 		088AA29CDB78B060F4EF73F5 /* libPods-nowmeetfrontend-nowmeetfrontendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C6AB20F340FE082F1A2C886 /* libPods-nowmeetfrontend-nowmeetfrontendTests.a */; };
+		095D64402BBA85180097E7C3 /* L_LOGO.png in Resources */ = {isa = PBXBuildFile; fileRef = 095D643F2BBA85180097E7C3 /* L_LOGO.png */; };
 		09EC95B12AB1E9F500312A15 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09EC95B02AB1E9F400312A15 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -33,6 +34,7 @@
 		00E356F21AD99517003FC87E /* nowmeetfrontendTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nowmeetfrontendTests.m; sourceTree = "<group>"; };
 		04E3A3C3C3C99B03CD0E3135 /* Pods-nowmeetfrontend-nowmeetfrontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nowmeetfrontend-nowmeetfrontendTests.debug.xcconfig"; path = "Target Support Files/Pods-nowmeetfrontend-nowmeetfrontendTests/Pods-nowmeetfrontend-nowmeetfrontendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0915A1752B3013040069343A /* nowmeetfrontendDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = nowmeetfrontendDebug.entitlements; path = nowmeetfrontend/nowmeetfrontendDebug.entitlements; sourceTree = "<group>"; };
+		095D643F2BBA85180097E7C3 /* L_LOGO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = L_LOGO.png; sourceTree = "<group>"; };
 		09A780172B3543E7005020A1 /* nowmeetfrontendRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = nowmeetfrontendRelease.entitlements; path = nowmeetfrontend/nowmeetfrontendRelease.entitlements; sourceTree = "<group>"; };
 		09D6E3D02ACD9CBD00CB61D3 /* nowmeetfrontend-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nowmeetfrontend-Bridging-Header.h"; sourceTree = "<group>"; };
 		09EC95B02AB1E9F400312A15 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		13B07FAE1A68108700A75B9A /* nowmeetfrontend */ = {
 			isa = PBXGroup;
 			children = (
+				095D643F2BBA85180097E7C3 /* L_LOGO.png */,
 				09A780172B3543E7005020A1 /* nowmeetfrontendRelease.entitlements */,
 				0915A1752B3013040069343A /* nowmeetfrontendDebug.entitlements */,
 				09EC95B02AB1E9F400312A15 /* GoogleService-Info.plist */,
@@ -257,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				095D64402BBA85180097E7C3 /* L_LOGO.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				09EC95B12AB1E9F500312A15 /* GoogleService-Info.plist in Resources */,
 			);

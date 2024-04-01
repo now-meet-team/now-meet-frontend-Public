@@ -1,5 +1,5 @@
 import {StyleSheet, View, Image} from 'react-native';
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useMemo, useRef} from 'react';
 
 import GoogleMap from 'components/GoogleMap/GoogleMap';
 import BottomSheet, {BottomSheetVirtualizedList} from '@gorhom/bottom-sheet';
@@ -24,7 +24,10 @@ export default function Main() {
   const lat = useGoogleMapStore(state => state.latitude);
   const long = useGoogleMapStore(state => state.longitude);
 
-  const {locationProfileData} = useLocationProfile(lat, long);
+  const {locationProfileData, locationProfileLoading} = useLocationProfile(
+    lat,
+    long,
+  );
 
   return (
     <MainContainer>
@@ -45,42 +48,53 @@ export default function Main() {
         locationProfileData={locationProfileData || undefined}
       />
       <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
-        <BottomSheetVirtualizedList
-          data={locationProfileData?.nearbyUsers || []}
-          keyExtractor={item => item.nickname}
-          getItemCount={data => data.length}
-          getItem={(data, index) => data[index]}
-          renderItem={useCallback(
-            ({item}: {item: NearbyUsersType}) => (
-              <View style={styles.itemContainer}>
-                <MainDetailFlexList
-                  onPress={() =>
-                    navigation.navigate('UserDetail', {
-                      nickname: item.nickname,
-                    })
-                  }>
-                  <Image
-                    style={styles.images}
-                    source={{
-                      uri: item.PreSignedUrl[0],
-                    }}
-                  />
-                  <View>
-                    <ListNickName>{item.nickname}</ListNickName>
-                    <ListUserInfo>
-                      {item.sex === 'men' ? '남성' : '여성'} ·{' '}
-                      {`${calculateAge(item.birthDate)}살`} · {item.job}
-                    </ListUserInfo>
-                  </View>
-                </MainDetailFlexList>
+        {!locationProfileLoading &&
+        locationProfileData?.nearbyUsers === undefined ? (
+          <NoListInfo>
+            <ListUserInfo>주변에 사람이 없습니다.</ListUserInfo>
+            <ListUserInfo>
+              사람 많은 곳으로 이동하여 다시 찾아보세요!
+            </ListUserInfo>
+          </NoListInfo>
+        ) : (
+          <>
+            <BottomSheetVirtualizedList
+              data={locationProfileData?.nearbyUsers || []}
+              keyExtractor={item => item.nickname}
+              getItemCount={data => data.length}
+              getItem={(data, index) => data[index]}
+              renderItem={({item}: {item: NearbyUsersType}) => {
+                return (
+                  <View style={styles.itemContainer}>
+                    <MainDetailFlexList
+                      onPress={() =>
+                        navigation.navigate('UserDetail', {
+                          nickname: item.nickname,
+                        })
+                      }>
+                      <Image
+                        style={styles.images}
+                        source={{
+                          uri: item.PreSignedUrl[0],
+                        }}
+                      />
+                      <View>
+                        <ListNickName>{item.nickname}</ListNickName>
+                        <ListUserInfo>
+                          {item.sex === 'men' ? '남성' : '여성'} ·{' '}
+                          {`${calculateAge(item.birthDate)}살`} · {item.job}
+                        </ListUserInfo>
+                      </View>
+                    </MainDetailFlexList>
 
-                <LeftArrowSVG />
-              </View>
-            ),
-            [navigation],
-          )}
-          contentContainerStyle={styles.contentContainer}
-        />
+                    <LeftArrowSVG />
+                  </View>
+                );
+              }}
+              contentContainerStyle={styles.contentContainer}
+            />
+          </>
+        )}
       </BottomSheet>
     </MainContainer>
   );
@@ -142,5 +156,17 @@ export const ListNickName = styled.Text`
 `;
 
 export const ListUserInfo = styled.Text`
+  color: ${palette.primaryB2};
+`;
+
+export const NoListInfo = styled.View`
+  flex: 1;
   color: ${palette.gray};
+
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 2px;
 `;

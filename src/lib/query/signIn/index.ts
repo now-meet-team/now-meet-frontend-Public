@@ -23,6 +23,7 @@ export const useNickNameDuplication = (nickName: string) => {
   const {isFetched: isFetched, data: nicknameDuplication} = useQuery(
     [NICK_NAME_DUPLICATION_KEY, nickName],
     () => getAxiosRequest(`/users/signup/nickname/${nickName}`),
+    {enabled: !!nickName},
   );
 
   return {

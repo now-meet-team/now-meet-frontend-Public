@@ -14,11 +14,13 @@ import Button from 'components/Common/Button/Button';
 import {calculateRemainingTime} from 'utils/like';
 import {InboxListType} from 'types/list';
 import {useUserAccept, useUserReject} from 'lib/mutation/like';
+import {usePushNotification} from 'lib/mutation/pushNotification';
 
 export default function InBox() {
   const {inboxListData} = useInBoxList();
   const {useUserAcceptMutation} = useUserAccept();
   const {useUserRejectMutation} = useUserReject();
+  const {usePushNotificationMutation} = usePushNotification();
 
   const renderItem = useCallback(
     ({item}: {item: InboxListType}) => {
@@ -51,6 +53,11 @@ export default function InBox() {
               fontSize={15}
               onPress={() => {
                 useUserAcceptMutation.mutate(item.matchId);
+                usePushNotificationMutation.mutate({
+                  title: 'NOWMEET',
+                  message: `${item.senderNickname}님과 매칭이 되었습니다. 대화를 시작해보세요!`,
+                  nickname: item.senderNickname,
+                });
               }}
             />
 
@@ -68,7 +75,7 @@ export default function InBox() {
         </InBoxFlatListContainer>
       );
     },
-    [useUserAcceptMutation, useUserRejectMutation],
+    [useUserAcceptMutation, useUserRejectMutation, usePushNotificationMutation],
   );
 
   return (

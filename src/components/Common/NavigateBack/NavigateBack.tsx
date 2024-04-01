@@ -2,6 +2,8 @@ import {Button, View} from 'react-native';
 import React from 'react';
 import {useNavigationStore} from 'store/signup/signUpStore';
 import {useNavigation} from '@react-navigation/native';
+import {BackArrow} from 'assets';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function NavigateBack(props: {label: string}) {
   const {label} = props;
@@ -26,17 +28,16 @@ export default function NavigateBack(props: {label: string}) {
 
   return (
     <View>
-      <Button
+      <TouchableOpacity
         onPress={() => {
           if (label === 'SignUp') {
             signUpBackNavigate();
           } else {
             otherBackNavigate();
           }
-        }}
-        title="<"
-        color="black"
-      />
+        }}>
+        <BackArrow />
+      </TouchableOpacity>
     </View>
   );
 }

@@ -2,7 +2,7 @@
 
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {AxiosResponse} from 'axios';
+import {AxiosRequestConfig, AxiosResponse} from 'axios';
 
 import {axiosInstance} from 'lib/axiosConfig';
 import {
@@ -16,9 +16,9 @@ import {LikedProfileListType} from 'types/profile/likedProfileList';
 const LIKE_MESSAGE_LIST_QUERY_KEY = 'LIKE_MESSAGE_LIST_QUERY_KEY';
 const PROFILE_ME_QUERY_KEY = 'PROFILE_ME_QUERY_KEY';
 
-export const handleAxios = async (api: string) => {
+export const handleAxios = async (api: string, option?: AxiosRequestConfig) => {
   try {
-    const response = await axiosInstance.get(api);
+    const response = await axiosInstance.get(api, {...option});
     return response.data;
   } catch (error) {
     console.log(error);

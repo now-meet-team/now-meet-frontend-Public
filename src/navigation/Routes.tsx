@@ -22,7 +22,6 @@ import JobScreen from 'screens/SignUp/JobScreen/JobScreen';
 import SelfScreen from 'screens/SignUp/SelfScreen/SelfScreen';
 import HobbyScreen from 'screens/SignUp/HobbyScreen/HobbyScreen';
 import {useNavigation} from '@react-navigation/native';
-import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 import UserDetail from 'screens/UserDetail/UserDetail';
 
 import {ActivityIndicator, Text} from 'react-native';
@@ -36,6 +35,8 @@ import useNetworkStatus from 'hooks/useNetworkStatus';
 import NetworkError from 'screens/NetworkError/NetworkError';
 
 import ChatRightExit from 'components/Chat/ChatRightExit';
+import {useNavigationStore} from 'store/signup/signUpStore';
+import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -110,11 +111,7 @@ export default function Routes() {
           component={SignUp}
           options={() => ({
             headerTitle: '',
-
-            headerStyle: {backgroundColor: '#fff'},
-            headerTintColor: '#000',
-            headerShadowVisible: false,
-            headerBackTitleVisible: false,
+            headerLeft: () => <NavigateBack label="SignUp" />,
           })}
         />
 
