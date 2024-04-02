@@ -1,4 +1,4 @@
-import {StyleSheet, View, Image, Platform, Text} from 'react-native';
+import {StyleSheet, View, Image, Platform} from 'react-native';
 import React, {useMemo, useRef, useState} from 'react';
 
 import GoogleMap from 'components/GoogleMap/GoogleMap';

@@ -11,11 +11,10 @@ import useSocket from 'hooks/useSocket';
 
 type ChatRightExitType = {
   chatId: number;
-  chatStatus: string;
 };
 
 export default function ChatRightExit(props: ChatRightExitType) {
-  const {chatId, chatStatus} = props;
+  const {chatId} = props;
 
   const {useChatExitMutation} = useChatExit();
   const {useChatDeleteMutation} = useChatDelete();

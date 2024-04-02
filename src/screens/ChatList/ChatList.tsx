@@ -39,6 +39,7 @@ export default function ChatList() {
                   onPress={() =>
                     navigation.navigate('ChatRoom', {
                       chatId: item.chatId,
+                      name: item.chatUserNickname,
                     })
                   }>
                   <ProfileUserDetailName>
