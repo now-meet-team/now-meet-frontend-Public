@@ -1,3 +1,4 @@
+import {usePushNotification} from 'lib/mutation/pushNotification';
 import {useCallback, useEffect, useState} from 'react';
 import {GestureResponderEvent} from 'react-native';
 
@@ -13,17 +14,24 @@ function useSocket(roomId: number) {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const [chatRoomStatus, setChatRoomStatus] = useState('');
+  const {usePushNotificationMutation} = usePushNotification();
 
   const sendMessage = useCallback(
-    (event: GestureResponderEvent) => {
+    (event: GestureResponderEvent, senderUser: string) => {
       event.preventDefault();
 
       if (socket?.active) {
         socket.emit('message', {message: message, date: new Date()});
+        usePushNotificationMutation.mutate({
+          title: '메세지',
+          message: message,
+          nickname: senderUser,
+        });
+
         setMessage('');
       }
     },
-    [message, socket],
+    [message, socket, usePushNotificationMutation],
   );
 
   useEffect(() => {

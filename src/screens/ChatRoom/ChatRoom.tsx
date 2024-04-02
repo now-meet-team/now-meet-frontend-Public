@@ -44,6 +44,7 @@ export default function ChatRoom() {
 
           <FlatList
             inverted
+            keyExtractor={item => String(`${item.id}`)}
             showsVerticalScrollIndicator={false}
             automaticallyAdjustContentInsets={false}
             initialNumToRender={10}
@@ -69,7 +70,6 @@ export default function ChatRoom() {
                 />
               );
             }}
-            keyExtractor={item => String(`${item.id}`)}
           />
 
           <ChatInput
@@ -79,7 +79,12 @@ export default function ChatRoom() {
             }
             value={message}
             onChangeText={setMessage}
-            onSubmit={event => sendMessage(event)}
+            onSubmit={event =>
+              sendMessage(
+                event,
+                chatRoomData?.chatUserData.chatUserNickname || '',
+              )
+            }
           />
         </KeyboardAvoidingView>
       )}

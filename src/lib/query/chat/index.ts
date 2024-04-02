@@ -36,6 +36,7 @@ export const useChatRoom = (chatId: number) => {
       const {data} = await handleAxios(`/match/me/chatBox/${chatId}`);
       return data;
     },
+    enabled: !!chatId,
   });
 
   return {chatRoomData, chatRoomLoading, refetch};
