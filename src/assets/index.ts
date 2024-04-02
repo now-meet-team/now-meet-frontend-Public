@@ -23,6 +23,7 @@ export {default as EditSVG} from './svg/Edit.svg';
 //main
 export {default as MarkerSVG} from './svg/main/marker.svg';
 export {default as MessageSVG} from './svg/main/message.svg';
+export {default as LocationSVG} from './svg/main/location.svg';
 
 export {default as LoveSVG} from './svg/love.svg';
 

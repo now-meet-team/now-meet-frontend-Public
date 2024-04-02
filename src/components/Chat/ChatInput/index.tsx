@@ -37,7 +37,6 @@ function ChatInput(props: InputType) {
 export default memo(ChatInput);
 
 export const MessageTextInputContainer = styled.View`
-  margin-top: auto;
   margin-top: 10px;
   margin-bottom: 10px;
 `;

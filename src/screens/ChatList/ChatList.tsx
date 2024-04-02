@@ -38,9 +38,7 @@ export default function ChatList() {
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('ChatRoom', {
-                      name: item.matchUserNickname,
                       chatId: item.chatId,
-                      chatStatus: item.chatStatus,
                     })
                   }>
                   <ProfileUserDetailName>

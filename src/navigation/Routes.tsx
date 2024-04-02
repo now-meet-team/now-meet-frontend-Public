@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BackArrow} from 'assets';
 import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import SignUp from '../screens/SignUp/SignUp';
+
+import messaging, {firebase} from '@react-native-firebase/messaging';
+
+import {storeUserSession} from 'utils/auth';
+
+import {displayNotification} from 'utils/notifee';
 
 import Home from 'screens/Home/Home';
 import Main from 'screens/Main/Main';
@@ -37,6 +43,7 @@ import NetworkError from 'screens/NetworkError/NetworkError';
 import ChatRightExit from 'components/Chat/ChatRightExit';
 import {useNavigationStore} from 'store/signup/signUpStore';
 import NavigateBack from 'components/Common/NavigateBack/NavigateBack';
+import useNotification from 'hooks/useNotification';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -60,9 +67,7 @@ export type RootStackParamList = {
 
   ChatList: undefined;
   ChatRoom: {
-    name: string;
     chatId: number;
-    chatStatus: string;
   };
 
   NetworkError: undefined;
@@ -78,6 +83,7 @@ export default function Routes() {
   const {userToken, loading} = useAuth();
 
   useNetworkStatus();
+  useNotification();
 
   if (loading) {
     return <ActivityIndicator />;

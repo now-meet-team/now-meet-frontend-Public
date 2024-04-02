@@ -1,7 +1,7 @@
 import {usePushNotification} from 'lib/mutation/pushNotification';
 import {useCallback, useEffect, useState} from 'react';
 import {GestureResponderEvent} from 'react-native';
-
+import notifee from '@notifee/react-native';
 import {Socket} from 'socket.io-client';
 import {io} from 'socket.io-client';
 import {ResponseMessageType} from 'types/chat';

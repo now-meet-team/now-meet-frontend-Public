@@ -1,5 +1,5 @@
-import {StyleSheet, View, Image} from 'react-native';
-import React, {useMemo, useRef} from 'react';
+import {StyleSheet, View, Image, Platform, Text} from 'react-native';
+import React, {useMemo, useRef, useState} from 'react';
 
 import GoogleMap from 'components/GoogleMap/GoogleMap';
 import BottomSheet, {BottomSheetVirtualizedList} from '@gorhom/bottom-sheet';
@@ -10,12 +10,14 @@ import {useLocationProfile} from 'lib/query/googlemap';
 import {NearbyUsersType} from 'types/googlemap';
 import {palette} from 'config/globalStyles';
 import {calculateAge} from 'utils/calculateAge';
-import {LeftArrowSVG, ProfileSVG, MessageSVG} from '../../assets';
+import {LeftArrowSVG, ProfileSVG, MessageSVG, LocationSVG} from '../../assets';
 
 import {RootStackNavigationProp} from 'navigation/Routes';
 import {useGoogleMapStore} from 'store/signup/signUpStore';
 
 export default function Main() {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const navigation = useNavigation<RootStackNavigationProp>();
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -24,19 +26,19 @@ export default function Main() {
   const lat = useGoogleMapStore(state => state.latitude);
   const long = useGoogleMapStore(state => state.longitude);
 
-  const {locationProfileData, locationProfileLoading} = useLocationProfile(
-    lat,
-    long,
-  );
+  const {locationProfileData, locationProfileLoading, locationMapRefetch} =
+    useLocationProfile(lat, long);
 
   return (
     <MainContainer>
       <MainWrapper
+        top={'80px'}
         right={'3%'}
         onPress={() => navigation.navigate('Profile' as never)}>
         <ProfileSVG />
       </MainWrapper>
       <MainWrapper
+        top={'80px'}
         right={'16%'}
         onPress={() => navigation.navigate('ChatList' as never)}>
         <MessageSVG />
@@ -47,6 +49,27 @@ export default function Main() {
         long={long}
         locationProfileData={locationProfileData || undefined}
       />
+
+      {Platform.OS === 'ios' && (
+        <MainWrapper
+          style={{position: 'absolute', bottom: 135, zIndex: 0}}
+          onPress={() => {
+            if (isButtonDisabled) {
+              return;
+            }
+
+            setIsButtonDisabled(true);
+
+            setTimeout(() => {
+              setIsButtonDisabled(false);
+            }, 5000);
+
+            locationMapRefetch();
+          }}>
+          <LocationSVG />
+        </MainWrapper>
+      )}
+
       <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
         {!locationProfileLoading &&
         locationProfileData?.nearbyUsers === undefined ? (
@@ -104,13 +127,8 @@ const styles = StyleSheet.create({
   container: {
     left: 0,
     right: 0,
-
     bottom: 0,
-
     position: 'absolute',
-
-    backgroundColor: 'red',
-
     height: 50,
   },
   contentContainer: {
@@ -132,9 +150,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export const MainWrapper = styled.TouchableOpacity<{right: string}>`
+export const MainContainer = styled.SafeAreaView`
+  position: relative;
+`;
+
+export const MainWrapper = styled.TouchableOpacity<{
+  top?: string;
+  right?: string;
+}>`
   position: absolute;
-  top: 80px;
+
+  top: ${props => props.top};
   right: ${props => props.right || '3%'};
 
   z-index: 2;
@@ -144,10 +170,6 @@ export const MainDetailFlexList = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-export const MainContainer = styled.SafeAreaView`
-  position: relative;
 `;
 
 export const ListNickName = styled.Text`
