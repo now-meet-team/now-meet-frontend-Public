@@ -29,6 +29,7 @@ export type ChatListType = {
   message: Array<ResponseMessageType>;
   chatUserNickname: string;
   lastMessage: string;
+  myNickname: string;
 };
 
 export type ChatListTypeWithUserData = {

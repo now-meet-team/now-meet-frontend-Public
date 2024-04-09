@@ -1,7 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosResponse} from 'axios';
-import {axiosInstance} from 'lib/axiosConfig';
+import axiosInstance from 'lib/axiosConfig';
+
 import {CHAT_ROOM_QUERY_KEY} from 'lib/query/chat';
 import {RootStackNavigationProp} from 'navigation/Routes';
 import {useModalStore} from 'store/modal/modalStore';

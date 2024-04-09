@@ -16,6 +16,9 @@ import {ChatStatus} from 'types/chat';
 
 import ChatInput from 'components/Chat/ChatInput';
 import MessageList from 'components/Chat/MessageList';
+import {usePushNotification} from 'lib/mutation/pushNotification';
+import useNotification from 'hooks/useNotification';
+import {firebase} from '@react-native-firebase/messaging';
 
 export default function ChatRoom() {
   const {params} = useRoute();
@@ -24,6 +27,7 @@ export default function ChatRoom() {
 
   const {chatRoomData} = useChatRoom(roomId);
   const {useChatOpenMutation} = useChatOpen();
+  const {usePushNotificationMutation} = usePushNotification();
 
   const {chatRoomStatus, setMessage, message, sendMessage, messages} =
     useSocket(roomId);
@@ -37,10 +41,14 @@ export default function ChatRoom() {
           style={{flex: 1}}
           keyboardVerticalOffset={95}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <EndTimeBox
-            status={chatRoomData?.chatUserData.chatStatus ?? ''}
-            chatTime={chatRoomData?.chatTime ?? ''}
-          />
+          {chatRoomStatus !== ChatStatus.RECEIVER_EXIT &&
+            chatRoomStatus !== ChatStatus.SENDER_EXIT &&
+            chatRoomStatus !== ChatStatus.DISCONNECT_END && (
+              <EndTimeBox
+                status={chatRoomData?.chatUserData.chatStatus ?? ''}
+                chatTime={chatRoomData?.chatTime ?? ''}
+              />
+            )}
 
           <FlatList
             inverted
@@ -79,12 +87,17 @@ export default function ChatRoom() {
             }
             value={message}
             onChangeText={setMessage}
-            onSubmit={event =>
-              sendMessage(
-                event,
-                chatRoomData?.chatUserData.chatUserNickname || '',
-              )
-            }
+            onSubmit={event => {
+              sendMessage(event);
+
+              usePushNotificationMutation.mutate({
+                chatId: roomId,
+                screenName: 'ChatRoom',
+                title: chatRoomData?.chatUserData.myNickname || '',
+                message: message,
+                nickname: chatRoomData?.chatUserData.chatUserNickname || '',
+              });
+            }}
           />
         </KeyboardAvoidingView>
       )}

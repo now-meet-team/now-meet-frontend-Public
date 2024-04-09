@@ -1,7 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosError, AxiosResponse} from 'axios';
-import {axiosInstance} from 'lib/axiosConfig';
+import axiosInstance from 'lib/axiosConfig';
+
 import {LOCATION_PROFILE_QUERY_KEY} from 'lib/query/googlemap';
 import {Alert} from 'react-native';
 import {useModalStore} from 'store/modal/modalStore';

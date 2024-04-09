@@ -4,6 +4,7 @@ import {palette} from 'config/globalStyles';
 import styled from 'styled-components/native';
 import {SvgProps} from 'react-native-svg';
 import {RightSVG} from '../../assets';
+import {useSwitchStore} from 'store/switch/switchStore';
 
 enum SettingLight {
   switch = 'switch',
@@ -15,11 +16,15 @@ type SettingListType = {
   label: string;
   mode: SettingLight | string;
   onClick?: () => void;
+  onChange?: (value: boolean) => void;
   text?: string;
 };
 
 export default function SettingList(props: SettingListType) {
-  const {SvgComponent, label, mode, text, onClick} = props;
+  const {SvgComponent, label, mode, text, onClick, onChange} = props;
+
+  const switchingValue = useSwitchStore(state => state.switching);
+
   return (
     <ProfileSVGWrapper onPress={onClick}>
       <ProfileSVGTextContainer>
@@ -30,10 +35,11 @@ export default function SettingList(props: SettingListType) {
 
       {mode === 'switch' && (
         <Switch
-          trackColor={{false: palette.beer, true: '#FF224A'}}
+          thumbColor={palette.white}
+          trackColor={{false: palette.gray, true: palette.nero}}
           ios_backgroundColor={false ? '#FF224A' : '#f4f3f4'}
-          onValueChange={() => {}}
-          value={false}
+          onValueChange={onChange}
+          value={switchingValue}
         />
       )}
 

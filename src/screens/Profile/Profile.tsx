@@ -14,11 +14,14 @@ import {useNavigation} from '@react-navigation/native';
 import ProfileLayout from 'components/ProfileLayout';
 import {useProfileMe} from 'lib/query/profile';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSwitchStore} from 'store/switch/switchStore';
 
 export default function Profile() {
   const navigation = useNavigation();
 
   const {queryProfileData} = useProfileMe();
+
+  const handleSwitch = useSwitchStore(state => state.handleSwitch);
 
   return (
     <ProfileSafeAreaView>
@@ -43,7 +46,12 @@ export default function Profile() {
       </ProfileSettingContainer>
 
       <ProfileSVGContainer>
-        <SettingList label="유령모드" SvgComponent={GhostSVG} mode="switch" />
+        <SettingList
+          onChange={handleSwitch}
+          label="유령모드"
+          SvgComponent={GhostSVG}
+          mode="switch"
+        />
 
         <SettingList
           label="스토어"

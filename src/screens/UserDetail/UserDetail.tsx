@@ -16,17 +16,13 @@ import {useUserDetail} from 'lib/query/user';
 import {calculateAge} from 'utils/calculateAge';
 import {ScrollView} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
-import {usePushNotification} from 'lib/mutation/pushNotification';
-import {useProfileMe} from 'lib/query/profile';
 
 type DetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;
 
 export default function UserDetail() {
   const {params} = useRoute<DetailScreenRouteProp>();
 
-  const {queryProfileData} = useProfileMe();
   const {useUserLikeMutation} = useProfileLike();
-  const {usePushNotificationMutation} = usePushNotification();
 
   const likeModalVisible = useModalStore(state => state.likeModalVisible);
   const handleSetTimeoutVisible = useModalStore(
@@ -65,11 +61,6 @@ export default function UserDetail() {
                   onPress={() => {
                     useModalStore.setState({likeModalVisible: true});
                     useUserLikeMutation.mutate(params.nickname);
-                    usePushNotificationMutation.mutate({
-                      title: 'NOWMEET',
-                      message: `${queryProfileData?.user.nickname}님이 좋아요를 보냈습니다.`,
-                      nickname: params.nickname,
-                    });
                     handleSetTimeoutVisible();
                   }}
                 />

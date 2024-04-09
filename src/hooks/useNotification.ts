@@ -1,10 +1,17 @@
 import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
-import {FirebaseMessagingTypes} from '@react-native-firebase/messaging';
+import {
+  FirebaseMessagingTypes,
+  firebase,
+} from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
-import messaging, {firebase} from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import {storeUserSession} from 'utils/auth';
+import {RootStackNavigationProp} from 'navigation/Routes';
+import {useNavigation} from '@react-navigation/native';
 
 const useNotification = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   const getFcmToken = async () => {
     const fcmToken = await messaging().getToken();
     await storeUserSession('fcmToken', `${fcmToken}`);
@@ -26,9 +33,10 @@ const useNotification = () => {
 
   const displayNotification = async (
     message: FirebaseMessagingTypes.RemoteMessage,
-    category?: string,
   ) => {
-    const channel = await androidCreateChannel();
+    const channel = await androidCreateChannel(
+      String(message?.data?.screenName) || '',
+    );
 
     await notifee.requestPermission();
 
@@ -36,7 +44,10 @@ const useNotification = () => {
       await notifee.displayNotification({
         title: message?.notification?.title || '',
         body: message?.notification?.body || '',
-        data: {mysupervalue: 1},
+        data: {
+          chatId: message?.data?.chatId || '',
+          category: message?.data?.screenName || '',
+        },
         android: {
           channelId: channel,
           smallIcon: 'ic_launcher',
@@ -48,10 +59,10 @@ const useNotification = () => {
     }
   };
 
-  const androidCreateChannel = async () => {
+  const androidCreateChannel = async (category: string) => {
     const channel = await notifee.createChannel({
       id: 'default',
-      name: 'category1',
+      name: category,
       importance: AndroidImportance.HIGH,
     });
 
@@ -64,44 +75,76 @@ const useNotification = () => {
         case EventType.DISMISSED:
           console.log('User dismissed notification', detail.notification);
           break;
+
         case EventType.PRESS:
-          if (detail.notification?.title === '메세지') {
-            console.log('메세지방!');
+          switch (detail.notification?.data?.category) {
+            case 'ChatList':
+              navigation.navigate('ChatList');
+              break;
+
+            case 'ChatRoom':
+              navigation.navigate('ChatRoom', {
+                chatId: Number(detail.notification?.data?.chatId),
+                name: String(detail.notification?.title),
+              });
+              break;
+
+            case 'Inbox':
+              navigation.navigate('Inbox');
+              break;
+
+            default:
+              break;
           }
-          console.log('User pressed notification', detail.notification);
+
           break;
       }
     });
   };
 
   const onBackgroundEvent = () => {
-    notifee.onBackgroundEvent(async ({type, detail}) => {
-      const {notification} = detail;
-      console.log(notification);
-      if (type === EventType.DELIVERED) {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(remoteMessage);
+      const screenName = remoteMessage.data?.screenName;
+      switch (screenName) {
+        case 'ChatList':
+          navigation.navigate('ChatList');
+          break;
+
+        case 'ChatRoom':
+          navigation.navigate('ChatRoom', {
+            chatId: Number(remoteMessage.data?.chatId),
+            name: String(remoteMessage.notification?.title),
+          });
+          break;
+
+        case 'Inbox':
+          navigation.navigate('Inbox');
+          break;
+
+        default:
+          break;
       }
     });
   };
 
   useEffect(() => {
     requestUserPermission();
-    // 이 훅이 마운트될 때 실행되는 코드
+
     const setupNotificationHandlers = async () => {
       firebase.messaging().onMessage(async remoteMessage => {
         displayNotification(remoteMessage);
       });
-
-      onForegroundEvent();
-      onBackgroundEvent();
     };
 
     setupNotificationHandlers();
+    onForegroundEvent();
+    onBackgroundEvent();
 
-    return () => {
-      // 여기서 사용된 이벤트 리스너를 제거하는 작업을 수행할 수 있습니다.
-      // 예를 들어, notifee.offForegroundEvent(), notifee.offBackgroundEvent() 등을 호출할 수 있습니다.
-    };
+    return () => {};
   }, []);
+
+  return {displayNotification};
 };
 
 export default useNotification;
