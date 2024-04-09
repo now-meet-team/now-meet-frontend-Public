@@ -56,6 +56,7 @@ function useSocket(roomId: number) {
 
       /** 채팅방 status에 관련된 소켓 **/
       newSocket.on('status', (data: string) => {
+        console.log('data-->>', data);
         setChatRoomStatus(data);
       });
 

@@ -15,7 +15,7 @@ export const useChatOpen = () => {
     (chatId: number): Promise<AxiosResponse> =>
       axiosInstance.post(`/match/me/chatBox/${chatId}/open`),
     {
-      onSuccess: data => {
+      onSuccess: () => {
         queryClient.invalidateQueries({queryKey: [CHAT_ROOM_QUERY_KEY]});
       },
 
@@ -48,7 +48,7 @@ export const useChatExit = () => {
         useModalStore.setState({visible: false});
       },
 
-      onError: error => {
+      onError: (error: Error) => {
         console.log(error);
       },
     },

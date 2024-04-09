@@ -8,6 +8,7 @@ import {palette} from 'config/globalStyles';
 import {useChatDelete, useChatExit} from 'lib/mutation/chat';
 import {ChatStatus} from 'types/chat';
 import useSocket from 'hooks/useSocket';
+import {useChatRoom} from 'lib/query/chat';
 
 type ChatRightExitType = {
   chatId: number;
@@ -20,6 +21,7 @@ export default function ChatRightExit(props: ChatRightExitType) {
   const {useChatDeleteMutation} = useChatDelete();
 
   const {chatRoomStatus} = useSocket(chatId);
+  const {chatRoomData} = useChatRoom(chatId);
 
   return (
     <>
@@ -37,8 +39,12 @@ export default function ChatRightExit(props: ChatRightExitType) {
             backgroundColor={palette.primaryB1}
             title={'나가기' || ''}
             onPress={() => {
-              chatRoomStatus === ChatStatus.SENDER_EXIT ||
-              chatRoomStatus === ChatStatus.RECEIVER_EXIT
+              [ChatStatus.SENDER_EXIT, ChatStatus.RECEIVER_EXIT].includes(
+                chatRoomData?.chatUserData.chatStatus ?? '',
+              ) ||
+              [ChatStatus.SENDER_EXIT, ChatStatus.RECEIVER_EXIT].includes(
+                chatRoomStatus,
+              )
                 ? useChatDeleteMutation.mutate(chatId)
                 : useChatExitMutation.mutate(chatId);
             }}

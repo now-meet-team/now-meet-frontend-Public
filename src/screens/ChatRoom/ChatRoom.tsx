@@ -17,8 +17,7 @@ import {ChatStatus} from 'types/chat';
 import ChatInput from 'components/Chat/ChatInput';
 import MessageList from 'components/Chat/MessageList';
 import {usePushNotification} from 'lib/mutation/pushNotification';
-import useNotification from 'hooks/useNotification';
-import {firebase} from '@react-native-firebase/messaging';
+import {exitStatus} from 'utils/chat';
 
 export default function ChatRoom() {
   const {params} = useRoute();
@@ -41,9 +40,10 @@ export default function ChatRoom() {
           style={{flex: 1}}
           keyboardVerticalOffset={95}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          {chatRoomStatus !== ChatStatus.RECEIVER_EXIT &&
-            chatRoomStatus !== ChatStatus.SENDER_EXIT &&
-            chatRoomStatus !== ChatStatus.DISCONNECT_END && (
+          {!exitStatus.includes(chatRoomStatus) &&
+            !exitStatus.includes(
+              chatRoomData?.chatUserData.chatStatus ?? '',
+            ) && (
               <EndTimeBox
                 status={chatRoomData?.chatUserData.chatStatus ?? ''}
                 chatTime={chatRoomData?.chatTime ?? ''}

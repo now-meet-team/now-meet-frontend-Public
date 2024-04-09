@@ -10,13 +10,13 @@ export default function Setting() {
 
   return (
     <ProfileSettingContainer>
-      <ProfileSettingSVGContainer>
+      {/* <ProfileSettingSVGContainer>
         <SettingList label="좋아요 알림" mode="switch" />
         <SettingList label="채팅 메시지 알림" mode="switch" />
         <SettingList label="매칭 알림" mode="switch" />
-      </ProfileSettingSVGContainer>
+      </ProfileSettingSVGContainer> */}
 
-      <ProfileSettingLine />
+      {/* <ProfileSettingLine /> */}
 
       <ProfileSettingSettingListContainer>
         {/* <SettingList label="계정" mode="text" text="0.0.1" /> */}
