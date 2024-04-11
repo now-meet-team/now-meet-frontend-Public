@@ -7,11 +7,11 @@ import {
   storeUserSession,
 } from 'utils/auth';
 import * as RootNavigation from '../utils/navigate/RootNavigation';
-import {navigationRef} from '../utils/navigate/RootNavigation';
+import {API_URL} from 'config/env';
 
 export const createApi = () => {
   const axiosInstance = axios.create({
-    baseURL: 'https://nowmeet.org',
+    baseURL: API_URL,
   });
 
   axiosInstance.interceptors.request.use(
@@ -62,10 +62,6 @@ export const createApi = () => {
 
           return axios(originalRequest);
         } catch (err) {
-          console.log('err-->', err);
-          console.log('에러인데?');
-          RootNavigation.navigationRef.current?.navigate('Home');
-
           await removeUserSession('idToken');
           await GoogleSignin.signOut();
 

@@ -1,3 +1,4 @@
+import {CHATS_URL} from 'config/env';
 import {useCallback, useEffect, useState} from 'react';
 import {GestureResponderEvent} from 'react-native';
 
@@ -32,7 +33,7 @@ function useSocket(roomId: number) {
     const initializeSocket = async () => {
       const getToken = await retrieveUserSession('idToken');
 
-      newSocket = io('https://nowmeet.org/chats', {
+      newSocket = io(CHATS_URL, {
         auth: {token: getToken},
         query: {
           roomId: roomId,
