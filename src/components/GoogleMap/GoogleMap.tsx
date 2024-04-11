@@ -165,7 +165,6 @@ export default function GoogleMap(props: GoogleMapType) {
             style={styles.map}
             provider={PROVIDER_GOOGLE}
             customMapStyle={mapStyle}
-            showsUserLocation
             scrollEnabled={false}
             toolbarEnabled={false}
             followsUserLocation

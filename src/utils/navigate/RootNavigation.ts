@@ -1,4 +1,5 @@
 import {createNavigationContainerRef} from '@react-navigation/native';
+
 import {RootStackParamList} from 'navigation/Routes';
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
@@ -12,6 +13,7 @@ export function RootNavigation<RouteName extends keyof RootStackParamList>(
       : [screen: RouteName, params: RootStackParamList[RouteName]]
     : never
 ) {
+  console.log(navigationRef.isReady());
   if (navigationRef.isReady()) {
     navigationRef.navigate(...args);
   }

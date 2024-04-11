@@ -50,25 +50,23 @@ export default function Main() {
         locationProfileData={locationProfileData || undefined}
       />
 
-      {Platform.OS === 'ios' && (
-        <MainWrapper
-          style={{position: 'absolute', bottom: 135, zIndex: 0}}
-          onPress={() => {
-            if (isButtonDisabled) {
-              return;
-            }
+      <MainWrapper
+        style={{position: 'absolute', bottom: 135, zIndex: 0}}
+        onPress={() => {
+          if (isButtonDisabled) {
+            return;
+          }
 
-            setIsButtonDisabled(true);
+          setIsButtonDisabled(true);
 
-            setTimeout(() => {
-              setIsButtonDisabled(false);
-            }, 5000);
+          setTimeout(() => {
+            setIsButtonDisabled(false);
+          }, 5000);
 
-            locationMapRefetch();
-          }}>
-          <LocationSVG />
-        </MainWrapper>
-      )}
+          locationMapRefetch();
+        }}>
+        <LocationSVG />
+      </MainWrapper>
 
       <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
         {!locationProfileLoading &&

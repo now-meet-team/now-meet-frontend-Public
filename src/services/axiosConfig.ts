@@ -6,7 +6,8 @@ import {
   retrieveUserSession,
   storeUserSession,
 } from 'utils/auth';
-import {RootNavigation} from 'utils/navigate/RootNavigation';
+import * as RootNavigation from '../utils/navigate/RootNavigation';
+import {navigationRef} from '../utils/navigate/RootNavigation';
 
 export const createApi = () => {
   const axiosInstance = axios.create({
@@ -44,18 +45,17 @@ export const createApi = () => {
 
       const originalRequest = error.config;
 
-      console.log('status-->', status);
-
       if (error.response && status === 401) {
         try {
-          const userInfo = await GoogleSignin.signInSilently();
-
           const oldInfo = await GoogleSignin.getCurrentUser();
+          console.log(oldInfo);
 
           if (oldInfo) {
             const oldTokens = await GoogleSignin.getTokens();
             await GoogleSignin.clearCachedAccessToken(oldTokens.idToken);
           }
+
+          const userInfo = await GoogleSignin.signInSilently();
 
           config.headers.Authorization = `Bearer ${userInfo.idToken}`;
           await storeUserSession('idToken', `${userInfo.idToken}`);
@@ -63,7 +63,9 @@ export const createApi = () => {
           return axios(originalRequest);
         } catch (err) {
           console.log('err-->', err);
-          RootNavigation('Home');
+          console.log('에러인데?');
+          RootNavigation.navigationRef.current?.navigate('Home');
+
           await removeUserSession('idToken');
           await GoogleSignin.signOut();
 

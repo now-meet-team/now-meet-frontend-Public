@@ -15,11 +15,13 @@ import ProfileLayout from 'components/ProfileLayout';
 import {useProfileMe} from 'services/query/profile';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSwitchStore} from 'store/switch/switchStore';
+import {useGhost} from 'services/mutation/profile/ghost';
 
 export default function Profile() {
   const navigation = useNavigation();
 
   const {queryProfileData} = useProfileMe();
+  const {useUserGhostMutation} = useGhost();
 
   const handleSwitch = useSwitchStore(state => state.handleSwitch);
 
@@ -47,7 +49,10 @@ export default function Profile() {
 
       <ProfileSVGContainer>
         <SettingList
-          onChange={handleSwitch}
+          onChange={async (value: boolean) => {
+            handleSwitch(value);
+            useUserGhostMutation.mutate(value);
+          }}
           label="유령모드"
           SvgComponent={GhostSVG}
           mode="switch"

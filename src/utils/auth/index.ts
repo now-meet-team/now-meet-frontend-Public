@@ -42,10 +42,8 @@ export const retrieveWebClientId = async () => {
 export const storeUserSession = async (key: string, value: string) => {
   try {
     await EncryptedStorage.setItem(key, value);
-
-    // Congrats! You've just stored your first value!
   } catch (error) {
-    // There was an error on the native side
+    throw error;
   }
 };
 
@@ -55,7 +53,7 @@ export const retrieveUserSession = async (key: string) => {
 
     return session;
   } catch (error) {
-    // There was an error on the native side
+    throw error;
   }
 };
 
@@ -63,6 +61,6 @@ export const removeUserSession = async (key: string) => {
   try {
     await EncryptedStorage.removeItem(key);
   } catch (error) {
-    // There was an error on the native side
+    throw error;
   }
 };
