@@ -10,9 +10,9 @@ import CustomModal, {modalStyle} from 'components/CustomModal';
 import Button from 'components/Common/Button/Button';
 import {palette} from 'config/globalStyles';
 import {useModalStore} from 'store/modal/modalStore';
-import {useProfileLike} from 'lib/mutation/profile/like';
+import {useProfileLike} from 'services/mutation/profile/like';
 
-import {useUserDetail} from 'lib/query/user';
+import {useUserDetail} from 'services/query/user';
 import {calculateAge} from 'utils/calculateAge';
 import {ScrollView} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';

@@ -1,6 +1,6 @@
 import {useMutation} from '@tanstack/react-query';
 import {AxiosResponse} from 'axios';
-import axiosInstance from 'lib/axiosConfig';
+import axiosInstance from 'services/axiosConfig';
 
 /** 계정 삭제 회원가입  **/
 export const usePushNotification = () => {

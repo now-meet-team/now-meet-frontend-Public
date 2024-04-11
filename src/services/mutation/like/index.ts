@@ -1,10 +1,10 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosResponse} from 'axios';
 
-import {LIKE_INBOX_LIST_QUERY_KEY} from 'lib/query/like';
+import {LIKE_INBOX_LIST_QUERY_KEY} from 'services/query/like';
 import {usePushNotification} from '../pushNotification';
 
-import axiosInstance from 'lib/axiosConfig';
+import axiosInstance from 'services/axiosConfig';
 
 /** POST
 /match/me/reciveBox/{matchId}/accept  **/

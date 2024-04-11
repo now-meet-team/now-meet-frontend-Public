@@ -5,7 +5,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import {FlatList, View} from 'react-native';
 import ProfileLayout from 'components/ProfileLayout';
-import {useLikedMessageList} from 'lib/query/profile';
+import {useLikedMessageList} from 'services/query/profile';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';

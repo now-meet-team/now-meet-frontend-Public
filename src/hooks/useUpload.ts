@@ -2,7 +2,7 @@ import {
   useDeleteProfileImage,
   useProfileMe,
   useUpdateProfileImage,
-} from 'lib/query/profile';
+} from 'services/query/profile';
 import {
   Asset,
   ImageLibraryOptions,

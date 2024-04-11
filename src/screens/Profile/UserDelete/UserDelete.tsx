@@ -6,7 +6,7 @@ import Button from 'components/Common/Button/Button';
 import {ButtonContainer} from 'layout/SignUpLayout/SignUpLayout';
 import CustomModal, {modalStyle} from 'components/CustomModal';
 import {useModalStore} from 'store/modal/modalStore';
-import {usePostUserDelete} from 'lib/mutation/auth';
+import {usePostUserDelete} from 'services/mutation/auth';
 import {View} from 'react-native';
 
 export default function UserDelete() {

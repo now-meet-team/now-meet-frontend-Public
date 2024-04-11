@@ -2,7 +2,7 @@ import {FlatList, View, Text, StyleSheet} from 'react-native';
 import React, {useCallback} from 'react';
 import {ProfileSafeAreaView} from 'screens/Profile/Profile';
 import styled from 'styled-components/native';
-import {useInBoxList} from 'lib/query/like';
+import {useInBoxList} from 'services/query/like';
 import {
   MessageUserInfo,
   LastMessage,
@@ -13,7 +13,7 @@ import {palette} from 'config/globalStyles';
 import Button from 'components/Common/Button/Button';
 import {calculateRemainingTime} from 'utils/like';
 import {InboxListType} from 'types/list';
-import {useUserAccept, useUserReject} from 'lib/mutation/like';
+import {useUserAccept, useUserReject} from 'services/mutation/like';
 
 export default function InBox() {
   const {inboxListData} = useInBoxList();

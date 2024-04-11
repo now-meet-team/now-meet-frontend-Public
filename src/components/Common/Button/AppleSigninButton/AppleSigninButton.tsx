@@ -6,7 +6,7 @@ import {
 } from '@invertase/react-native-apple-authentication';
 import {useNavigation} from '@react-navigation/native';
 import {storeUserSession} from 'utils/auth';
-import {usePostIsSignIn} from 'lib/mutation/auth';
+import {usePostIsSignIn} from 'services/mutation/auth';
 
 export default function AppleSigninButton() {
   const {useSignInMutation} = usePostIsSignIn();

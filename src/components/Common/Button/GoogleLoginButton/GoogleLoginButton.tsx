@@ -3,7 +3,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
-import {usePostIsSignIn} from 'lib/mutation/auth';
+import {usePostIsSignIn} from 'services/mutation/auth';
 
 import {saveWebClientId, storeUserSession} from 'utils/auth';
 

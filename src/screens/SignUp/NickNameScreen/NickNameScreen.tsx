@@ -4,7 +4,7 @@ import {shallow} from 'zustand/shallow';
 import Input from '@components/Common/Input/Input';
 import SignUpLayout from '@layout/SignUpLayout/SignUpLayout';
 import {useNickNameStore} from 'store/signup/signUpStore';
-import {useNickNameDuplication} from 'lib/query/signIn';
+import {useNickNameDuplication} from 'services/query/signIn';
 
 import useDebounce from 'hooks/useDebounce';
 

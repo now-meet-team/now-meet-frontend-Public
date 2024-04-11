@@ -3,7 +3,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
-import axiosInstance from 'lib/axiosConfig';
+import axiosInstance from 'services/axiosConfig';
 
 import {
   useHobbyStore,

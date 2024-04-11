@@ -5,10 +5,10 @@ import {useModalStore} from 'store/modal/modalStore';
 import CustomModal, {modalStyle} from 'components/CustomModal';
 import Button from 'components/Common/Button/Button';
 import {palette} from 'config/globalStyles';
-import {useChatDelete, useChatExit} from 'lib/mutation/chat';
+import {useChatDelete, useChatExit} from 'services/mutation/chat';
 import {ChatStatus} from 'types/chat';
 import useSocket from 'hooks/useSocket';
-import {useChatRoom} from 'lib/query/chat';
+import {useChatRoom} from 'services/query/chat';
 
 type ChatRightExitType = {
   chatId: number;

@@ -1,10 +1,10 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosResponse} from 'axios';
 
-import {PROFILE_DETAIL_QUERY_KEY} from 'lib/query/user';
+import {PROFILE_DETAIL_QUERY_KEY} from 'services/query/user';
 
-import {usePushNotification} from 'lib/mutation/pushNotification';
-import axiosInstance from 'lib/axiosConfig';
+import {usePushNotification} from 'services/mutation/pushNotification';
+import axiosInstance from 'services/axiosConfig';
 
 /** 유저 좋아요  **/
 export const useProfileLike = () => {

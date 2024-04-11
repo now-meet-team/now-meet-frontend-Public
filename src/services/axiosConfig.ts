@@ -1,10 +1,12 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import axios from 'axios';
+
 import {
   removeUserSession,
   retrieveUserSession,
   storeUserSession,
 } from 'utils/auth';
+import {RootNavigation} from 'utils/navigate/RootNavigation';
 
 export const createApi = () => {
   const axiosInstance = axios.create({
@@ -61,6 +63,7 @@ export const createApi = () => {
           return axios(originalRequest);
         } catch (err) {
           console.log('err-->', err);
+          RootNavigation('Home');
           await removeUserSession('idToken');
           await GoogleSignin.signOut();
 

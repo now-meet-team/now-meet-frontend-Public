@@ -8,7 +8,7 @@ import {
   ProfileUserDetailWrapper,
 } from 'screens/UserDetail/UserDetail';
 import styled from 'styled-components/native';
-import {useChatList} from 'lib/query/chat';
+import {useChatList} from 'services/query/chat';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProp} from 'navigation/Routes';

@@ -6,17 +6,17 @@ import {FlatList} from 'react-native-gesture-handler';
 
 import ChatOpenButton from 'components/ChatOpenButton';
 import {useRoute} from '@react-navigation/native';
-import {useChatRoom} from 'lib/query/chat';
+import {useChatRoom} from 'services/query/chat';
 
 import useSocket from 'hooks/useSocket';
-import {useChatOpen} from 'lib/mutation/chat';
+import {useChatOpen} from 'services/mutation/chat';
 
 import EndTimeBox from 'components/Chat/EndTimeBox';
 import {ChatStatus} from 'types/chat';
 
 import ChatInput from 'components/Chat/ChatInput';
 import MessageList from 'components/Chat/MessageList';
-import {usePushNotification} from 'lib/mutation/pushNotification';
+import {usePushNotification} from 'services/mutation/pushNotification';
 import {exitStatus} from 'utils/chat';
 
 export default function ChatRoom() {

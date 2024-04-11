@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import axiosInstance from 'lib/axiosConfig';
+import axiosInstance from 'services/axiosConfig';
 
 const SIGNIN_QUERY_KEY = 'SIGNINKEY';
 const NICK_NAME_DUPLICATION_KEY = 'NICK_NAME_DUPLICATION_KEY';

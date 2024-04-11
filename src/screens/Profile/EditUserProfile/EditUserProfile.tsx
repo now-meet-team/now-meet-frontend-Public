@@ -2,7 +2,7 @@ import {Text, View} from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import {palette} from 'config/globalStyles';
-import {useProfileMe} from 'lib/query/profile';
+import {useProfileMe} from 'services/query/profile';
 import ImageUploadContainer from 'components/ImageUploadContainer';
 import {Asset} from 'react-native-image-picker';
 

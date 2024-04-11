@@ -6,7 +6,7 @@ import BottomSheet, {BottomSheetVirtualizedList} from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
 
 import {useNavigation} from '@react-navigation/native';
-import {useLocationProfile} from 'lib/query/googlemap';
+import {useLocationProfile} from 'services/query/googlemap';
 import {NearbyUsersType} from 'types/googlemap';
 import {palette} from 'config/globalStyles';
 import {calculateAge} from 'utils/calculateAge';
